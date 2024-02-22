@@ -1,25 +1,3 @@
 .work-experience--container {
   text-align: left;
-  padding: 60px;
-  .ant-list-item-meta-content {
-    padding: 0 24px;
-  }
-
-  .ant-list-vertical .ant-list-item {
-    &:nth-child(even) {
-      flex-direction: row-reverse;
-    }
-    .ant-list-item-main {
-      width: 35%;
-    }
-    .ant-list-item-extra {
-      width: 65%;
-    }
-    .ant-list-item-meta .ant-list-item-meta-title {
-      font-size: 36px;
-    }
-    .ant-list-item-meta .ant-list-item-meta-description {
-      font-size: 24px;
-    }
-  }
 }

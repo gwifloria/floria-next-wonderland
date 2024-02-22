@@ -1,9 +1,12 @@
+const isProd = process.env.NODE_ENV === "production";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    generateBuildId: async () => {
-        // This could be anything, using the latest git hash
-        return process.env.GIT_HASH
-      },
+  output: "export",
+  basePath : isProd ? "/bj-next-wonderland" : "/",
+  images: {
+    unoptimized: true,
+  },
 };
 
 export default nextConfig;
