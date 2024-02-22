@@ -1,0 +1,38 @@
+
+.in.splitting-title {
+    .char {
+      animation: fadein 400ms ease;
+      animation-delay: calc((20ms * var(--char-index) ));
+    }
+  }
+  .out.splitting-title {
+    .char {
+      animation: fadeout 300ms ease;
+      opacity: 0;
+    }
+  }
+
+@keyframes fadein {
+    0%{
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    100%{
+      opacity: 1;
+      transform: translateY(0);
+    }
+}
+@keyframes fadeout {
+  0%{
+    opacity: 1;
+    transform: translateY(20px);
+  }
+  0%{
+    opacity: 0.5;
+    transform: translateY(40px);
+  }
+  100%{
+    opacity: 0;
+    transform: translateY(400px);
+  }
+}

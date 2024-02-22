@@ -44,9 +44,9 @@ jobs:
           npm install
           npm run build --source ./
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2 
+        uses: actions/upload-pages-artifact@v2
         with:
-          path: ./dist         
+          path: ./next
 
   # Deployment job
   deploy:
@@ -59,4 +59,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
-
