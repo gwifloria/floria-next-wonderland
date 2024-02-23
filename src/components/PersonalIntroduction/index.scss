@@ -1,15 +1,9 @@
 
   .personal-introduction__container{
    text-align: left;
-   font-size:48px;
-   padding:108px;
    padding-bottom: 0;
-   .text {padding:40px 0}
    .container {
-      position: relative;
-      margin-bottom:48px;
       .confetti {
-         font-size: 64px;
          >.particle {
             opacity:0;
             position: absolute;
@@ -24,33 +18,17 @@
       }
    }
    .brief-intro{
-      font-size: 36px;
       >span{
          display: block;
       }
    }
-   .detail-info{
-      font-size: 24px;
-      >div{
-         margin:16px 0 ;
-      }
-   }
-   .intro-footer{
-      font-size: 16px;
-   }
-   .skills{
-      margin: 48px 0;
-      display: flex;
-      font-size: 48px;
-   }
    .skill-card{
       background: #638772;
       color: #dfe8e3;
-      font-size: 32px;
       text-align: center;
       font-family: monospace;
    }
- 
+
   }
 @keyframes confetti {
   0% {
