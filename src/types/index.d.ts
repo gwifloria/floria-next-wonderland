@@ -10,4 +10,5 @@ export interface ProjectExperienceProps {
   projectBackground: string;
   details: string[];
   pictures: StaticImageData[];
+  skills: string[];
 }

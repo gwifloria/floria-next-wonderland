@@ -1,11 +1,11 @@
 import { ProjectExperienceProps, WorkHistoryProps } from "../types";
-import auto1 from "@/assets/auto1.png";
-import auto2 from "@/assets/auto2.png";
-import auto3 from "@/assets/auto3.png";
+import auto1 from "/public/images/auto1.png";
+import auto2 from "/public/images/auto2.png";
+import auto3 from "/public/images/auto3.png";
 
-import cloud1 from "@/assets/cloud1.png";
-import cloud2 from "@/assets/cloud2.png";
-import cloud3 from "@/assets/cloud3.png";
+import cloud1 from "/public/images/cloud1.png";
+import cloud2 from "/public/images/cloud2.png";
+import cloud3 from "/public/images/cloud3.png";
 
 export const workHistoryList: WorkHistoryProps[] = [
   {
@@ -40,6 +40,7 @@ export const projectExperienceList: ProjectExperienceProps[] = [
       "- Complete (Vue+Typescript+Pinia+Element Plus) project construction",
       "- Based on Baidu Maps (bmapgl), complete the map page function development and module animation:",
     ],
+    skills: ["React", "Antd", "Webgl", "Typescript", "Echarts"],
     pictures: [auto1, auto2, auto3],
   },
   {
@@ -49,9 +50,10 @@ export const projectExperienceList: ProjectExperienceProps[] = [
     details: [
       "- Use React.js+Typescript+Antd to complete the background management project CRUD basic functions, use css drawing interface to achieve product requirements",
       "- Use Echarts to implement data display pie charts, column charts, dashboards, etc",
-      "- Use Frabric.js to realize canvas to draw the sweeper track line on the picture, and complete the upload and echo functions",
+      "- Use Fabric.js to realize canvas to draw the sweeper track line on the picture, and complete the upload and echo functions",
       "- Operation and Maintenance Management Subsystem (vue): Collaborate to complete the Node.js large file slicing upload function (responsible for the non-Node.js part)",
     ],
+    skills: ["Vue", "Fabric.js", "Pinia"],
     pictures: [cloud1, cloud2, cloud3],
   },
 ];
