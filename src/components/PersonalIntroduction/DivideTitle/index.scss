@@ -1,0 +1,26 @@
+.divide-title {
+  position: relative;
+  color: #91aeba;
+  text-align: center;
+  z-index: 1;
+  > span {
+    position: relative;
+    z-index: 3;
+  }
+  &::before {
+    display: block;
+    position: relative;
+    content: "";
+    width: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(200%) scale(8);
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 6px solid #c6d5db;
+    z-index: 2;
+  }
+  &:hover {
+    animation: 1000ms ease-in scaleLarge;
+  }
+}
