@@ -1,15 +1,25 @@
-'use client'
-import { useBlogData } from "./useBlogData";
-import { BlogItem } from "./BlogItem";
+"use client";
+import { AuthProvider } from "@/context";
+import { BlogUpload } from "./BlogUpload";
+import { BlogList } from "./BlogList";
+import withTheme from "@/theme";
+console.log(process.env.NODE_ENV === "development");
 
-export default function Blog() {
-    const data = useBlogData()
-
-    return (<div className="blog-container justify-between">
+const Blog = () => {
+  return (
+    <AuthProvider>
+      <div className="blog-container justify-between">
         <div>blog</div>
         <div className="blog-list">
-        {data?.map((blog) =>
-            <BlogItem key={blog.id} blog={blog}></BlogItem>
-        )}</div>
-    </div>)
-} 
+          {process.env.NODE_ENV === "development" && <BlogUpload></BlogUpload>}
+
+          <BlogList></BlogList>
+        </div>
+      </div>
+    </AuthProvider>
+  );
+};
+const BlogPage = () => {
+  return withTheme(<Blog />);
+};
+export default BlogPage;

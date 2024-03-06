@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build ",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "predev": "ts-node --project ./tsconfig.node.json ./scripts/genAntdCss.tsx",
+    "prebuild": "cross-env NODE_ENV=production ts-node --project ./tsconfig.node.json ./scripts/genAntdCss.tsx"
   },
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [
@@ -17,8 +19,11 @@
     ]
   },
   "dependencies": {
+    "@ant-design/nextjs-registry": "^1.0.0",
     "animate.css": "^4.1.1",
+    "antd": "^5.15.0",
     "classnames": "^2.5.1",
+    "cross-env": "^7.0.3",
     "lodash": "^4.17.21",
     "next": "14.1.0",
     "react": "^18",
@@ -27,9 +32,13 @@
     "sass": "^1.71.1",
     "sharp": "^0.33.2",
     "splitting": "^1.0.6",
-    "swr": "^2.2.5"
+    "swr": "^2.2.5",
+    "ts-node": "^10.9.2",
+    "tslib": "^2.6.2",
+    "web-vitals": "^3.5.2"
   },
   "devDependencies": {
+    "@ant-design/static-style-extract": "^1.0.2",
     "@commitlint/cli": "^18.6.1",
     "@commitlint/config-conventional": "^18.6.2",
     "@types/lodash": "^4.14.195",

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import PageHeader from "@/components/PageHeader";
+import "../../public/antd.min.css"; // 添加这行
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,8 +27,8 @@ export default function RootLayout({
       />
       <body className={inter.className}>
         <div className="main-background bg-mint-100 font-sans mx-auto min-h-screen p-12 md:p-24 lg:p-36 ">
-        <PageHeader></PageHeader>
-           {children}
+          <PageHeader></PageHeader>
+          <AntdRegistry>{children}</AntdRegistry>
         </div>
       </body>
     </html>

@@ -1,12 +1,18 @@
-import { FixedNavBar } from "@/components/FixedNavBar";
-import PageHeader from "@/components/PageHeader";
+"use client";
 import { PersonalIntroduction } from "@/components/PersonalIntroduction";
-import Image from "next/image";
+import { AuthProvider } from "@/context";
+import { StyleProvider } from "@ant-design/cssinjs";
 
 export default function Home() {
+  // useWebVital();
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between ">
-      <PersonalIntroduction></PersonalIntroduction>
-    </main>
+    <StyleProvider hashPriority="high">
+      <AuthProvider>
+        <main className="flex min-h-screen flex-col items-center justify-between ">
+          <PersonalIntroduction></PersonalIntroduction>
+        </main>
+      </AuthProvider>
+    </StyleProvider>
   );
 }
