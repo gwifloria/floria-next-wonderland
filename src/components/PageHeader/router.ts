@@ -1,1 +1,1 @@
-export const routes = ['/',"blog", "photo"];
+export const routes = ["/", "blog", "photo", "caster"];
