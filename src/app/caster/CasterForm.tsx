@@ -7,12 +7,10 @@ const { Option } = Select;
 export const CasterForm = () => {
   const [form] = Form.useForm();
 
-  const { isMutating, trigger } = useSWRMutation(
-    "/floria-service/caster/subscribe",
-    { method: "POST" }
-  );
+  const { trigger } = useSWRMutation("/floria-service/caster/subscribe", {
+    method: "POST",
+  });
   const onFinish = (values: any) => {
-    console.log(values);
     trigger(values);
   };
 

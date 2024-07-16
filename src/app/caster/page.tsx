@@ -1,7 +1,7 @@
 "use client";
 import { AuthProvider } from "@/context";
 import withTheme from "@/theme";
-import { CasterForm } from "./useCasterForm";
+import { CasterForm } from "./CasterForm";
 
 const CasterBooking = () => {
   return (
