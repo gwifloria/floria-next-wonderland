@@ -17,6 +17,10 @@ const nextConfig = {
         source: "/floria-service/:path*",
         destination: `http://localhost:8080/:path*`,
       },
+      {
+        source: "/github-service/:path*",
+        destination: `https://github.com/:path*`,
+      },
     ];
   },
 };
