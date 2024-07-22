@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import PageHeader from "@/components/PageHeader";
-import "../../public/antd.min.css"; // 添加这行
+import "../../public/antd.min.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { useEffect } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -2,6 +2,7 @@
 
 import { ConfigProvider } from "antd";
 import { ThemeConfig } from "antd";
+import { useEffect } from "react";
 
 export const themeConfigToken: ThemeConfig["token"] = {
   colorPrimary: "#a7c7b0",
@@ -13,16 +14,18 @@ export const themeConfigToken: ThemeConfig["token"] = {
   colorTextBase: "#3a3636",
 };
 
-const withTheme = (node: JSX.Element) => (
-  <>
-    <ConfigProvider
-      theme={{
-        token: themeConfigToken,
-      }}
-    >
-      {node}
-    </ConfigProvider>
-  </>
-);
+const withTheme = (node: JSX.Element) => {
+  return (
+    <>
+      <ConfigProvider
+        theme={{
+          token: themeConfigToken,
+        }}
+      >
+        {node}
+      </ConfigProvider>
+    </>
+  );
+};
 
 export default withTheme;
