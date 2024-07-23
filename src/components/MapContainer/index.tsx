@@ -1,16 +1,18 @@
 import React, { useEffect, useRef } from "react";
-import mapboxgl from "mapbox-gl";
+import mapboxgl, { MapMouseEvent } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useBarHidden } from "./useBarHidden";
+import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
+import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
-const MapContainer = () => {
+const MapContainer = ({
+  clickEvent,
+}: {
+  clickEvent?: (e: MapMouseEvent) => void;
+}) => {
   const mapContainerRef = useRef(null);
   const mapRef = useRef<mapboxgl.Map | undefined>();
   useBarHidden();
-
-  useEffect(() => {
-    console.log("render");
-  }, []);
 
   useEffect(() => {
     mapboxgl.accessToken =
@@ -40,39 +42,19 @@ const MapContainer = () => {
       if (!mapRef.current) {
         return;
       }
-
-      mapRef.current.addImage("gradient", {
-        width: width,
-        height: width,
-        data: data,
+      mapRef.current.on("dblclick", (e) => {
+        clickEvent && clickEvent(e);
       });
 
-      // mapRef.current.addSource("point", {
-      //   type: "geojson",
-      //   data: {
-      //     type: "FeatureCollection",
-      //     features: [
-      //       {
-      //         type: "Feature",
-      //         geometry: {
-      //           type: "Point",
-      //           coordinates: [0, 0],
-      //         },
-      //       },
-      //     ],
-      //   },
-      // });
-
-      // mapRef.current.addLayer({
-      //   id: "points",
-      //   type: "symbol",
-      //   source: "point",
-      //   layout: {
-      //     "icon-image": "gradient",
-      //   },
-      // });
+      mapRef.current.addControl(
+        new MapboxGeocoder({
+          accessToken: mapboxgl.accessToken,
+          // @ts-ignore
+          mapboxgl: mapboxgl,
+        })
+      );
     });
-  }, []);
+  }, [clickEvent]);
 
   return <div id="map" ref={mapContainerRef} style={{ height: "100%" }}></div>;
 };

@@ -2,10 +2,13 @@
 import { PersonalIntroduction } from "@/components/PersonalIntroduction";
 import { AuthProvider } from "@/context";
 import { StyleProvider } from "@ant-design/cssinjs";
+import { useEffect } from "react";
 
 export default function Home() {
   // useWebVital();
-
+  useEffect(() => {
+    console.log(333);
+  }, []);
   return (
     <StyleProvider hashPriority="high">
       <AuthProvider>

@@ -4,9 +4,6 @@ import { routes } from "./router";
 import { useEffect } from "react";
 
 const PageHeader = () => {
-  useEffect(() => {
-    console.log(22);
-  }, []);
   return (
     <div
       className="p-4 container page-header flex justify-between absolute "
