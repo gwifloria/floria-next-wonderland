@@ -16,6 +16,7 @@ export const DestinationModal = forwardRef(function A(props, ref) {
   const showModal = useCallback(
     (e: MapMouseEvent) => {
       const { lngLat } = e;
+      console.log(e);
       const { lng, lat } = lngLat;
       form.setFieldsValue({ longitude: lng, latitude: lat });
       setIsModalOpen(true);
