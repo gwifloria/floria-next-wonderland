@@ -8,10 +8,9 @@ export const BlogList = () => {
   );
   return (
     <>
-      {/* {data?.blogs?.map((blog) => (
+      {data?.blogs?.map((blog) => (
         <BlogItem key={blog.id} blog={blog}></BlogItem>
-      ))} */}
-      <MarkdownViewer></MarkdownViewer>
+      ))}
     </>
   );
 };

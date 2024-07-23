@@ -3,9 +3,11 @@ import { AuthProvider } from "@/context";
 import "./index.scss";
 import withTheme from "@/theme";
 import { useTravelTabs } from "./useTravelTabs";
+import { useSWRMutation } from "@/api/useFetch";
 
 const Travel = () => {
   const Tabs = useTravelTabs();
+
   return (
     <AuthProvider>
       <div className="travel-container justify-between h-dvh">{Tabs}</div>

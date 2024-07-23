@@ -1,9 +1,5 @@
-import MapContainer from "@/components/MapContainer";
 import { TabPaneProps, Tabs, TabsProps } from "antd";
 import { useDestinations } from "./useData";
-import { useCallback } from "react";
-import { MapMouseEvent } from "mapbox-gl";
-import { useDestinationModal } from "./useDestinationModal";
 import { useMapTab } from "./useMapTab";
 
 export interface TabChildren extends Omit<TabPaneProps, "children"> {}

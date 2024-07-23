@@ -1,14 +1,17 @@
-import { Button, DatePicker, Form, Input, Modal, Select, Space } from "antd";
+import { useSWRMutation } from "@/api/useFetch";
+import { DatePicker, Form, Input, Modal, Switch } from "antd";
 import { MapMouseEvent } from "mapbox-gl";
-import { useCallback, useState } from "react";
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
+import { forwardRef, useCallback, useImperativeHandle, useState } from "react";
+import layout from "../layout";
 
-export const useDestinationModal = () => {
+export const DestinationModal = forwardRef(function A(props, ref) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
+
+  const { isMutating, trigger } = useSWRMutation(
+    "/floria-service/destination/add",
+    { method: "POST" }
+  );
 
   const showModal = useCallback(
     (e: MapMouseEvent) => {
@@ -20,27 +23,36 @@ export const useDestinationModal = () => {
     [form]
   );
 
-  const handleOk = () => {
-    form.validateFields().then((res) => {
-      console.log(res);
-      setIsModalOpen(false);
-      form.resetFields();
-    });
+  const handleOk = async () => {
+    const res = await form.validateFields();
+    await trigger(res);
+    setIsModalOpen(false);
+    form.resetFields();
   };
 
   const handleCancel = () => {
     form.resetFields();
     setIsModalOpen(false);
   };
-
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        showModal,
+      };
+    },
+    [showModal]
+  );
   const dom = (
     <>
       <Modal
         title="New Destination!"
         open={isModalOpen}
+        destroyOnClose
         onOk={handleOk}
         onCancel={handleCancel}
       >
+        {" "}
         <Form
           preserve={false}
           {...layout}
@@ -54,6 +66,9 @@ export const useDestinationModal = () => {
             rules={[{ required: true }]}
           >
             <Input />
+          </Form.Item>
+          <Form.Item name="visited" label="visited">
+            <Switch />
           </Form.Item>
           <Form.Item
             name="longitude"
@@ -69,13 +84,13 @@ export const useDestinationModal = () => {
           >
             <Input disabled />
           </Form.Item>
-          <Form.Item name="planning-date" label="planning-date">
+          {/* <Form.Item name="planning-date" label="planning-date">
             <DatePicker picker="month" />
-          </Form.Item>
+          </Form.Item> */}
         </Form>
       </Modal>
     </>
   );
 
-  return { dom, showModal };
-};
+  return dom;
+});
