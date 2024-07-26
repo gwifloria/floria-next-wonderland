@@ -3,6 +3,7 @@ import { DatePicker, Form, Input, Modal, Switch } from "antd";
 import { MapMouseEvent } from "mapbox-gl";
 import { forwardRef, useCallback, useImperativeHandle, useState } from "react";
 import layout from "../layout";
+const wc = require("which-country");
 
 export const DestinationModal = forwardRef(function A(props, ref) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -10,18 +11,19 @@ export const DestinationModal = forwardRef(function A(props, ref) {
 
   const { isMutating, trigger } = useSWRMutation(
     "/floria-service/destination/add",
-    { method: "POST" }
+    { method: "POST" },
   );
 
   const showModal = useCallback(
     (e: MapMouseEvent) => {
       const { lngLat } = e;
-      console.log(e);
       const { lng, lat } = lngLat;
-      form.setFieldsValue({ longitude: lng, latitude: lat });
+      const country = wc([lng, lat]);
+
+      form.setFieldsValue({ longitude: lng, latitude: lat, country });
       setIsModalOpen(true);
     },
-    [form]
+    [form],
   );
 
   const handleOk = async () => {
@@ -42,7 +44,7 @@ export const DestinationModal = forwardRef(function A(props, ref) {
         showModal,
       };
     },
-    [showModal]
+    [showModal],
   );
   const dom = (
     <>

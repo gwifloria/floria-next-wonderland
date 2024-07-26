@@ -1,54 +1,51 @@
-import React, { useEffect, useRef } from "react";
-import mapboxgl, { MapMouseEvent } from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
-import { useBarHidden } from "./useBarHidden";
-import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
-import { useSWR } from "@/api/useFetch";
+import { MapMouseEvent } from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+import { useCallback, useEffect, useRef } from "react";
+import { useBarHidden } from "./useBarHidden";
+import { useMapInstance } from "./useMapInstance";
+import { useMapMarker } from "./useMapMarker";
+import { Destination } from "@/types";
 
 const MapContainer = ({
   clickEvent,
+  markers,
 }: {
   clickEvent?: (e: MapMouseEvent) => void;
+  markers?: Destination[];
 }) => {
+  const { mapRef } = useMapInstance();
   const mapContainerRef = useRef(null);
-  const mapRef = useRef<mapboxgl.Map | undefined>();
+
   useBarHidden();
 
-  const { data } = useSWR<{ mapKey: string }>("/floria-service/auth/info");
+  const ele = useMapMarker(mapRef.current, markers);
+
+  const listener = useCallback(
+    (e: MapMouseEvent) => {
+      clickEvent && clickEvent(e);
+    },
+    [clickEvent],
+  );
 
   useEffect(() => {
-    if (!data) {
+    const ref = mapRef?.current;
+    if (!ref) {
       return;
     }
-    mapboxgl.accessToken = data.mapKey;
+    ref?.on("dblclick", listener);
 
-    mapRef.current = new mapboxgl.Map({
-      container: "map",
-      style: "mapbox://styles/mapbox/streets-v12",
-      center: [0, 0],
-      zoom: 2,
-    });
+    return () => {
+      ref?.off("dblclick", listener);
+    };
+  }, [listener, mapRef]);
 
-    mapRef.current.on("load", () => {
-      if (!mapRef.current) {
-        return;
-      }
-      mapRef.current.on("dblclick", (e) => {
-        clickEvent && clickEvent(e);
-      });
-
-      mapRef.current.addControl(
-        new MapboxGeocoder({
-          accessToken: mapboxgl.accessToken,
-          // @ts-ignore
-          mapboxgl: mapboxgl,
-        })
-      );
-    });
-  }, [clickEvent, data]);
-
-  return <div id="map" ref={mapContainerRef} style={{ height: "100%" }}></div>;
+  return (
+    <>
+      <div id="map" ref={mapContainerRef} style={{ height: "100%" }}></div>
+      {ele}
+    </>
+  );
 };
 
 export default MapContainer;

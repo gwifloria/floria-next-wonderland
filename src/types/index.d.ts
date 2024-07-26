@@ -12,3 +12,10 @@ export interface ProjectExperienceProps {
   pictures: StaticImageData[];
   skills: string[];
 }
+export interface Destination {
+  longitude: string;
+  latitude: string;
+  destination: string;
+  visited: boolean;
+  isDomestic: boolean;
+}

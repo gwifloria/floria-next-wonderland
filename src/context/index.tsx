@@ -5,7 +5,10 @@ interface AuthContextType {
   setToken: (token: string | null) => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | undefined>({
+  token: "1",
+  setToken: () => {},
+});
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,

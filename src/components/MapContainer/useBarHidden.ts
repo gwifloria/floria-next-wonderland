@@ -3,7 +3,6 @@ import { useEffect } from "react";
 const eleName = "mapboxgl-ctrl-attrib-inner";
 export const useBarHidden = () => {
   useEffect(() => {
-    console.log(66);
     const elements = document.getElementsByClassName(eleName);
     Array.from(elements).forEach((ele: any) => {
       ele.style.visibility = "hidden";

@@ -14,7 +14,6 @@
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [
       "yarn prettier --write",
-      "next lint",
       "git add ."
     ]
   },
@@ -39,7 +38,8 @@
     "swr": "^2.2.5",
     "ts-node": "^10.9.2",
     "tslib": "^2.6.2",
-    "web-vitals": "^3.5.2"
+    "web-vitals": "^3.5.2",
+    "which-country": "^1.0.0"
   },
   "devDependencies": {
     "@ant-design/static-style-extract": "^1.0.2",

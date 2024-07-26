@@ -3,7 +3,6 @@ import { AuthProvider } from "@/context";
 import "./index.scss";
 import withTheme from "@/theme";
 import { useTravelTabs } from "./useTravelTabs";
-import { useSWRMutation } from "@/api/useFetch";
 
 const Travel = () => {
   const Tabs = useTravelTabs();

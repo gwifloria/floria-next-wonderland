@@ -1,13 +1,24 @@
+import { useSWR } from "@/api/useFetch";
 import { TabPaneProps, Tabs, TabsProps } from "antd";
-import { useDestinations } from "./useData";
 import { useMapTab } from "./useMapTab";
+import { useMemo } from "react";
+import { useFancyList } from "./useFancyList";
+import { Destination } from "@/types";
 
 export interface TabChildren extends Omit<TabPaneProps, "children"> {}
 
 export const useTravelTabs = () => {
-  const data = useDestinations();
+  const { data } = useSWR<{
+    data: Destination[];
+  }>("/floria-service/destination/list", {
+    method: "GET",
+  });
 
-  const mapTab = useMapTab();
+  const visited = useMemo(() => data?.data.filter((v) => !v.visited), [data]);
+  const unvisited = useMemo(() => data?.data.filter((v) => !v.visited), [data]);
+
+  const mapTab = useMapTab(visited);
+  const fancyTab = useFancyList(unvisited);
 
   const items: TabsProps["items"] = [
     {
@@ -18,7 +29,7 @@ export const useTravelTabs = () => {
     {
       key: "2",
       label: "Fancy",
-      children: <div></div>,
+      children: fancyTab,
     },
   ];
 
