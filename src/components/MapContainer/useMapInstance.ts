@@ -1,10 +1,11 @@
 import { useSWR } from "@/api/useFetch";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import mapboxgl, { IControl } from "mapbox-gl";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const useMapInstance = () => {
-  const mapRef = useRef<mapboxgl.Map | undefined>();
+  const mapContainerRef = useRef(null);
+  const [mapE, setMap] = useState<mapboxgl.Map | undefined>();
 
   const mapSearchRef = useRef<IControl>();
 
@@ -15,6 +16,7 @@ export const useMapInstance = () => {
     if (!mapKeyData) {
       return;
     }
+
     const geocoder = new MapboxGeocoder({
       accessToken: mapKeyData.mapKey,
       // @ts-ignore
@@ -30,28 +32,29 @@ export const useMapInstance = () => {
 
     mapboxgl.accessToken = mapKeyData.mapKey;
 
-    mapRef.current = new mapboxgl.Map({
+    const map = new mapboxgl.Map({
       container: "map",
       style: "mapbox://styles/mapbox/streets-v12",
       center: [0, 0],
       zoom: 2,
     });
 
-    mapRef.current.on("load", () => {
-      if (!mapRef.current || !mapSearchRef.current) {
+    map.on("load", () => {
+      if (!mapSearchRef.current) {
         return;
       }
 
-      mapRef.current.addControl(mapSearchRef.current);
+      map.addControl(mapSearchRef.current);
     });
+    setMap(map);
 
     return () => {
-      mapSearchRef?.current &&
-        mapRef.current?.removeControl(mapSearchRef.current);
+      mapSearchRef?.current && map?.removeControl(mapSearchRef.current);
     };
   }, [mapKeyData]);
 
   return {
-    mapRef,
+    mapContainerRef,
+    mapE,
   };
 };

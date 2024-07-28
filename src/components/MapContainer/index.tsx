@@ -7,43 +7,41 @@ import { useMapInstance } from "./useMapInstance";
 import { useMapMarker } from "./useMapMarker";
 import { Destination } from "@/types";
 
-const MapContainer = ({
-  clickEvent,
-  markers,
-}: {
-  clickEvent?: (e: MapMouseEvent) => void;
+interface MapContainerProps {
   markers?: Destination[];
-}) => {
-  const { mapRef } = useMapInstance();
-  const mapContainerRef = useRef(null);
+  dbclickEvent?: (e: MapMouseEvent) => void;
+}
+
+const MapContainer = ({ markers, dbclickEvent }: MapContainerProps) => {
+  const { mapContainerRef, mapE } = useMapInstance();
 
   useBarHidden();
 
-  const ele = useMapMarker(mapRef.current, markers);
+  useMapMarker(mapE, markers);
 
-  const listener = useCallback(
+  const dblistener = useCallback(
     (e: MapMouseEvent) => {
-      clickEvent && clickEvent(e);
+      dbclickEvent && dbclickEvent(e);
     },
-    [clickEvent],
+    [dbclickEvent],
   );
 
   useEffect(() => {
-    const ref = mapRef?.current;
+    const ref = mapE;
+
     if (!ref) {
       return;
     }
-    ref?.on("dblclick", listener);
+    ref?.on("dblclick", dblistener);
 
     return () => {
-      ref?.off("dblclick", listener);
+      ref?.off("dblclick", dblistener);
     };
-  }, [listener, mapRef]);
+  }, [dblistener, mapE]);
 
   return (
     <>
       <div id="map" ref={mapContainerRef} style={{ height: "100%" }}></div>
-      {ele}
     </>
   );
 };
