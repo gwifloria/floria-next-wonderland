@@ -3,7 +3,6 @@ import { AuthProvider } from "@/context";
 import { BlogUpload } from "./BlogUpload";
 import { BlogList } from "./BlogList";
 import withTheme from "@/theme";
-console.log(process.env.NODE_ENV === "development");
 
 const Blog = () => {
   return (

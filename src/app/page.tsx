@@ -6,9 +6,7 @@ import { useEffect } from "react";
 
 export default function Home() {
   // useWebVital();
-  useEffect(() => {
-    console.log(333);
-  }, []);
+
   return (
     <StyleProvider hashPriority="high">
       <AuthProvider>

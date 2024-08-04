@@ -14,7 +14,6 @@ export const useMapMarker = (map?: mapboxgl.Map, data?: Destination[]) => {
     img.className = "rounded-full h-24 w-24";
     img.src = image.src;
     div.appendChild(img);
-    console.log(div);
     return div;
   };
 
@@ -31,7 +30,6 @@ export const useMapMarker = (map?: mapboxgl.Map, data?: Destination[]) => {
   useEffect(() => {
     if (!map) return;
     markers?.forEach((i) => {
-      console.log(i);
       i.addTo(map);
     });
     return () => markers?.forEach((i) => i.remove());

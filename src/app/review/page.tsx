@@ -38,12 +38,10 @@ const ThemeToggler: React.FC = () => {
 };
 
 const Test1 = () => {
-  console.log(1);
   return <div>test</div>;
 };
 
 const Test2: React.FC<{ children: React.JSX.Element }> = ({ children }) => {
-  console.log(2);
   const [a, setA] = useState(1);
 
   function c() {

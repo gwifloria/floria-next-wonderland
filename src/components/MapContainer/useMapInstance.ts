@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 
 export const useMapInstance = () => {
   const mapContainerRef = useRef(null);
-  const [mapE, setMap] = useState<mapboxgl.Map | undefined>();
+  const [mapInstance, setMap] = useState<mapboxgl.Map | undefined>();
 
   const mapSearchRef = useRef<IControl>();
 
@@ -38,23 +38,27 @@ export const useMapInstance = () => {
       center: [0, 0],
       zoom: 2,
     });
+    setMap(map);
+  }, [mapKeyData]);
 
-    map.on("load", () => {
+  useEffect(() => {
+    if (!mapInstance) return;
+    mapInstance.on("load", () => {
       if (!mapSearchRef.current) {
         return;
       }
 
-      map.addControl(mapSearchRef.current);
+      mapInstance.addControl(mapSearchRef.current);
     });
-    setMap(map);
-
     return () => {
-      mapSearchRef?.current && map?.removeControl(mapSearchRef.current);
+      mapSearchRef?.current &&
+        mapInstance &&
+        mapInstance.removeControl(mapSearchRef.current);
     };
-  }, [mapKeyData]);
+  }, [mapInstance]);
 
   return {
     mapContainerRef,
-    mapE,
+    mapInstance,
   };
 };

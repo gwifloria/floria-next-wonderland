@@ -17,8 +17,8 @@ export const useMapTab = (destinations?: Destination[]) => {
   return (
     <>
       <MapContainer
-        markers={destinations}
-        dbclickEvent={clickEvent}
+        destinations={destinations}
+        dblclick={clickEvent}
       ></MapContainer>
       <DestinationModal ref={ref}></DestinationModal>
     </>

@@ -33,7 +33,6 @@ export const useWebVital = () => {
     const value = data.value;
     const rating = data.rating;
     const msg = `${name}: value=${value}, rating=${rating}`;
-    console.log(msg);
     report(name, { rating, value });
   }, []);
 

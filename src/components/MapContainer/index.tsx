@@ -1,33 +1,35 @@
+import { Destination } from "@/types";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
-import { MapMouseEvent } from "mapbox-gl";
+import { MapEventType, MapMouseEvent } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 import { useBarHidden } from "./useBarHidden";
 import { useMapInstance } from "./useMapInstance";
 import { useMapMarker } from "./useMapMarker";
-import { Destination } from "@/types";
 
-interface MapContainerProps {
-  markers?: Destination[];
-  dbclickEvent?: (e: MapMouseEvent) => void;
+type MapEventProps = {
+  [K in MapEventType]?: (e: MapMouseEvent) => void;
+};
+interface MapContainerProps extends MapEventProps {
+  destinations?: Destination[];
 }
 
-const MapContainer = ({ markers, dbclickEvent }: MapContainerProps) => {
-  const { mapContainerRef, mapE } = useMapInstance();
-
+const MapContainer = (props: MapContainerProps) => {
+  const { mapContainerRef, mapInstance } = useMapInstance();
+  const { destinations, dblclick } = props;
   useBarHidden();
 
-  useMapMarker(mapE, markers);
+  useMapMarker(mapInstance, destinations);
 
   const dblistener = useCallback(
     (e: MapMouseEvent) => {
-      dbclickEvent && dbclickEvent(e);
+      dblclick && dblclick(e);
     },
-    [dbclickEvent],
+    [dblclick],
   );
 
   useEffect(() => {
-    const ref = mapE;
+    const ref = mapInstance;
 
     if (!ref) {
       return;
@@ -37,7 +39,7 @@ const MapContainer = ({ markers, dbclickEvent }: MapContainerProps) => {
     return () => {
       ref?.off("dblclick", dblistener);
     };
-  }, [dblistener, mapE]);
+  }, [dblistener, mapInstance]);
 
   return (
     <>

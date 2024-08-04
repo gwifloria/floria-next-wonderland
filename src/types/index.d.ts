@@ -18,4 +18,5 @@ export interface Destination {
   destination: string;
   visited: boolean;
   isDomestic: boolean;
+  imgUrl?: string;
 }
