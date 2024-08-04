@@ -3,9 +3,9 @@ import MapContainer from "@/components/MapContainer";
 import { MapMouseEvent } from "mapbox-gl";
 import { useCallback, useRef, useState } from "react";
 import { DestinationModal } from "./DestinationModal";
-import { Destination } from "@/types";
+import { Destination, MapDestinationMarker } from "@/types";
 
-export const useMapTab = (destinations?: Destination[]) => {
+export const useMapTab = (destinations?: MapDestinationMarker[]) => {
   const ref = useRef();
 
   const clickEvent = useCallback((e: MapMouseEvent) => {

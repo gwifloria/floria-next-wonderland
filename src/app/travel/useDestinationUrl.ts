@@ -1,36 +1,34 @@
-import { useSWR, useSWRMutation } from "@/api/useFetch";
-import { Destination } from "@/types";
-import { useEffect, useMemo, useState } from "react";
+import { useSWR } from "@/api/useFetch";
+import { Destination, GitItem, MapDestinationMarker } from "@/types";
+import { useMemo } from "react";
 const owner = "gwifloria";
 const repo = "album";
 
-interface GitItem {
-  name: string;
-  path: string;
-}
-// const urls = destinations.map(
-//   (destination) =>
-//     `https://api.github.com/repos/${owner}/${repo}/contents/pics/${destination.destination}`
-// );
-export const useDestinationUrl = (destinations?: Destination[]) => {
-  const { data } = useSWR<{ html_url: string; name: string }[]>(
+export const useDestinationUrl = (
+  destinations?: Destination[],
+): MapDestinationMarker[] | undefined => {
+  const { data } = useSWR<GitItem[]>(
     `https://api.github.com/repos/${owner}/${repo}/contents/pics`,
     {
-      token: `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`,
+      token: `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`,
     },
   );
 
-  const a = data?.reduce((prev, cur) => {
-    const des = cur.name.split("_")[0];
+  const a = useMemo(() => {
+    return data?.reduce((prev, cur) => {
+      const des = cur.name.split("_")[0];
 
-    prev.set(des, prev.has(des) ? [...prev.get(des), cur] : [cur]);
+      prev.set(des, prev.has(des) ? [...prev.get(des), cur] : [cur]);
 
-    return prev;
-  }, new Map());
+      return prev;
+    }, new Map());
+  }, [data]);
 
   const res = destinations?.map((des) => {
-    return a?.get(des.destination);
+    return {
+      ...des,
+      gitImages: a?.get(des.destination),
+    };
   });
-
-  return { res };
+  return res;
 };

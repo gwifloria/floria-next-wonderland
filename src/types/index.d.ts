@@ -20,3 +20,22 @@ export interface Destination {
   isDomestic: boolean;
   imgUrl?: string;
 }
+export interface GitItem {
+  download_url: string;
+  git_url: string;
+  html_url: string;
+  name: string;
+  path: string;
+  sha: string;
+  size: number;
+  type: string;
+  url: StaticImageData;
+  _links: {
+    git: string;
+    html: string;
+    self: string;
+  };
+}
+export interface MapDestinationMarker extends Destination {
+  gitImages?: GitItem[];
+}

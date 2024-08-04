@@ -1,4 +1,4 @@
-import { Destination } from "@/types";
+import { Destination, MapDestinationMarker } from "@/types";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import { MapEventType, MapMouseEvent } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -11,7 +11,7 @@ type MapEventProps = {
   [K in MapEventType]?: (e: MapMouseEvent) => void;
 };
 interface MapContainerProps extends MapEventProps {
-  destinations?: Destination[];
+  destinations?: MapDestinationMarker[];
 }
 
 const MapContainer = (props: MapContainerProps) => {

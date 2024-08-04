@@ -1,10 +1,13 @@
-import { Destination } from "@/types";
+import { MapDestinationMarker } from "@/types";
 import mapboxgl, { Marker } from "mapbox-gl";
 import { StaticImageData } from "next/image";
 import { useEffect, useState } from "react";
-import pu from "/public/images/phuket.jpg";
+import { first } from "lodash";
 
-export const useMapMarker = (map?: mapboxgl.Map, data?: Destination[]) => {
+export const useMapMarker = (
+  map?: mapboxgl.Map,
+  data?: MapDestinationMarker[],
+) => {
   const [markers, setMarkers] = useState<Marker[]>();
 
   const getImageDom = (image: StaticImageData) => {
@@ -18,12 +21,13 @@ export const useMapMarker = (map?: mapboxgl.Map, data?: Destination[]) => {
   };
 
   useEffect(() => {
-    const markers = data?.map((i) =>
-      new mapboxgl.Marker({ element: getImageDom(pu) }).setLngLat([
-        Number(i.longitude),
-        Number(i.latitude),
-      ]),
-    );
+    const markers = data?.map((i) => {
+      const firstImage = first(i.gitImages);
+      return new mapboxgl.Marker({
+        element: getImageDom(firstImage!.url),
+      }).setLngLat([Number(i.longitude), Number(i.latitude)]);
+    });
+
     setMarkers(markers);
   }, [data]);
 

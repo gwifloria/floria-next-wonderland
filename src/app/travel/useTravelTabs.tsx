@@ -15,11 +15,11 @@ export const useTravelTabs = () => {
     method: "GET",
   });
 
-  const visited = useMemo(() => data?.data.filter((v) => !v.visited), [data]);
+  const visited = useMemo(() => data?.data.filter((v) => v.visited), [data]);
   const unvisited = useMemo(() => data?.data.filter((v) => !v.visited), [data]);
   const des = useDestinationUrl(visited);
 
-  const mapTab = useMapTab(visited);
+  const mapTab = useMapTab(des);
   const fancyTab = useFancyList(unvisited);
 
   useEffect(() => {}, []);
