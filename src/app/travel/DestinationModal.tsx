@@ -9,10 +9,9 @@ export const DestinationModal = forwardRef(function A(props, ref) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
 
-  const { isMutating, trigger } = useSWRMutation(
-    "/floria-service/destination/add",
-    { method: "POST" },
-  );
+  const { trigger } = useSWRMutation("/floria-service/destination/add", {
+    method: "POST",
+  });
 
   const showModal = useCallback(
     (e: MapMouseEvent) => {

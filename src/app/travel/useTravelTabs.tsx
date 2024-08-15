@@ -20,20 +20,20 @@ export const useTravelTabs = () => {
   const des = useDestinationUrl(visited);
 
   const mapTab = useMapTab(des);
-  const fancyTab = useFancyList(unvisited);
+  const fancyTab = useFancyList(des);
 
   useEffect(() => {}, []);
 
   const items: TabsProps["items"] = [
     {
-      key: "1",
-      label: "Arrived",
-      children: mapTab,
-    },
-    {
       key: "2",
       label: "Fancy",
       children: fancyTab,
+    },
+    {
+      key: "1",
+      label: "Arrived",
+      children: mapTab,
     },
   ];
 
@@ -41,7 +41,7 @@ export const useTravelTabs = () => {
     <>
       <Tabs
         destroyInactiveTabPane
-        defaultActiveKey="1"
+        defaultActiveKey="2"
         tabPosition="left"
         size="large"
         style={{ height: "70%" }}

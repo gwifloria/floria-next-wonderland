@@ -10,7 +10,7 @@ export const useDestinationUrl = (
   const { data } = useSWR<GitItem[]>(
     `https://api.github.com/repos/${owner}/${repo}/contents/pics`,
     {
-      token: `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`,
+      token: `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`,
     },
   );
 

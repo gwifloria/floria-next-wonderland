@@ -51,9 +51,9 @@ export const useMapInstance = () => {
       mapInstance.addControl(mapSearchRef.current);
     });
     return () => {
-      mapSearchRef?.current &&
-        mapInstance &&
-        mapInstance.removeControl(mapSearchRef.current);
+      // mapSearchRef?.current &&
+      //   mapInstance &&
+      //   mapInstance.removeControl(mapSearchRef.current);
     };
   }, [mapInstance]);
 
