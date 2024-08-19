@@ -32,7 +32,7 @@ export const useMapMarker = (
       })
       .filter((i) => !isNull(i));
 
-    setMarkers(markers);
+    markers && setMarkers(markers);
   }, [data]);
 
   useEffect(() => {
