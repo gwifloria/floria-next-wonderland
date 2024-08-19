@@ -2,7 +2,7 @@ import { GitItem, MapDestinationMarker } from "@/types";
 import mapboxgl, { Marker } from "mapbox-gl";
 import { StaticImageData } from "next/image";
 import { useEffect, useState } from "react";
-import { first, isNull } from "lodash";
+import { first, isNull, isUndefined } from "lodash";
 
 export const useMapMarker = (
   map?: mapboxgl.Map,
@@ -28,11 +28,10 @@ export const useMapMarker = (
           ? new mapboxgl.Marker({
               element: getImageDom(firstImage),
             }).setLngLat([Number(i.longitude), Number(i.latitude)])
-          : null;
+          : undefined;
       })
-      .filter((i) => !isNull(i));
-
-    markers && setMarkers(markers);
+      .filter((i) => i !== undefined) as Marker[];
+    setMarkers(markers);
   }, [data]);
 
   useEffect(() => {
