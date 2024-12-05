@@ -1,19 +1,39 @@
 "use client";
 import { AuthProvider } from "@/context";
-import { BlogUpload } from "./BlogUpload";
 import { BlogList } from "./BlogList";
 import withTheme from "@/theme";
+import { BlogEditor } from "./BlogEditor";
+import { Tabs } from "antd";
+import type { TabsProps } from "antd";
+import "./index.scss";
 
+const items: TabsProps["items"] = [
+  {
+    key: "1",
+    label: "BlogList",
+    children: (
+      <div className="blog-list">
+        <BlogList></BlogList>
+      </div>
+    ),
+  },
+  {
+    key: "2",
+    label: "Upload",
+    children: <BlogEditor></BlogEditor>,
+  },
+];
 const Blog = () => {
   return (
     <AuthProvider>
       <div className="blog-container justify-between">
-        <div>blog</div>
-        <div className="blog-list">
-          {process.env.NODE_ENV === "development" && <BlogUpload></BlogUpload>}
-
-          <BlogList></BlogList>
-        </div>
+        <Tabs
+          type="card"
+          size="large"
+          tabPosition="left"
+          defaultActiveKey="2"
+          items={items}
+        />
       </div>
     </AuthProvider>
   );

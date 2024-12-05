@@ -40,7 +40,7 @@ const FancyItem = ({ item }: { item: FancyItem }) => {
           cancelText="No"
         >
           <Button danger>Delete</Button>
-        </Popconfirm>{" "}
+        </Popconfirm>
       </Space>
     </Card>
   );
