@@ -1,7 +1,7 @@
 "use client";
 import { DivideTitle } from "./DivideTitle";
 import { MyPortfolio } from "./MyPortfolio";
-import { BriefIntroduction } from "./BriefIntroduction";
+import { BriefIntroduction } from "./BriefIntro";
 import { JumpingFlags } from "./JumpingFlags";
 import { personalDescriptions, skills } from "./constant";
 import "./index.scss";

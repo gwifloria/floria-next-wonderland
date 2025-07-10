@@ -15,7 +15,7 @@ export const MyPortfolio: React.FC = () => (
       return (
         <div
           key={ex.projectName}
-          className="p-6 my-12 shadow-lg grid grid-cols-2 gap-4 border-4 border-nepal-300 rounded-md"
+          className="p-6 my-12 shadow-lg grid grid-cols-2 gap-4 border-2 border-nepal-300 rounded-md"
         >
           <div className="text-2xl">
             {ex.projectBackground}

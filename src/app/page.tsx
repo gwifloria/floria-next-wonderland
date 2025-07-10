@@ -1,5 +1,5 @@
 "use client";
-import { PersonalIntroduction } from "@/components/PersonalIntroduction";
+import { PersonalIntroduction } from "@/components/PersonalIntro";
 import { AuthProvider } from "@/context";
 import { StyleProvider } from "@ant-design/cssinjs";
 import { useEffect } from "react";

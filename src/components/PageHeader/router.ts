@@ -1,5 +1,5 @@
 export const routes = [
-  "/",
+  "home",
   "blog",
   "photo",
   "caster",
