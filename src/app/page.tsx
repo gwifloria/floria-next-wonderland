@@ -4,7 +4,8 @@ import ParallaxFavs from "@/components/ParallaxFavs";
 import HeroSection from "@/components/HeroSection";
 import { AuthProvider } from "@/context";
 import { StyleProvider } from "@ant-design/cssinjs";
-import { useEffect } from "react";
+import dynamic from "next/dynamic";
+import SayHiButton from "@/components/SayHiButton";
 
 export default function Home() {
   // useWebVital();
@@ -16,6 +17,7 @@ export default function Home() {
           <ParallaxFavs />
           <HeroSection />
           <PersonalIntroduction />
+          <SayHiButton />
         </main>
       </AuthProvider>
     </StyleProvider>
