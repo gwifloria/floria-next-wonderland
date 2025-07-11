@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { routes } from "./router";
+import I18nControl from "@/components/I18nControl";
 
 const PageHeader = () => {
   return (
@@ -18,6 +19,7 @@ const PageHeader = () => {
           </div>
         ))}
       </div>
+      {/* <I18nControl /> */}
     </div>
   );
 };
