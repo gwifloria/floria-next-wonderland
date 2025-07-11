@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Delius } from "next/font/google";
 import "./globals.css";
 import PageHeader from "@/components/PageHeader";
-import "../../public/antd.min.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 
 const delius = Delius({ subsets: ["latin"], weight: "400" });
@@ -26,7 +25,7 @@ export default function RootLayout({
         sizes="<generated>"
       />
       <body className={delius.className}>
-        <div className="main-background bg-mint-100 mx-auto min-h-screen p-12 md:p-24 lg:p-36">
+        <div className="main-background bg-mint-100 mx-auto min-h-screen p-4 sm:p-8 md:p-16 lg:p-24">
           <PageHeader />
           <AntdRegistry>{children}</AntdRegistry>
         </div>
