@@ -1,5 +1,5 @@
 import { personalDescriptions } from "../constant";
-
+import "./index.scss";
 export function BriefIntroduction() {
   return (
     <div

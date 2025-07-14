@@ -1,7 +1,7 @@
 "use client";
 import { isNumber } from "lodash";
 import { useRef, useState, useLayoutEffect, useMemo } from "react";
-
+import "./index.scss";
 export const JumpingFlags = () => {
   const domRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState<number>();
@@ -43,7 +43,7 @@ export const JumpingFlags = () => {
       ref={domRef}
       className="text confetti text-2xl sm:text-4xl md:text-6xl"
     >
-      WELCOME TO My&lsquo;FANTASY ISLAND
+      WELCOME TO My WONDERLAND
       {renderChildren}
     </span>
   );

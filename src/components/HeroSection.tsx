@@ -1,5 +1,7 @@
 "use client";
 import Image from "next/image";
+import { BriefIntroduction } from "./PersonalIntro/BriefIntro";
+import { JumpingFlags } from "./PersonalIntro/JumpingFlags";
 
 export default function HeroSection() {
   return (
@@ -15,12 +17,9 @@ export default function HeroSection() {
         />
       </div>
       <h1 className="text-4xl md:text-5xl font-bold text-mint-700 mb-4 font-mono text-center drop-shadow-lg">
-        Welcome to Wonderland!
+        <JumpingFlags></JumpingFlags>
       </h1>
-      <p className="text-lg md:text-2xl text-mint-600 max-w-xl text-center mb-6">
-        Hi, I’m Gwi Floria. This is my cozy Japanese-style blog island. Enjoy
-        the cute vibes, travel stories, and creative projects!
-      </p>
+      <BriefIntroduction></BriefIntroduction>
       <div className="flex gap-4 mt-2">
         <a
           href="#portfolio"
