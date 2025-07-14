@@ -1,6 +1,6 @@
-export interface BlogItemIF{
-    id:number,
-    date:string,
-    content:string,
-    title:string
+export interface BlogItemIF {
+  id: number;
+  date: string;
+  content: string;
+  bookName: string;
 }

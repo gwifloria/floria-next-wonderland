@@ -1,15 +1,44 @@
-'use client'
-import { useBlogData } from "./useBlogData";
-import { BlogItem } from "./BlogItem";
+"use client";
+import { AuthProvider } from "@/context";
+import { BlogList } from "./BlogList";
+import withTheme from "@/theme";
+import { BlogEditor } from "./BlogEditor";
+import { Tabs } from "antd";
+import type { TabsProps } from "antd";
+import "./index.scss";
 
-export default function Blog() {
-    const data = useBlogData()
-
-    return (<div className="blog-container justify-between">
-        <div>blog</div>
-        <div className="blog-list">
-        {data?.map((blog) =>
-            <BlogItem key={blog.id} blog={blog}></BlogItem>
-        )}</div>
-    </div>)
-} 
+const items: TabsProps["items"] = [
+  {
+    key: "1",
+    label: "BlogList",
+    children: (
+      <div className="blog-list">
+        <BlogList></BlogList>
+      </div>
+    ),
+  },
+  // {
+  //   key: "2",
+  //   label: "Upload",
+  //   children: <BlogEditor></BlogEditor>,
+  // },
+];
+const Blog = () => {
+  return (
+    <AuthProvider>
+      <div className="blog-container justify-between">
+        <Tabs
+          type="card"
+          size="large"
+          tabPosition="left"
+          defaultActiveKey="1"
+          items={items}
+        />
+      </div>
+    </AuthProvider>
+  );
+};
+const BlogPage = () => {
+  return withTheme(<Blog />);
+};
+export default BlogPage;

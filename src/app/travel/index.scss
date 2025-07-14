@@ -1,0 +1,16 @@
+.travel-container {
+  :where(.css-dev-only-do-not-override-wmez94).ant-tabs-left
+    > .ant-tabs-content-holder
+    > .ant-tabs-content
+    > .ant-tabs-tabpane,
+  :where(.css-dev-only-do-not-override-wmez94).ant-tabs-left
+    > div
+    > .ant-tabs-content-holder
+    > .ant-tabs-content
+    > .ant-tabs-tabpane {
+    height: 100%;
+  }
+  :where(.css-dev-only-do-not-override-wmez94).ant-tabs .ant-tabs-content {
+    height: 100%;
+  }
+}
