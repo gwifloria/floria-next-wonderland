@@ -17,11 +17,11 @@ const items: TabsProps["items"] = [
       </div>
     ),
   },
-  {
-    key: "2",
-    label: "Upload",
-    children: <BlogEditor></BlogEditor>,
-  },
+  // {
+  //   key: "2",
+  //   label: "Upload",
+  //   children: <BlogEditor></BlogEditor>,
+  // },
 ];
 const Blog = () => {
   return (
@@ -31,7 +31,7 @@ const Blog = () => {
           type="card"
           size="large"
           tabPosition="left"
-          defaultActiveKey="2"
+          defaultActiveKey="1"
           items={items}
         />
       </div>

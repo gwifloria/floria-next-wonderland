@@ -1,9 +1,10 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { routes } from "./router";
-import I18nControl from "@/components/I18nControl";
 
 const PageHeader = () => {
+  // Get locale from router pathname (Next.js App Router)
   return (
     <nav
       className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur border-b border-mint-100/40 shadow-sm px-4 py-2 flex items-center justify-between rounded-b-2xl animate-navbarDrop"
@@ -26,7 +27,7 @@ const PageHeader = () => {
           ))}
         </div>
       </div>
-      <div className="flex items-center gap-2">{/* <I18nControl /> */}</div>
+      <div className="flex items-center gap-2"></div>
       <style>{`
         @keyframes navbarDrop {
           0% { opacity: 0; transform: translateY(-24px) scale(0.98); }
