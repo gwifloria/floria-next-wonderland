@@ -25,7 +25,7 @@ export default function RootLayout({
         sizes="<generated>"
       />
       <body className={delius.className}>
-        <div className="main-background bg-mint-100 mx-auto min-h-screen p-4 sm:p-8 md:p-16 lg:p-24">
+        <div className="main-background bg-mint-100 mx-auto min-h-screen p-20">
           <PageHeader />
           <AntdRegistry>{children}</AntdRegistry>
         </div>
