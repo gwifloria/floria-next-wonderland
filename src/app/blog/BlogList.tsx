@@ -1,4 +1,4 @@
-import { useSWR } from "@/app/api/useFetch";
+import { useSWR } from "@/api/useFetch";
 import { BlogItem } from "./BlogItem";
 import { BlogItemIF } from "./type";
 import MarkdownViewer from "./MarkdownViewer";

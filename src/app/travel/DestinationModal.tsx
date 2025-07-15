@@ -1,4 +1,4 @@
-import { useSWRMutation } from "@/app/api/useFetch";
+import { useSWRMutation } from "@/api/useFetch";
 import { DatePicker, Form, Input, Modal, Switch } from "antd";
 import { MapMouseEvent } from "mapbox-gl";
 import { forwardRef, useCallback, useImperativeHandle, useState } from "react";

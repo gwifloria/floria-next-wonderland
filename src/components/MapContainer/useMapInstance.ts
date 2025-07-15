@@ -1,4 +1,4 @@
-import { useSWR } from "@/app/api/useFetch";
+import { useSWR } from "@/api/useFetch";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import mapboxgl, { IControl } from "mapbox-gl";
 import { useEffect, useRef, useState } from "react";

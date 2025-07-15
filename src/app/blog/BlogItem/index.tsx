@@ -6,7 +6,7 @@ import { useRef } from "react";
 import { useIntersection } from "react-use";
 import { BlogItemIF } from "../type";
 import "./index.scss";
-import { useSWRMutation } from "@/app/api/useFetch";
+import { useSWRMutation } from "@/api/useFetch";
 
 export const BlogItem = ({ blog }: { blog: BlogItemIF }) => {
   const ref = useRef<HTMLDivElement>(null);

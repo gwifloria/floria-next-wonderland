@@ -1,5 +1,5 @@
 "use client";
-import { useSWR, useSWRMutation } from "@/app/api/useFetch";
+import { useSWR, useSWRMutation } from "@/api/useFetch";
 import { AuthProvider } from "@/context";
 import withTheme from "@/theme";
 import { Button } from "antd";

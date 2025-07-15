@@ -1,4 +1,4 @@
-import { useSWRMutation } from "@/app/api/useFetch";
+import { useSWRMutation } from "@/api/useFetch";
 import { Button, Form, Input, Modal } from "antd";
 import { useState } from "react";
 
