@@ -1,4 +1,4 @@
-import { useSWRMutation } from "@/api/useFetch";
+import { useSWRMutation } from "@/app/api/useFetch";
 import { Button, Form, Input, Modal } from "antd";
 import { useState } from "react";
 
@@ -8,7 +8,7 @@ export const BlogUpload = () => {
 
   const { isMutating, trigger } = useSWRMutation(
     "/floria-service/excerpt/upload",
-    { method: "POST" }
+    { method: "POST" },
   );
 
   const showModal = () => {

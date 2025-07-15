@@ -12,7 +12,7 @@ const useFetch = () => {
   const fetcher = async <T>(
     url: string,
     options?: CustomFetchOptions,
-    arg?: undefined
+    arg?: undefined,
   ): Promise<T> => {
     const token = options?.token || userToken;
     const headers: { [key: string]: string } = token
@@ -40,7 +40,7 @@ const useFetch = () => {
 };
 const useCustomSWR = <T = any>(
   key: string,
-  fetchOptions?: CustomFetchOptions
+  fetchOptions?: CustomFetchOptions,
 ) => {
   const fetcher = useFetch();
 
@@ -49,7 +49,7 @@ const useCustomSWR = <T = any>(
 
 const useCustomSWRMutation = <T>(
   key: string,
-  fetchOptions?: CustomFetchOptions
+  fetchOptions?: CustomFetchOptions,
 ) => {
   const fetcher = useFetch();
 

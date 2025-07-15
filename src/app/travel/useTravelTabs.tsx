@@ -1,4 +1,4 @@
-import { useSWR } from "@/api/useFetch";
+import { useSWR } from "@/app/api/useFetch";
 import { TabPaneProps, Tabs, TabsProps } from "antd";
 import { useMapTab } from "./useMapTab";
 import { useEffect, useMemo } from "react";

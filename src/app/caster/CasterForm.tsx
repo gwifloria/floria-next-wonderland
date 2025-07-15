@@ -1,4 +1,4 @@
-import { useSWRMutation } from "@/api/useFetch";
+import { useSWRMutation } from "@/app/api/useFetch";
 import { Button, Form, Input, Select, Space } from "antd";
 import { layout, options, tailLayout, teachers } from "./constants";
 import { useEffect } from "react";

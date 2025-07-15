@@ -1,4 +1,4 @@
-import { useSWRMutation } from "@/api/useFetch";
+import { useSWRMutation } from "@/app/api/useFetch";
 import { Destination, MapDestinationMarker } from "@/types";
 import { Button, Card, Popconfirm, Space, Tag } from "antd";
 const { Meta } = Card;

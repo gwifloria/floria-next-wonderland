@@ -1,4 +1,4 @@
-import { useSWR } from "@/api/useFetch";
+import { useSWR } from "@/app/api/useFetch";
 import { Destination, GitItem, MapDestinationMarker } from "@/types";
 import { useMemo } from "react";
 const owner = "gwifloria";

@@ -6,7 +6,7 @@ import { useRef } from "react";
 import { useIntersection } from "react-use";
 import { BlogItemIF } from "../type";
 import "./index.scss";
-import { useSWRMutation } from "@/api/useFetch";
+import { useSWRMutation } from "@/app/api/useFetch";
 
 export const BlogItem = ({ blog }: { blog: BlogItemIF }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -17,7 +17,7 @@ export const BlogItem = ({ blog }: { blog: BlogItemIF }) => {
 
   const claZZ = classNames(
     "blog-item",
-    intersection?.isIntersecting ? "animate__fadeIn" : "animate__fadeOut"
+    intersection?.isIntersecting ? "animate__fadeIn" : "animate__fadeOut",
   );
 
   const { trigger } = useSWRMutation("/floria-service/excerpt/delete", {
