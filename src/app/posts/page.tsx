@@ -1,22 +1,43 @@
-import { MDXRemote } from "next-mdx-remote/rsc";
-import { readFileSync } from "node:fs";
+import { readdirSync } from "node:fs";
 import path from "node:path";
-import matter from "gray-matter";
+import Link from "next/link";
+import { MdxPost } from "./MdxPost";
 
-export default async function PostPage() {
-  const filePath = path.join(process.cwd(), "src/app/posts/content/demo.md");
-  const rawContent = readFileSync(filePath, "utf-8");
-  const { content, data } = matter(rawContent);
-  console.log(content, data);
+export default async function PostPage({
+  searchParams,
+}: {
+  searchParams?: { post?: string };
+}) {
+  const postsDir = path.join(process.cwd(), "src/app/posts/content");
+  const files = readdirSync(postsDir).filter((f) => f.endsWith(".md"));
+
+  const postFile =
+    searchParams?.post && files.includes(searchParams.post)
+      ? searchParams.post
+      : files[0];
+
+  const filePath = path.join(postsDir, postFile);
 
   return (
-    <div className="max-w-3xl mx-auto my-12 bg-white rounded-2xl shadow-lg p-8">
-      {data.title && (
-        <h1 className="text-3xl font-bold mb-6 text-center">{data.title}</h1>
-      )}
-      <article className="prose prose-lg">
-        <MDXRemote source={content} />
-      </article>
+    <div className="flex min-h-screen">
+      <aside className="w-64 bg-gray-50 border-r p-8 my-12">
+        <h2 className="font-bold text-lg mb-4">Posts</h2>
+        <ul>
+          {files.map((file) => (
+            <li key={file}>
+              <Link
+                className={`block px-2 py-1 rounded hover:bg-mint-100 ${file === postFile ? "bg-mint-100 font-bold" : ""}`}
+                href={{ pathname: "/posts", query: { post: file } }}
+              >
+                {file.replace(/\.md$/, "")}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </aside>
+      <main className="flex-1 ">
+        <MdxPost filePath={filePath} />
+      </main>
     </div>
   );
 }
