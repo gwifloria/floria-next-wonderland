@@ -13,7 +13,7 @@ const Travel = () => {
     </AuthProvider>
   );
 };
-const BlogPage = () => {
+const TravelPage = () => {
   return withTheme(<Travel />);
 };
-export default BlogPage;
+export default TravelPage;

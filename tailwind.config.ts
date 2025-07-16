@@ -49,8 +49,23 @@ const config: Config = {
           "950": "#1f272d",
         },
       },
+      //for markdown
+      typography: {
+        DEFAULT: {
+          css: {
+            table: {
+              width: "100%",
+              borderCollapse: "collapse",
+            },
+            "th, td": {
+              border: "1px solid #e5e7eb",
+              padding: "0.5em",
+            },
+          },
+        },
+      },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 };
 export default config;
