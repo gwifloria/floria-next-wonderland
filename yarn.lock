@@ -4620,6 +4620,9 @@ natural-compare@^1.4.0:
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 91fdd35 (feat: display md)
 next-mdx-remote@^5.0.0:
   version "5.0.0"
   resolved "https://registry.npmmirror.com/next-mdx-remote/-/next-mdx-remote-5.0.0.tgz#028a2cf5cf7f814d988d7ab11a401bed0f31b4ee"
@@ -4632,8 +4635,11 @@ next-mdx-remote@^5.0.0:
     vfile "^6.0.1"
     vfile-matter "^5.0.0"
 
+<<<<<<< HEAD
 =======
 >>>>>>> e5c882b (feat: improve homepage)
+=======
+>>>>>>> 91fdd35 (feat: display md)
 next@14.1.0:
   version "14.1.0"
   resolved "https://registry.npmjs.org/next/-/next-14.1.0.tgz"
@@ -6847,6 +6853,9 @@ vfile@^6.0.0:
     vfile-message "^4.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 91fdd35 (feat: display md)
 vfile@^6.0.1:
   version "6.0.3"
   resolved "https://registry.npmmirror.com/vfile/-/vfile-6.0.3.tgz#3652ab1c496531852bf55a6bac57af981ebc38ab"
@@ -6855,8 +6864,11 @@ vfile@^6.0.1:
     "@types/unist" "^3.0.0"
     vfile-message "^4.0.0"
 
+<<<<<<< HEAD
 =======
 >>>>>>> e5c882b (feat: improve homepage)
+=======
+>>>>>>> 91fdd35 (feat: display md)
 vt-pbf@^3.1.3:
   version "3.1.3"
   resolved "https://registry.npmmirror.com/vt-pbf/-/vt-pbf-3.1.3.tgz"
