@@ -8,7 +8,7 @@ export const BlogUpload = () => {
 
   const { isMutating, trigger } = useSWRMutation(
     "/floria-service/excerpt/upload",
-    { method: "POST" }
+    { method: "POST" },
   );
 
   const showModal = () => {

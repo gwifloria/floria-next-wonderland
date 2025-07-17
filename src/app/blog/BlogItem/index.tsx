@@ -17,7 +17,7 @@ export const BlogItem = ({ blog }: { blog: BlogItemIF }) => {
 
   const claZZ = classNames(
     "blog-item",
-    intersection?.isIntersecting ? "animate__fadeIn" : "animate__fadeOut"
+    intersection?.isIntersecting ? "animate__fadeIn" : "animate__fadeOut",
   );
 
   const { trigger } = useSWRMutation("/floria-service/excerpt/delete", {

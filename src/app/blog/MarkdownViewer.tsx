@@ -8,7 +8,7 @@ const MarkdownViewer = () => {
   const [markdownContent, setMarkdownContent] = useState("");
   const { data } = useSWR<{ blogs: any[] }>(
     `https://api.github.com/repos/${owner}/${repo}/contents`,
-    { token: "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" }
+    { token: "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" },
   );
 
   return (

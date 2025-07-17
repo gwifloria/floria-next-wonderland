@@ -1,9 +1,9 @@
-export const routes = [
-  "home",
-  "blog",
-  "photo",
+export const routes = ["posts"];
+export const hiddenRoutes = [
   "caster",
+  "blog",
   "oneway",
-  "travel",
   "tools",
+  "lib",
+  "travel",
 ];
