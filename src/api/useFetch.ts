@@ -43,7 +43,6 @@ const useCustomSWR = <T = any>(
   fetchOptions?: CustomFetchOptions,
 ) => {
   const fetcher = useFetch();
-
   return useSWR<T>(key, (url: string) => fetcher<T>(url, fetchOptions));
 };
 

@@ -1,10 +1,10 @@
 "use client";
-import { PersonalIntroduction } from "@/components/PersonalIntro";
-import ParallaxFavs from "@/components/ParallaxFavs";
-import HeroSection from "@/components/HeroSection";
+import { PersonalIntroduction } from "@/app/components/PersonalIntro";
+import ParallaxFavs from "@/app/components/ParallaxFavs";
+import HeroSection from "@/app/components/HeroSection";
 import { AuthProvider } from "@/context";
 import { StyleProvider } from "@ant-design/cssinjs";
-import SayHiButton from "@/components/SayHiButton";
+import SayHiButton from "@/app/components/SayHiButton";
 
 export default function Home() {
   return (
