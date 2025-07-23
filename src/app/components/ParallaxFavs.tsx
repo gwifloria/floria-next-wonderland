@@ -44,7 +44,9 @@ const ParallaxFavs: React.FC = () => {
       {favImgs.map((src, i) => (
         <div
           key={src}
-          ref={(el) => (refs.current[i] = el)}
+          ref={(el) => {
+            refs.current[i] = el;
+          }}
           style={{
             position: "absolute",
             left: `${10 + i * 15}%`,
