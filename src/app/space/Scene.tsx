@@ -12,7 +12,9 @@ export default function RoomScene() {
         shadows
         camera={{ position: [25, 25, 25], near: 0.1, far: 1000, fov: 45 }}
       >
-        <ambientLight intensity={0.5} />
+        <color attach="background" args={["rgba(143, 144, 123, 1)"]} />
+
+        <ambientLight intensity={0.5} color="#faf3e0" />
         <spotLight
           position={[5, 5, 5]}
           angle={0.15}
@@ -20,10 +22,10 @@ export default function RoomScene() {
           intensity={1}
           castShadow
         />
-        <pointLight position={[-5, 3, -5]} intensity={0.5} />
+        <pointLight position={[-5, 3, -5]} intensity={0.3} color="#e6f3ff" />
         <OrbitControls />
         <directionalLight position={[5, 5, 5]} />
-        <Environment preset="sunset" />
+        <Environment preset="warehouse" />
         <primitive object={scene} />
       </Canvas>
     </div>
