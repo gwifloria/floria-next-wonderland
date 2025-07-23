@@ -6,13 +6,21 @@ interface Schedule {
   projectname: string;
 }
 export const useOneway = () => {
-  const { data } = useSWR<Schedule[]>("/floria-service/oneway/list");
+  const { data, isLoading } = useSWR<Schedule[]>("/floria-service/oneway/list");
 
-  const { trigger } = useSWRMutation("/floria-service/oneway/subscribe");
+  const { trigger: subscribe } = useSWRMutation(
+    "/floria-service/oneway/subscribe",
+    {
+      method: "POST",
+    },
+  );
 
-  const handleBook = (id: string) => {
-    trigger({ scheduleId: id });
-  };
+  const { trigger: unsubscribe } = useSWRMutation(
+    "/floria-service/oneway/unsubscribe",
+    {
+      method: "POST",
+    },
+  );
 
   const schedules = data?.map((item) => ({
     courseId: item.scheduleid,
@@ -20,5 +28,10 @@ export const useOneway = () => {
     courseName: item.projectname,
   }));
 
-  return { schedules: schedules, subscribe: handleBook };
+  return {
+    schedules: schedules,
+    isLoading,
+    subscribe: (courseId: string) => subscribe({ courseId }),
+    unsubscribe: (courseId: string) => unsubscribe({ courseId }),
+  };
 };

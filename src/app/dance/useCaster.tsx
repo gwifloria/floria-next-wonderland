@@ -13,9 +13,22 @@ interface CasterSchedule {
   teacher_id: string;
 }
 export const useCaster = () => {
-  const { trigger } = useSWRMutation("/floria-service/caster/subscribe");
+  const { trigger: subscribe } = useSWRMutation(
+    "/floria-service/caster/subscribe",
+    {
+      method: "POST",
+    },
+  );
+  const { trigger: unsubscribe } = useSWRMutation(
+    "/floria-service/caster/unsubscribe",
+    {
+      method: "POST",
+    },
+  );
 
-  const { data } = useSWR<CasterSchedule[]>("/floria-service/caster/list");
+  const { data, isLoading } = useSWR<CasterSchedule[]>(
+    "/floria-service/caster/list",
+  );
 
   const schedules = data?.map((item) => ({
     teacherName: item.teacher_name,
@@ -25,10 +38,10 @@ export const useCaster = () => {
     courseId: item.id,
   }));
 
-  const handleCasterSubmit = (values: any) => {
-    console.log("Submitting caster booking with values:", values);
-    trigger({ courseId: values });
+  return {
+    schedules: schedules,
+    isLoading,
+    subscribe: (courseId: string) => subscribe({ courseId }),
+    unsubscribe: (courseId: string) => unsubscribe({ courseId }),
   };
-
-  return { schedules: schedules, subscribe: handleCasterSubmit };
 };
