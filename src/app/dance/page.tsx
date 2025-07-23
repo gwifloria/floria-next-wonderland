@@ -29,7 +29,7 @@ const CourseList = ({
       .filter(
         (course) =>
           course.teacherName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          course.courseName.toLowerCase().includes(searchTerm.toLowerCase()),
+          course.courseName.toLowerCase().includes(searchTerm.toLowerCase())
       )
       .sort((a, b) => {
         if (sortBy === "time") {
@@ -54,7 +54,7 @@ const CourseList = ({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" data-testid="course-list">
       <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-md">
         <div className="flex-1">
           <Input
@@ -152,7 +152,7 @@ const DanceBooking = () => {
       onewayUnsubscribe,
       isCasterLoading,
       isOnewayLoading,
-    ],
+    ]
   );
 
   return (
