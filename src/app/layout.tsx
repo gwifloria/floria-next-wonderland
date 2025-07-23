@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import { Delius } from "next/font/google";
 import "./globals.css";
-import PageHeader from "@/components/PageHeader";
+import PageHeader from "@/app/components/PageHeader";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 
 const delius = Delius({ subsets: ["latin"], weight: "400" });

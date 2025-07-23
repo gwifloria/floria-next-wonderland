@@ -1,17 +1,19 @@
 const isProd = process.env.NODE_ENV === "production";
+const online = "https://eco-node.onrender.com";
+const local = "http://localhost:8080";
 
-const ip = isProd ? "http://47.99.33.238" : "http://localhost";
+const ip = isProd ? online : local;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   basePath: isProd ? "/bj-next-wonderland" : "",
-  output: "export",
   images: {
     unoptimized: true,
   },
   reactStrictMode: false,
 
   async rewrites() {
+    console.log("🚀 Rewrites configuration loaded");
     return [
       {
         source: "/web-vital/:path*",
@@ -19,7 +21,7 @@ const nextConfig = {
       },
       {
         source: "/floria-service/:path*",
-        destination: `${ip}:8080/:path*`,
+        destination: `${ip}/:path*`,
       },
       {
         source: "/github-service/:path*",

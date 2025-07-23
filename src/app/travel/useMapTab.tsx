@@ -1,5 +1,5 @@
 "use client";
-import MapContainer from "@/components/MapContainer";
+import MapContainer from "@/app/components/MapContainer";
 import { MapMouseEvent } from "mapbox-gl";
 import { useCallback, useRef, useState } from "react";
 import { DestinationModal } from "./DestinationModal";
