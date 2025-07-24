@@ -1,49 +1,14 @@
-import { Empty, List, Skeleton, Space, Typography } from "antd";
+import { List, message, Modal, Skeleton, Space, Typography } from "antd";
 import { Suspense, useState } from "react";
 import { useMarkdown } from "./useMarkdown";
 import { MdxPost } from "./MdxPost";
-import { useSWR } from "@/api/useFetch";
-import { FileTextOutlined, ClockCircleOutlined } from "@ant-design/icons";
-function EmptyState() {
-  return (
-    <div className="flex flex-col items-center justify-center h-[calc(100vh-2rem)] bg-gray-50/30 rounded-xl">
-      <Empty
-        image={Empty.PRESENTED_IMAGE_SIMPLE}
-        description={
-          <div className="space-y-3 text-center">
-            <p className="text-xl font-semibold text-gray-700">
-              No Post Selected
-            </p>
-            <p className="text-sm text-gray-500 max-w-sm">
-              Select a post from the sidebar to view its content. You can also
-              upload new markdown files.
-            </p>
-          </div>
-        }
-      />
-      <FileTextOutlined className="text-6xl mt-6 text-mint-300" />
-    </div>
-  );
-}
-
-function PostSkeleton() {
-  return (
-    <div className="max-w-4xl mx-auto my-8 bg-white rounded-xl shadow-lg px-8 py-10 transition-all">
-      <Space direction="vertical" className="w-full">
-        <Skeleton.Input active block style={{ height: 40 }} />
-        <div className="h-4" />
-        <Skeleton.Input active block style={{ height: 28 }} />
-        {[...Array(3)].map((_, i) => (
-          <Skeleton
-            key={i}
-            active
-            paragraph={{ rows: 4, width: ["100%", "95%", "98%", "90%"] }}
-          />
-        ))}
-      </Space>
-    </div>
-  );
-}
+import { useSWR, useSWRMutation } from "@/api/useFetch";
+import {
+  FileTextOutlined,
+  ClockCircleOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
+import { EmptyState, PostSkeleton } from "./MarkdownSkelton";
 
 function PostContent({ id }: { id: string }) {
   const { data, isLoading } = useSWR(`/floria-service/markdown/${id}`);
@@ -55,14 +20,45 @@ function PostContent({ id }: { id: string }) {
   return (
     <Suspense fallback={<PostSkeleton />}>
       <div className="transition-all duration-200 ease-in-out">
-        <MdxPost content={data?.content} />
+        <MdxPost title={data?.title} content={data?.content} />
       </div>
     </Suspense>
   );
 }
 export const MarkdownDisplay = () => {
   const [selectedFileId, setSelectedFileId] = useState<string | null>(null);
-  const { data } = useMarkdown();
+  const { data, mutate } = useMarkdown();
+
+  const { trigger: deletePost } = useSWRMutation(
+    "/floria-service/markdown/delete",
+    {
+      method: "DELETE",
+    },
+  );
+
+  const handleDelete = async (fileId: string, e: React.MouseEvent) => {
+    Modal.confirm({
+      title: "Delete Post",
+      content: "Are you sure you want to delete this post?",
+      okText: "Delete",
+      okButtonProps: {
+        danger: true,
+      },
+      onOk: async () => {
+        try {
+          await deletePost({ id: fileId });
+          message.success("Post deleted successfully");
+          mutate(); // Refresh the list
+          if (selectedFileId === fileId) {
+            setSelectedFileId(null);
+          }
+        } catch (error) {
+          message.error("Failed to delete post");
+        }
+      },
+    });
+  };
+
   return (
     <div className="markdown-display flex">
       <aside className="w-72 bg-white border-r border-gray-100 p-6 shadow-sm">
@@ -73,6 +69,16 @@ export const MarkdownDisplay = () => {
             dataSource={data}
             renderItem={(file) => (
               <List.Item
+                key={file.id}
+                actions={[
+                  <button
+                    key={`delete-btn-${file.id}`}
+                    onClick={(e) => handleDelete(file.id, e)}
+                    title="Delete post"
+                  >
+                    <DeleteOutlined />
+                  </button>,
+                ]}
                 className={`cursor-pointer rounded-lg px-4 py-3 mb-2 transition-all duration-150 
                   hover:bg-mint-50 hover:shadow-sm
                   ${selectedFileId === file.id ? "bg-mint-50 border-mint-500 shadow-sm" : ""}`}

@@ -9,7 +9,7 @@ export async function MdxPost(data: any) {
   return (
     <div className="max-w-4xl mx-auto my-12 bg-white rounded-2xl shadow-lg px-6 py-8">
       {title && (
-        <h1 className="text-3xl font-bold mb-6 text-center">{title}</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center">{title}</h1>
       )}
       <article className="prose prose-lg">
         <MDXRemote source={content} />

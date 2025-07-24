@@ -10,7 +10,7 @@ interface MarkdownFile {
 }
 
 export function useMarkdown() {
-  const { data, error, isLoading } = useSWR<{ data: MarkdownFile[] }>(
+  const { data, error, isLoading, mutate } = useSWR<{ data: MarkdownFile[] }>(
     "/floria-service/markdown/list",
   );
 
@@ -18,5 +18,6 @@ export function useMarkdown() {
     data: data?.data || [],
     isLoading,
     error,
+    mutate,
   };
 }
