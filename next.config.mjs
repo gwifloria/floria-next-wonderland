@@ -6,7 +6,7 @@ const ip = isProd ? online : local;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: isProd ? "/bj-next-wonderland" : "",
+  basePath: "",
   images: {
     unoptimized: true,
   },
