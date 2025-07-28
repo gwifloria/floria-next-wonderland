@@ -29,7 +29,7 @@ const CourseList = ({
       .filter(
         (course) =>
           course.teacherName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          course.courseName.toLowerCase().includes(searchTerm.toLowerCase())
+          course.courseName.toLowerCase().includes(searchTerm.toLowerCase()),
       )
       .sort((a, b) => {
         if (sortBy === "time") {
@@ -115,45 +115,39 @@ const DanceBooking = () => {
     unsubscribe: onewayUnsubscribe,
     isLoading: isOnewayLoading,
   } = useOneway();
-
-  const items = useMemo(
-    () => [
-      {
-        key: "caster",
-        label: "Caster Studio",
-        children: (
-          <CourseList
-            courses={casterSchedules}
-            subscribe={casterSubscribe}
-            unsubscribe={casterUnsubscribe}
-            isLoading={isCasterLoading}
-          />
-        ),
-      },
-      {
-        key: "oneway",
-        label: "One Way",
-        children: (
-          <CourseList
-            courses={onewaySchedules}
-            subscribe={onewaySubscribe}
-            unsubscribe={onewayUnsubscribe}
-            isLoading={isOnewayLoading}
-          />
-        ),
-      },
-    ],
-    [
-      casterSchedules,
-      onewaySchedules,
-      casterSubscribe,
-      casterUnsubscribe,
-      onewaySubscribe,
-      onewayUnsubscribe,
-      isCasterLoading,
-      isOnewayLoading,
-    ]
+  const casterTabItem = useMemo(
+    () => ({
+      key: "caster",
+      label: "Caster Studio",
+      children: (
+        <CourseList
+          courses={casterSchedules}
+          subscribe={casterSubscribe}
+          unsubscribe={casterUnsubscribe}
+          isLoading={isCasterLoading}
+        />
+      ),
+    }),
+    [casterSchedules, casterSubscribe, casterUnsubscribe, isCasterLoading],
   );
+
+  const onewayTabItem = useMemo(
+    () => ({
+      key: "oneway",
+      label: "One Way",
+      children: (
+        <CourseList
+          courses={onewaySchedules}
+          subscribe={onewaySubscribe}
+          unsubscribe={onewayUnsubscribe}
+          isLoading={isOnewayLoading}
+        />
+      ),
+    }),
+    [onewaySchedules, onewaySubscribe, onewayUnsubscribe, isOnewayLoading],
+  );
+
+  const items = [casterTabItem, onewayTabItem];
 
   return (
     <AuthProvider>
