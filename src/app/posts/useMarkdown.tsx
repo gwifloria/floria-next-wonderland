@@ -13,7 +13,7 @@ export function useMarkdown() {
   const {
     data,
     error,
-    isLoading,
+    isLoading: isListLoading,
     mutate: getMarkdownList,
   } = useSWR<{ data: MarkdownFile[] }>("/floria-service/markdown/list");
 
@@ -33,7 +33,7 @@ export function useMarkdown() {
 
   return {
     data: data?.data || [],
-    isLoading,
+    isListLoading,
     error,
     deletePost,
     getMarkdownList,
