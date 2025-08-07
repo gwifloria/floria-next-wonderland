@@ -1,15 +1,18 @@
 "use client";
-import { Button, Modal, Upload, message } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
+import { InboxOutlined, PlusOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd";
-import { useSWR, useSWRMutation } from "@/api/useFetch";
+import { App, Modal, Upload } from "antd";
 import matter from "gray-matter";
 import { useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
+import { useMarkdown } from "./useMarkdown";
 const { Dragger } = Upload;
 
 export const MarkdownUpload = () => {
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const { message } = App.useApp(); // Use App.useApp instead of direct Modal usage
+
+  const { addPost, isPosting, getMarkdownList } = useMarkdown();
+
   const parseMarkdownFile = (
     file: File,
   ): Promise<{ title: string; content: string; data: any }> => {
@@ -48,14 +51,16 @@ export const MarkdownUpload = () => {
         const fileObj = file as File;
         const parsed = await parseMarkdownFile(fileObj);
 
-        await trigger({
+        await addPost({
           title: parsed.title,
           content: parsed.content,
           metadata: parsed.data,
         });
 
         onSuccess?.(parsed);
+        getMarkdownList();
         message.success(`${fileObj.name} uploaded successfully.`);
+        setIsUploadModalOpen(false);
       } catch (error) {
         onError?.(new Error("Failed to process file"));
         message.error(`Failed to process ${(file as File).name}`);
@@ -65,9 +70,7 @@ export const MarkdownUpload = () => {
       console.log("Dropped files", e.dataTransfer.files);
     },
   };
-  const { trigger } = useSWRMutation("/floria-service/markdown/add", {
-    method: "POST",
-  });
+
   return (
     <div className="fixed right-0 flex justify-between items-center mb-4">
       <button
@@ -88,6 +91,7 @@ export const MarkdownUpload = () => {
         open={isUploadModalOpen}
         onCancel={() => setIsUploadModalOpen(false)}
         footer={null}
+        loading={isPosting}
       >
         <div className="max-w-2xl mx-auto p-6">
           <Dragger {...props}>

@@ -1,13 +1,9 @@
-import { Empty, Space, Skeleton } from "antd";
-import {
-  FileTextOutlined,
-  ClockCircleOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
+import { FileTextOutlined } from "@ant-design/icons";
+import { Empty, Skeleton, Space } from "antd";
 
 export function EmptyState() {
   return (
-    <div className="flex flex-col items-center justify-center h-[calc(100vh-2rem)] bg-gray-50/30 rounded-xl">
+    <div className=" flex items-center flex-col justify-center bg-gray-50/30 rounded-xl">
       <Empty
         image={Empty.PRESENTED_IMAGE_SIMPLE}
         description={
@@ -29,7 +25,7 @@ export function EmptyState() {
 
 export function PostSkeleton() {
   return (
-    <div className="max-w-4xl mx-auto my-8 bg-white rounded-xl shadow-lg px-8 py-10 transition-all">
+    <div className=" rounded-xl shadow-lg  transition-all">
       <Space direction="vertical" className="w-full">
         <Skeleton.Input active block style={{ height: 40 }} />
         <div className="h-4" />
