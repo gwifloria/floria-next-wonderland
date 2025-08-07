@@ -2,11 +2,11 @@ import { useAuth } from "@/context";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 
-interface CustomFetchOptions extends RequestInit {
+export interface CustomFetchOptions extends RequestInit {
   token?: string;
 }
 
-const useFetch = () => {
+export const useFetch = () => {
   const { token: userToken } = useAuth();
 
   const fetcher = async <T>(
@@ -39,7 +39,7 @@ const useFetch = () => {
   return fetcher;
 };
 const useCustomSWR = <T = any>(
-  key: string,
+  key: string | undefined | null,
   fetchOptions?: CustomFetchOptions,
 ) => {
   const fetcher = useFetch();

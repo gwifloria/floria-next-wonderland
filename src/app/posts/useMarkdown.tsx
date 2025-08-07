@@ -1,6 +1,6 @@
 "use client";
 
-import { useSWR } from "@/api/useFetch";
+import { useSWR, useSWRMutation } from "@/api/useFetch";
 
 interface MarkdownFile {
   id: string;
@@ -10,14 +10,34 @@ interface MarkdownFile {
 }
 
 export function useMarkdown() {
-  const { data, error, isLoading, mutate } = useSWR<{ data: MarkdownFile[] }>(
-    "/floria-service/markdown/list",
+  const {
+    data,
+    error,
+    isLoading,
+    mutate: getMarkdownList,
+  } = useSWR<{ data: MarkdownFile[] }>("/floria-service/markdown/list");
+
+  const { trigger: deletePost } = useSWRMutation(
+    "/floria-service/markdown/delete",
+    {
+      method: "POST",
+    },
+  );
+
+  const { trigger: addPost, isMutating: isPosting } = useSWRMutation(
+    "/floria-service/markdown/add",
+    {
+      method: "POST",
+    },
   );
 
   return {
     data: data?.data || [],
     isLoading,
     error,
-    mutate,
+    deletePost,
+    getMarkdownList,
+    addPost,
+    isPosting,
   };
 }

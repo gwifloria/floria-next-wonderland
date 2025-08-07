@@ -26,7 +26,7 @@ export const useCaster = () => {
     },
   );
 
-  const { data, isLoading } = useSWR<CasterSchedule[]>(
+  const { data, isLoading, mutate } = useSWR<CasterSchedule[]>(
     "/floria-service/caster/list",
   );
 
