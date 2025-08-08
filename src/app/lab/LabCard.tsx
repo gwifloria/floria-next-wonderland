@@ -1,5 +1,11 @@
 import { motion } from "framer-motion";
-import { cardVariants, Category, statusColor, typeEmoji } from "./constant";
+import { cardVariants, Category, statusColor } from "./constant";
+
+const typeStyle = {
+  todo: "bg-green-100 text-green-800",
+  bug: "bg-red-100 text-red-800",
+  idea: "bg-blue-100 text-blue-800",
+};
 
 export type LabEntry = {
   id: string;
@@ -29,9 +35,29 @@ export default function LabCard({
       whileHover={{ y: -2 }}
     >
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-xl font-semibold text-gray-800 group-hover:text-mint-600 transition-colors duration-300">
-          {typeEmoji[type]} {title}
-        </h2>
+        <div className="flex items-center gap-2">
+          <button
+            title={
+              type === "todo"
+                ? "记录待办任务"
+                : type === "bug"
+                  ? "问题/故障记录"
+                  : "灵感或想法"
+            }
+            className={`text-xs px-2 py-1 rounded-full font-medium ${typeStyle[type]} hover:brightness-110 transition`}
+            onClick={() => {
+              // You can pass a handler from parent to implement filtering
+              console.log("Type badge clicked:", type);
+            }}
+          >
+            {type === "todo" && "✅ Todo"}
+            {type === "bug" && "🧩 Bug"}
+            {type === "idea" && "💡 Idea"}
+          </button>
+          <h2 className="text-xl font-semibold text-gray-800 group-hover:text-mint-600 transition-colors duration-300">
+            {title}
+          </h2>
+        </div>
         <span
           className={`text-xs px-3 py-1 rounded-full font-medium transition-all duration-300 ${statusColor[status]}`}
         >

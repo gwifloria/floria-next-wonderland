@@ -84,3 +84,18 @@ export const cardVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
 };
+export const typeStyle = {
+  task: "bg-green-100 text-green-800",
+  issue: "bg-red-100 text-red-800",
+  idea: "bg-blue-100 text-blue-800",
+};
+
+export type LabCardType = keyof typeof typeStyle;
+
+export interface LabCardProps {
+  id?: string;
+  title: string;
+  description: string;
+  status?: string;
+  type: LabCardType;
+}
