@@ -91,11 +91,3 @@ export const typeStyle = {
 };
 
 export type LabCardType = keyof typeof typeStyle;
-
-export interface LabCardProps {
-  id?: string;
-  title: string;
-  description: string;
-  status?: string;
-  type: LabCardType;
-}

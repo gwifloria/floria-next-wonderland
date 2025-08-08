@@ -1,5 +1,5 @@
 "use client";
-
+import { Spin } from "antd";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import {
@@ -7,20 +7,40 @@ import {
   Category,
   categoryLabel,
   containerVariants,
-  exampleEntries,
   tabVariants,
 } from "./constant";
 import LabCard from "./LabCard";
+import { useLabApi } from "./useLab";
 
 export default function LabPage() {
   const [activeCategory, setActiveCategory] = useState<Category>("tech");
   const [showOnlyPending, setShowOnlyPending] = useState(false);
+  const { entries, isLoading, deleteEntry, updateEntry, refresh } = useLabApi();
 
-  const filteredEntries = exampleEntries.filter(
-    (entry) =>
-      entry.category === activeCategory &&
-      (!showOnlyPending || entry.status !== "resolved"),
-  );
+  const filteredEntries =
+    entries?.filter(
+      (entry) =>
+        entry.category === activeCategory &&
+        (!showOnlyPending || entry.status !== "resolved"),
+    ) || [];
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteEntry(id);
+      await refresh();
+    } catch (error) {
+      console.error("Failed to delete entry:", error);
+    }
+  };
+
+  const handleStatusChange = async (id: string, newStatus: string) => {
+    try {
+      await updateEntry({ id, status: newStatus });
+      await refresh();
+    } catch (error) {
+      console.error("Failed to update entry:", error);
+    }
+  };
 
   return (
     <motion.main
@@ -80,9 +100,28 @@ export default function LabPage() {
         initial="hidden"
         animate="visible"
       >
-        {filteredEntries.map((entry) => (
-          <LabCard key={entry.id} {...entry} />
-        ))}
+        {isLoading ? (
+          <div className="flex justify-center py-12">
+            <Spin size="large" />
+          </div>
+        ) : filteredEntries.length > 0 ? (
+          filteredEntries.map((entry) => (
+            <LabCard
+              key={entry.id}
+              {...entry}
+              onDelete={() => handleDelete(entry.id)}
+              onStatusChange={(status) => handleStatusChange(entry.id, status)}
+            />
+          ))
+        ) : (
+          <motion.div
+            className="text-center py-12 text-gray-500"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            暂无符合条件的记录 🤔
+          </motion.div>
+        )}
       </motion.div>
     </motion.main>
   );

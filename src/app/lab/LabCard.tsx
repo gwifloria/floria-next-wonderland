@@ -17,6 +17,10 @@ export type LabEntry = {
   createdAt: string;
   category: Category;
 };
+interface LabCardProps extends LabEntry {
+  onDelete: () => void;
+  onStatusChange: (status: string) => void;
+}
 
 export default function LabCard({
   id,
@@ -26,7 +30,7 @@ export default function LabCard({
   tags,
   content,
   createdAt,
-}: LabEntry) {
+}: LabCardProps) {
   return (
     <motion.div
       key={id}
