@@ -15,7 +15,6 @@
     outline: none;
     z-index: 3;
     position: relative;
-    font-size: 28px;
     transition: all 0.5s $cubic-bezier 0.15s;
     &::after,
     &::before {

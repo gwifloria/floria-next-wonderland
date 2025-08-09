@@ -1,10 +1,8 @@
 "use client";
 import { AuthProvider } from "@/context";
-import withTheme from "@/theme";
+import { DailyReview } from "./DailyReview";
 import { VisionCard } from "./VisionCard";
 import { weekVisions } from "./constants";
-import { Card, Space } from "antd";
-import { DailyReview } from "./DailyReview";
 
 const VisionBoard = () => {
   return (
@@ -29,7 +27,5 @@ const VisionBoard = () => {
     </AuthProvider>
   );
 };
-const VisionBoardPage = () => {
-  return withTheme(<VisionBoard />);
-};
-export default VisionBoardPage;
+
+export default VisionBoard;

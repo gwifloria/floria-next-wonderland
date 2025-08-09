@@ -1,7 +1,6 @@
 "use client";
 import { AuthProvider } from "@/context";
 import "./index.scss";
-import withTheme from "@/theme";
 import { useTravelTabs } from "./useTravelTabs";
 
 const Travel = () => {
@@ -13,7 +12,5 @@ const Travel = () => {
     </AuthProvider>
   );
 };
-const TravelPage = () => {
-  return withTheme(<Travel />);
-};
-export default TravelPage;
+
+export default Travel;

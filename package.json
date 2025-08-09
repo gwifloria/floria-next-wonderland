@@ -37,7 +37,7 @@
     "clsx": "^2.1.1",
     "cross-env": "^7.0.3",
     "date-fns": "^4.1.0",
-    "framer-motion": "^12.23.6",
+    "framer-motion": "^12.23.12",
     "fs": "^0.0.1-security",
     "gray-matter": "^4.0.3",
     "lodash": "^4.17.21",

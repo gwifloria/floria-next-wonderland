@@ -1,9 +1,8 @@
 "use client";
-import type { Metadata } from "next";
-import { Delius } from "next/font/google";
-import "./globals.css";
 import PageHeader from "@/app/components/PageHeader";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { Delius } from "next/font/google";
+import "./globals.css";
 
 const delius = Delius({ subsets: ["latin"], weight: "400" });
 // export const metadata: Metadata = {
