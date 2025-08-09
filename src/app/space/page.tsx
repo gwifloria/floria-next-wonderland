@@ -1,6 +1,5 @@
 "use client";
 import dynamic from "next/dynamic";
-import withTheme from "@/theme";
 
 const RoomScene = dynamic(() => import("./Scene").then((mod) => mod.default), {
   ssr: false,
@@ -12,10 +11,10 @@ const RoomScene = dynamic(() => import("./Scene").then((mod) => mod.default), {
 });
 
 const SpacePage = () => {
-  return withTheme(
+  return (
     <div className="space-page-container h-screen ">
       <RoomScene />
-    </div>,
+    </div>
   );
 };
 

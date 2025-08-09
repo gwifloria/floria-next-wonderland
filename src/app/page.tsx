@@ -1,12 +1,13 @@
 "use client";
-import { PersonalIntroduction } from "@/app/components/PersonalIntro";
-import ParallaxFavs from "@/app/components/ParallaxFavs";
 import HeroSection from "@/app/components/HeroSection";
-import { AuthProvider } from "@/context";
-import { StyleProvider } from "@ant-design/cssinjs";
+import ParallaxFavs from "@/app/components/ParallaxFavs";
+import { PersonalIntroduction } from "@/app/components/PersonalIntro";
 import SayHiButton from "@/app/components/SayHiButton";
+import { AuthProvider } from "@/context";
+import withTheme from "@/theme";
+import { StyleProvider } from "@ant-design/cssinjs";
 
-export default function Home() {
+const HomeContainer = () => {
   return (
     <StyleProvider hashPriority="high">
       <AuthProvider>
@@ -23,4 +24,8 @@ export default function Home() {
       </AuthProvider>
     </StyleProvider>
   );
-}
+};
+const Home = () => {
+  return withTheme(<HomeContainer />);
+};
+export default Home;

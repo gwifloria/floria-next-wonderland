@@ -16,7 +16,7 @@ import { useLabApi } from "./useLab";
 import { useLabInitializer } from "./useLabInitializer";
 import { useLabUpdater } from "./useLabUpdater";
 
-export default function LabPage() {
+const LabPageContainer = () => {
   const [activeCategory, setActiveCategory] = useState<Category>("tech");
   const [showOnlyPending, setShowOnlyPending] = useState(false);
   const [editingEntry, setEditingEntry] = useState<LabEntry | null>(null);
@@ -117,7 +117,7 @@ export default function LabPage() {
         </div>
         <div className="flex items-center gap-4">
           <Button
-            type="primary"
+            type="default"
             icon={<PlusOutlined />}
             onClick={labInit.open}
             className="bg-mint-500 hover:bg-mint-600"
@@ -173,4 +173,6 @@ export default function LabPage() {
       {labUpdater.drawer}
     </motion.main>
   );
-}
+};
+
+export default LabPageContainer;

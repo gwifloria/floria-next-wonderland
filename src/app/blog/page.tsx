@@ -1,10 +1,8 @@
 "use client";
 import { AuthProvider } from "@/context";
-import { BlogList } from "./BlogList";
-import withTheme from "@/theme";
-import { BlogEditor } from "./BlogEditor";
-import { Tabs } from "antd";
 import type { TabsProps } from "antd";
+import { Tabs } from "antd";
+import { BlogList } from "./BlogList";
 import "./index.scss";
 
 const items: TabsProps["items"] = [
@@ -38,7 +36,5 @@ const Blog = () => {
     </AuthProvider>
   );
 };
-const BlogPage = () => {
-  return withTheme(<Blog />);
-};
-export default BlogPage;
+
+export default Blog;
