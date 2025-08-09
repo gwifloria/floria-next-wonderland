@@ -1,6 +1,7 @@
 import { Modal, message } from "antd";
 import { useState } from "react";
 import { Category, LabEntry } from "./constant";
+import "./index.scss";
 import LabForm from "./LabForm";
 import { useLabApi } from "./useLab";
 
@@ -27,11 +28,11 @@ export function useLabInitializer({
         status: "open",
         createdAt: new Date().toISOString(),
       });
-      message.success("创建成功");
+      message.success("🎉 创建成功！");
       close();
       refresh();
     } catch (err) {
-      message.error("创建失败");
+      message.error("😢 创建失败，请重试！");
     } finally {
       setLoading(false);
     }
@@ -39,11 +40,26 @@ export function useLabInitializer({
 
   const modal = (
     <Modal
-      title="新增实验室内容"
+      title={
+        <span className="flex items-center gap-2 text-xl font-bold text-mint-600">
+          <span>🌱</span>
+          <span>新增实验室内容</span>
+        </span>
+      }
       open={visible}
       onCancel={close}
       footer={null}
-      width={600}
+      width={480}
+      centered
+      className="init-modal"
+      styles={{
+        body: {
+          borderRadius: 16,
+          background: "#f7fafc",
+          boxShadow: "0 4px 24px 0 rgba(0,0,0,0.04)",
+          padding: 32,
+        },
+      }}
     >
       <LabForm
         onSubmit={handleSubmit}
@@ -51,6 +67,7 @@ export function useLabInitializer({
         loading={loading}
         initialValues={{ category: defaultCategory }}
       />
+      <div className="text-center mt-4 text-xs text-gray-400">✨ ✨</div>
     </Modal>
   );
 

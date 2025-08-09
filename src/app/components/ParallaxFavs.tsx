@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useRef } from "react";
 import Image from "next/image";
+import React, { useEffect, useRef } from "react";
 
 const favImgs = [
   "/images/fav_arrow.png",
@@ -44,7 +44,9 @@ const ParallaxFavs: React.FC = () => {
       {favImgs.map((src, i) => (
         <div
           key={src}
-          ref={(el) => (refs.current[i] = el)}
+          ref={(el) => {
+            refs.current[i] = el;
+          }}
           style={{
             position: "absolute",
             left: `${10 + i * 15}%`,

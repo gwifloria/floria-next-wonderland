@@ -24,7 +24,7 @@ const PageHeader = () => {
             <Link
               href={route}
               key={route}
-              className="px-3 py-1 rounded-full text-mint-800 text-lg md:text-xl font-mono font-semibold hover:bg-mint-100 hover:text-rose-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-mint-200"
+              className="px-3 py-1 rounded-full text-mint-800 text-sm md:text-lg font-mono font-semibold hover:bg-mint-100 hover:text-rose-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-mint-200"
             >
               {routes[route as keyof typeof routes] || "🌟"}
               {route.charAt(0).toUpperCase() + route.slice(1)}

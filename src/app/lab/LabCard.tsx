@@ -1,6 +1,7 @@
 import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
 import { cardVariants, Category, statusColor } from "./constant";
+const isProd = process.env.NODE_ENV === "production";
 
 const typeStyle = {
   todo: "bg-green-100 text-green-700",
@@ -79,34 +80,39 @@ export default function LabCard({
           </span>
         ))}
       </div>
-      <div className="flex gap-2 mt-2">
-        <button
-          className="px-2 py-1 rounded hover:bg-mint-100 text-mint-600 flex items-center gap-1 border border-transparent hover:border-mint-300 transition"
-          title="编辑"
-          onClick={onEdit}
-        >
-          <EditOutlined /> 编辑
-        </button>
-        {status !== "resolved" && (
+      {!isProd && (
+        <div className="flex gap-2 mt-2">
           <button
-            className="px-2 py-1 rounded hover:bg-green-100 text-green-600 flex items-center gap-1 border border-transparent hover:border-green-300 transition"
-            title="标记为已完成"
-            onClick={() => onStatusChange("resolved")}
+            className="px-2 py-1 rounded hover:bg-mint-100 text-mint-600 flex items-center gap-1 border border-transparent hover:border-mint-300 transition"
+            title="编辑"
+            onClick={onEdit}
           >
-            <CheckOutlined /> 完成
+            <EditOutlined /> 编辑
           </button>
-        )}
-      </div>
+          {status !== "resolved" && (
+            <button
+              className="px-2 py-1 rounded hover:bg-green-100 text-green-600 flex items-center gap-1 border border-transparent hover:border-green-300 transition"
+              title="标记为已完成"
+              onClick={() => onStatusChange("resolved")}
+            >
+              <CheckOutlined /> 完成
+            </button>
+          )}
+        </div>
+      )}
+
       {/* Delete button at bottom right, subtle and small */}
-      <button
-        className="absolute bottom-3 right-3 p-1 w-7 h-7 flex items-center justify-center rounded-full text-gray-300 hover:text-red-500 hover:bg-red-50 transition
+      {!isProd && (
+        <button
+          className="absolute bottom-3 right-3 p-1 w-7 h-7 flex items-center justify-center rounded-full text-gray-300 hover:text-red-500 hover:bg-red-50 transition
           opacity-50 hover:opacity-100 z-10"
-        style={{ fontSize: 16 }}
-        title="删除"
-        onClick={onDelete}
-      >
-        <DeleteOutlined />
-      </button>
+          style={{ fontSize: 16 }}
+          title="删除"
+          onClick={onDelete}
+        >
+          <DeleteOutlined />
+        </button>
+      )}
     </motion.div>
   );
 }

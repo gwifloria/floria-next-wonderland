@@ -1,4 +1,5 @@
 "use client";
+import withTheme from "@/theme";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Spin } from "antd";
 import { motion } from "framer-motion";
@@ -36,8 +37,6 @@ const LabPageContainer = () => {
         entry.category === activeCategory &&
         (!showOnlyPending || entry.status !== "resolved"),
     ) || [];
-
-  console.log(filteredEntries);
 
   const handleDelete = async (id: string) => {
     try {
@@ -175,4 +174,11 @@ const LabPageContainer = () => {
   );
 };
 
-export default LabPageContainer;
+const LabPage = () => {
+  return withTheme(
+    <div className="lab-page-container">
+      <LabPageContainer />
+    </div>,
+  );
+};
+export default LabPage;
