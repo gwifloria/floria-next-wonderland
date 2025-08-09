@@ -4,7 +4,7 @@ import { ConfigProvider, ThemeConfig } from "antd";
 
 export const themeConfig: ThemeConfig = {
   token: {
-    colorPrimary: "#b7d8c5", // 马卡龙薄荷绿
+    colorPrimary: "#89b7a3ff", // 马卡龙薄荷绿
     colorInfo: "#b7c7e6", // 马卡龙淡蓝紫
     colorWarning: "#ffe5b4", // 马卡龙淡杏黄
     colorError: "#f7b7b7", // 马卡龙淡粉红
@@ -12,7 +12,7 @@ export const themeConfig: ThemeConfig = {
     colorBgBase: "#f8fafc", // 柔和浅灰白
     colorBgElevated: "#fffaf3", // 浅米白
     colorTextBase: "#6b6b6b", // 柔和深灰
-
+    colorBgContainer: "#fffaf3",
     // AliasToken 补充
     colorFillContent: "#f8fafc", // 内容区背景色
     colorFillContentHover: "#f3f8ff", // 内容区hover色
@@ -31,12 +31,12 @@ export const themeConfig: ThemeConfig = {
     colorIcon: "#b7d8c5", // 弱操作图标色
     colorIconHover: "#f7b7b7", // 弱操作图标hover色
     colorHighlight: "#ffe5b4", // 高亮色
-    controlOutline: "#b7d8c5", // 输入组件outline色
+    controlOutline: "#aec3b7ff", // 输入组件outline色
     colorWarningOutline: "#ffe5b4", // 警告outline色
     colorErrorOutline: "#f7b7b7", // 错误outline色
-    controlItemBgHover: "#f3f8ff", // 控件hover背景色
-    controlItemBgActive: "#b7d8c5", // 控件激活背景色
-    controlItemBgActiveHover: "#b7c7e6", // 控件激活hover背景色
+    controlItemBgHover: "#f3f8dfff", // 控件hover背景色
+    controlItemBgActive: "#acceb3ff", // 控件激活背景色
+    controlItemBgActiveHover: "#e5f2ccff", // 控件激活hover背景色
   },
   hashed: false,
   cssVar: true,

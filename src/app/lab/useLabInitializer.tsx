@@ -1,4 +1,4 @@
-import { Modal, message } from "antd";
+import { App, Modal } from "antd";
 import { useState } from "react";
 import LabForm from "./LabForm";
 import { Category, LabEntry } from "./type";
@@ -14,6 +14,7 @@ export function useLabInitializer({
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const { addEntry, refresh } = useLabApi();
+  const { message } = App.useApp();
 
   const open = () => setVisible(true);
   const close = () => setVisible(false);
@@ -27,9 +28,9 @@ export function useLabInitializer({
         status: "open",
         createdAt: new Date().toISOString(),
       });
-      message.success("🎉 创建成功！");
       close();
       refresh();
+      message.success("🎉 创建成功！");
     } catch (err) {
       message.error("😢 创建失败，请重试！");
     } finally {

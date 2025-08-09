@@ -1,14 +1,15 @@
-import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+  PlayCircleOutlined,
+} from "@ant-design/icons";
+import { App } from "antd";
 import { motion } from "framer-motion";
-import { cardVariants, statusColor } from "./constant";
+import { cardVariants, statusColor, typeEmoji, typeStyle } from "./constant";
 import { LabEntry } from "./type";
 const isProd = process.env.NODE_ENV === "production";
-
-const typeStyle = {
-  issue: "bg-green-100 text-green-700",
-  bug: "bg-red-100 text-red-700",
-  idea: "bg-blue-100 text-blue-700",
-};
 
 interface LabCardProps extends LabEntry {
   onDelete: () => void;
@@ -28,6 +29,20 @@ export default function LabCard({
   onStatusChange,
   onEdit,
 }: LabCardProps) {
+  const { modal } = App.useApp();
+  const handleDelete = () => {
+    modal.confirm({
+      title: "Are you sure you want to delete?",
+      icon: <ExclamationCircleOutlined />,
+      content: "This action cannot be undone.",
+      okText: "Delete",
+      okType: "danger",
+      cancelText: "Cancel",
+      centered: true,
+      onOk: onDelete,
+    });
+  };
+
   return (
     <motion.div
       key={id}
@@ -41,9 +56,7 @@ export default function LabCard({
             className={`text-xs px-2 py-1 rounded font-medium ${typeStyle[type]}`}
             title={type === "issue" ? "待办" : type === "bug" ? "问题" : "想法"}
           >
-            {type === "issue" && "📌"}
-            {type === "bug" && "🐛"}
-            {type === "idea" && "💡"}
+            {typeEmoji[type]}
           </span>
           <span className="text-lg font-semibold text-gray-800 group-hover:text-mint-600 transition-colors">
             {title}
@@ -52,9 +65,7 @@ export default function LabCard({
         <span
           className={`text-xs px-2 py-1 rounded font-medium ${statusColor[status]}`}
         >
-          {status === "open" && "open"}
-          {status === "thinking" && "thinking"}
-          {status === "resolved" && "resolved"}
+          {status}
         </span>
       </div>
       <p className="text-gray-600 text-sm mb-3 leading-relaxed line-clamp-3">
@@ -72,37 +83,46 @@ export default function LabCard({
         ))}
       </div>
       {!isProd && (
-        <div className="flex gap-2 text-sm mt-2">
-          <button
-            className="px-2 py-1 rounded hover:bg-mint-100 text-mint-600 flex items-center gap-1 border border-transparent hover:border-mint-300 transition"
-            title="编辑"
-            onClick={onEdit}
-          >
-            <EditOutlined /> 编辑
-          </button>
-          {status !== "resolved" && (
+        <div className="flex justify-between">
+          <div className="flex gap-2 text-sm mt-2">
+            {status === "open" && (
+              <button
+                className="px-2 py-1 rounded  text-mint-500 hover:bg-mint-100 flex items-center gap-1 border border-transparent transition"
+                title="starting"
+                onClick={() => onStatusChange("thinking")}
+              >
+                <PlayCircleOutlined /> Start
+              </button>
+            )}
+            {status !== "resolved" && (
+              <button
+                className="px-2 py-1 rounded hover:bg-nepal-100 text-nepal-300 gap-1 border border-transparent transition"
+                title="标记为已完成"
+                onClick={() => onStatusChange("resolved")}
+              >
+                <CheckOutlined /> Complete
+              </button>
+            )}
+          </div>
+          <div className="flex justify-between">
             <button
-              className="px-2 py-1 rounded hover:bg-green-100 text-green-600 flex items-center gap-1 border border-transparent hover:border-green-300 transition"
-              title="标记为已完成"
-              onClick={() => onStatusChange("resolved")}
+              className="mr-2 px-2 rounded hover:bg-mint-100 text-mint-600 gap-1 border border-transparent hover:border-mint-300 transition"
+              title="编辑"
+              onClick={onEdit}
             >
-              <CheckOutlined /> 完成
+              <EditOutlined />
             </button>
-          )}
+            <button
+              className="px-2 rounded-full text-gray-300 hover:text-red-500 hover:bg-red-50 transition
+          opacity-50 hover:opacity-100 "
+              style={{ fontSize: 16 }}
+              title="删除"
+              onClick={handleDelete}
+            >
+              <DeleteOutlined />
+            </button>
+          </div>
         </div>
-      )}
-
-      {/* Delete button at bottom right, subtle and small */}
-      {!isProd && (
-        <button
-          className="absolute bottom-3 right-3 p-1 w-7 h-7 flex items-center justify-center rounded-full text-gray-300 hover:text-red-500 hover:bg-red-50 transition
-          opacity-50 hover:opacity-100 z-10"
-          style={{ fontSize: 16 }}
-          title="删除"
-          onClick={onDelete}
-        >
-          <DeleteOutlined />
-        </button>
       )}
     </motion.div>
   );

@@ -32,6 +32,6 @@ export const typeEmoji: Record<LabItemType, string> = {
   issue: "📌",
 };
 export const categoryLabelEmoji: Record<Category, string> = {
-  tech: "🧑‍💻 技术",
-  life: "🍵 生活",
+  tech: "🧑‍💻",
+  life: "🍵",
 };

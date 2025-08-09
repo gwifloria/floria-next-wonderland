@@ -1,7 +1,7 @@
 "use client";
 import withTheme from "@/theme";
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Spin } from "antd";
+import { App, Button, Spin } from "antd";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import {
@@ -77,7 +77,9 @@ const LabPageContainer = () => {
     >
       {isDeleting && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-          <Spin size="large" tip="正在删除..." />
+          <Spin size="large" tip="正在删除...">
+            <div style={{ width: 100, height: 100 }} />{" "}
+          </Spin>
         </div>
       )}
       <motion.h1
@@ -109,7 +111,7 @@ const LabPageContainer = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              {categoryLabelEmoji[category]}
+              {categoryLabelEmoji[category]} {category.toUpperCase()}
             </motion.button>
           ))}
         </div>
@@ -164,11 +166,12 @@ const LabPageContainer = () => {
           </motion.div>
         )}
       </motion.div>
-
-      {/* 新建弹窗 */}
-      {labInit.modal}
-      {/* 编辑抽屉 */}
-      {labUpdater.drawer}
+      <App>
+        {/* 新建弹窗 */}
+        {labInit.modal}
+        {/* 编辑抽屉 */}
+        {labUpdater.drawer}
+      </App>
     </motion.main>
   );
 };
