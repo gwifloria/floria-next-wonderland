@@ -1,8 +1,8 @@
 import { useSWRMutation } from "@/api/useFetch";
-import { Destination, MapDestinationMarker } from "@/types";
+import { MapDestinationMarker } from "@/types";
+import type { PopconfirmProps } from "antd";
 import { Button, Card, Popconfirm, Space, Tag } from "antd";
 const { Meta } = Card;
-import type { PopconfirmProps } from "antd";
 // TODO
 interface FancyItem extends MapDestinationMarker {
   _id?: string;
@@ -32,8 +32,8 @@ const FancyItem = ({ item }: { item: FancyItem }) => {
       <Space>
         <Button>编辑</Button>
         <Popconfirm
-          title="Delete the task"
-          description="Are you sure to delete this task?"
+          title="Delete the issue"
+          description="Are you sure to delete this issue?"
           onConfirm={handleDelete}
           onCancel={cancel}
           okText="Yes"
@@ -49,7 +49,9 @@ const FancyItem = ({ item }: { item: FancyItem }) => {
 export const useFancyList = (data?: FancyItem[]) => {
   return (
     <div className="fancy-container">
-      {data?.map((d, i) => <FancyItem key={i} item={d}></FancyItem>)}
+      {data?.map((d, i) => (
+        <FancyItem key={i} item={d}></FancyItem>
+      ))}
     </div>
   );
 };

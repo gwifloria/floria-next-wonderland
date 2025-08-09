@@ -6,13 +6,12 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import {
   cardVariants,
-  Category,
-  categoryLabel,
+  categoryLabelEmoji,
   containerVariants,
-  LabEntry,
   tabVariants,
 } from "./constant";
 import LabCard from "./LabCard";
+import { Category, LabEntry } from "./type";
 import { useLabApi } from "./useLab";
 import { useLabInitializer } from "./useLabInitializer";
 import { useLabUpdater } from "./useLabUpdater";
@@ -82,7 +81,7 @@ const LabPageContainer = () => {
         </div>
       )}
       <motion.h1
-        className="text-3xl font-bold mb-8 bg-gradient-to-r from-mint-600 to-mint-400 bg-clip-text text-transparent"
+        className="text-xl font-bold mb-8 bg-gradient-to-r from-mint-600 to-mint-400 bg-clip-text text-transparent"
         variants={tabVariants}
         initial="hidden"
         animate="visible"
@@ -98,7 +97,7 @@ const LabPageContainer = () => {
         transition={{ duration: 0.4 }}
       >
         <div className="flex gap-4">
-          {(Object.keys(categoryLabel) as Category[]).map((category) => (
+          {(Object.keys(categoryLabelEmoji) as Category[]).map((category) => (
             <motion.button
               key={category}
               onClick={() => setActiveCategory(category)}
@@ -110,7 +109,7 @@ const LabPageContainer = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              {categoryLabel[category]}
+              {categoryLabelEmoji[category]}
             </motion.button>
           ))}
         </div>
@@ -121,7 +120,7 @@ const LabPageContainer = () => {
             onClick={labInit.open}
             className="bg-mint-500 hover:bg-mint-600"
           >
-            新建
+            New
           </Button>
           <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
             <input

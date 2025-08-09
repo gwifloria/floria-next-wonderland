@@ -1,6 +1,6 @@
 // src/api/useLabApi.ts
 import { useSWR, useSWRMutation } from "@/api/useFetch";
-import { LabEntry } from "./constant";
+import { LabEntry } from "./type";
 
 export function useLabApi() {
   const { data: entries, mutate } = useSWR<{ data: LabEntry[] }>(

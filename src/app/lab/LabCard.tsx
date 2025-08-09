@@ -1,24 +1,15 @@
 import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { motion } from "framer-motion";
-import { cardVariants, Category, statusColor } from "./constant";
+import { cardVariants, statusColor } from "./constant";
+import { LabEntry } from "./type";
 const isProd = process.env.NODE_ENV === "production";
 
 const typeStyle = {
-  todo: "bg-green-100 text-green-700",
+  issue: "bg-green-100 text-green-700",
   bug: "bg-red-100 text-red-700",
   idea: "bg-blue-100 text-blue-700",
 };
 
-export type LabEntry = {
-  id: string;
-  title: string;
-  type: "idea" | "bug" | "todo";
-  status: "open" | "thinking" | "resolved";
-  tags?: string[];
-  content: string;
-  createdAt: string;
-  category: Category;
-};
 interface LabCardProps extends LabEntry {
   onDelete: () => void;
   onStatusChange: (status: string) => void;
@@ -48,9 +39,9 @@ export default function LabCard({
         <div className="flex items-center gap-2">
           <span
             className={`text-xs px-2 py-1 rounded font-medium ${typeStyle[type]}`}
-            title={type === "todo" ? "待办" : type === "bug" ? "问题" : "想法"}
+            title={type === "issue" ? "待办" : type === "bug" ? "问题" : "想法"}
           >
-            {type === "todo" && "📌"}
+            {type === "issue" && "📌"}
             {type === "bug" && "🐛"}
             {type === "idea" && "💡"}
           </span>
@@ -81,7 +72,7 @@ export default function LabCard({
         ))}
       </div>
       {!isProd && (
-        <div className="flex gap-2 mt-2">
+        <div className="flex gap-2 text-sm mt-2">
           <button
             className="px-2 py-1 rounded hover:bg-mint-100 text-mint-600 flex items-center gap-1 border border-transparent hover:border-mint-300 transition"
             title="编辑"

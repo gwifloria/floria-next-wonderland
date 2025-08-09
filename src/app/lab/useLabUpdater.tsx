@@ -1,7 +1,7 @@
 import { Drawer, message } from "antd";
 import { useState } from "react";
 import LabForm from "./LabForm";
-import { LabEntry } from "./constant";
+import { LabEntry } from "./type";
 import { useLabApi } from "./useLab";
 
 interface UseLabUpdaterProps {
@@ -40,7 +40,7 @@ export function useLabUpdater({ entry }: UseLabUpdaterProps) {
       open={visible}
       onClose={close}
       width={480}
-      destroyOnClose
+      destroyOnHidden
     >
       <LabForm
         initialValues={entry ?? undefined}

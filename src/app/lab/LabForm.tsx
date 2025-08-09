@@ -1,5 +1,7 @@
 import { Button, Form, Input, Select } from "antd";
-import { LabEntry } from "./constant";
+import { useRef } from "react";
+import { categoryLabelEmoji, typeEmoji } from "./constant";
+import { Category, LabEntry, LabItemType } from "./type";
 
 interface LabFormProps {
   initialValues?: Partial<LabEntry>;
@@ -15,9 +17,11 @@ export default function LabForm({
   loading,
 }: LabFormProps) {
   const [form] = Form.useForm();
+  const formRef = useRef<any>(null);
 
   return (
     <Form
+      ref={formRef}
       form={form}
       layout="vertical"
       initialValues={initialValues}
@@ -37,8 +41,11 @@ export default function LabForm({
         rules={[{ required: true, message: "请选择分类" }]}
       >
         <Select placeholder="请选择分类">
-          <Select.Option value="tech">🧑‍💻 技术</Select.Option>
-          <Select.Option value="life">🍵 生活</Select.Option>
+          {Object.keys(categoryLabelEmoji).map((cat) => (
+            <Select.Option key={cat} value={cat}>
+              {categoryLabelEmoji[cat as Category]}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
 
@@ -48,9 +55,11 @@ export default function LabForm({
         rules={[{ required: true, message: "请选择类型" }]}
       >
         <Select>
-          <Select.Option value="idea">💡 想法</Select.Option>
-          <Select.Option value="bug">🐛 问题</Select.Option>
-          <Select.Option value="todo">📌 待办</Select.Option>
+          {Object.keys(typeEmoji).map((type) => (
+            <Select.Option key={type} value={type}>
+              {typeEmoji[type as LabItemType]} {type}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
 
