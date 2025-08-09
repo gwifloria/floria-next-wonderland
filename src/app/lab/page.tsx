@@ -1,5 +1,6 @@
 "use client";
-import { Spin } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button, Spin } from "antd";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import {
@@ -7,15 +8,27 @@ import {
   Category,
   categoryLabel,
   containerVariants,
+  LabEntry,
   tabVariants,
 } from "./constant";
 import LabCard from "./LabCard";
 import { useLabApi } from "./useLab";
+import { useLabInitializer } from "./useLabInitializer";
+import { useLabUpdater } from "./useLabUpdater";
 
 export default function LabPage() {
   const [activeCategory, setActiveCategory] = useState<Category>("tech");
   const [showOnlyPending, setShowOnlyPending] = useState(false);
-  const { entries, isLoading, deleteEntry, updateEntry, refresh } = useLabApi();
+  const [editingEntry, setEditingEntry] = useState<LabEntry | null>(null);
+
+  const { entries, isLoading, deleteEntry, updateEntry, refresh, isDeleting } =
+    useLabApi();
+
+  // 新建弹窗
+  const labInit = useLabInitializer({ defaultCategory: activeCategory });
+
+  // 编辑抽屉
+  const labUpdater = useLabUpdater({ entry: editingEntry });
 
   const filteredEntries =
     entries?.filter(
@@ -24,9 +37,11 @@ export default function LabPage() {
         (!showOnlyPending || entry.status !== "resolved"),
     ) || [];
 
+  console.log(filteredEntries);
+
   const handleDelete = async (id: string) => {
     try {
-      await deleteEntry(id);
+      await deleteEntry({ id: id });
       await refresh();
     } catch (error) {
       console.error("Failed to delete entry:", error);
@@ -42,6 +57,18 @@ export default function LabPage() {
     }
   };
 
+  // 打开编辑抽屉
+  const handleEdit = (entry: LabEntry) => {
+    console.log(entry);
+    setEditingEntry(entry);
+    labUpdater.open();
+  };
+
+  // 关闭编辑抽屉时清空 entry
+  if (!labUpdater.visible && editingEntry) {
+    setEditingEntry(null);
+  }
+
   return (
     <motion.main
       className="max-w-4xl mx-auto px-4 py-10"
@@ -50,6 +77,11 @@ export default function LabPage() {
       animate="visible"
       transition={{ duration: 0.5 }}
     >
+      {isDeleting && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <Spin size="large" tip="正在删除..." />
+        </div>
+      )}
       <motion.h1
         className="text-3xl font-bold mb-8 bg-gradient-to-r from-mint-600 to-mint-400 bg-clip-text text-transparent"
         variants={tabVariants}
@@ -83,15 +115,25 @@ export default function LabPage() {
             </motion.button>
           ))}
         </div>
-        <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={showOnlyPending}
-            onChange={(e) => setShowOnlyPending(e.target.checked)}
-            className="w-4 h-4 accent-yellow-500"
-          />
-          👀 仅看未完成
-        </label>
+        <div className="flex items-center gap-4">
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={labInit.open}
+            className="bg-mint-500 hover:bg-mint-600"
+          >
+            新建
+          </Button>
+          <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={showOnlyPending}
+              onChange={(e) => setShowOnlyPending(e.target.checked)}
+              className="w-4 h-4 accent-yellow-500"
+            />
+            👀 仅看未完成
+          </label>
+        </div>
       </motion.div>
 
       <motion.div
@@ -111,6 +153,7 @@ export default function LabPage() {
               {...entry}
               onDelete={() => handleDelete(entry.id)}
               onStatusChange={(status) => handleStatusChange(entry.id, status)}
+              onEdit={() => handleEdit(entry)}
             />
           ))
         ) : (
@@ -123,6 +166,11 @@ export default function LabPage() {
           </motion.div>
         )}
       </motion.div>
+
+      {/* 新建弹窗 */}
+      {labInit.modal}
+      {/* 编辑抽屉 */}
+      {labUpdater.drawer}
     </motion.main>
   );
 }

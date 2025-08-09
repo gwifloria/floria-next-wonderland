@@ -13,12 +13,12 @@ export function useLabApi() {
 
   const { trigger: updateEntry } = useSWRMutation(
     "/floria-service/lab/update",
-    { method: "PUT" },
+    { method: "POST" },
   );
 
-  const { trigger: deleteEntry } = useSWRMutation(
+  const { trigger: deleteEntry, isMutating: isDeleting } = useSWRMutation(
     "/floria-service/lab/delete",
-    { method: "DELETE" },
+    { method: "POST" },
   );
 
   return {
@@ -27,6 +27,7 @@ export function useLabApi() {
     addEntry,
     updateEntry,
     deleteEntry,
+    isDeleting,
     refresh: mutate,
   };
 }
