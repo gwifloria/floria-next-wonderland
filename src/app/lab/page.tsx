@@ -21,8 +21,7 @@ const LabPageContainer = () => {
   const [showOnlyPending, setShowOnlyPending] = useState(false);
   const [editingEntry, setEditingEntry] = useState<LabEntry | null>(null);
 
-  const { entries, isLoading, deleteEntry, updateEntry, refresh, isDeleting } =
-    useLabApi();
+  const { entries, isLoading, deleteEntry, updateEntry, refresh } = useLabApi();
 
   // 新建弹窗
   const labInit = useLabInitializer({ defaultCategory: activeCategory });
@@ -55,14 +54,11 @@ const LabPageContainer = () => {
     }
   };
 
-  // 打开编辑抽屉
   const handleEdit = (entry: LabEntry) => {
-    console.log(entry);
     setEditingEntry(entry);
     labUpdater.open();
   };
 
-  // 关闭编辑抽屉时清空 entry
   if (!labUpdater.visible && editingEntry) {
     setEditingEntry(null);
   }
@@ -75,13 +71,6 @@ const LabPageContainer = () => {
       animate="visible"
       transition={{ duration: 0.5 }}
     >
-      {isDeleting && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-          <Spin size="large" tip="正在删除...">
-            <div style={{ width: 100, height: 100 }} />{" "}
-          </Spin>
-        </div>
-      )}
       <motion.h1
         className="text-xl font-bold mb-8 bg-gradient-to-r from-mint-600 to-mint-400 bg-clip-text text-transparent"
         variants={tabVariants}
@@ -142,11 +131,12 @@ const LabPageContainer = () => {
         initial="hidden"
         animate="visible"
       >
-        {isLoading ? (
-          <div className="flex justify-center py-12">
+        {isLoading && (
+          <div className="inset-0 z-10 flex items-center bg-white bg-opacity-70 align-center z-50 absolute justify-center py-12">
             <Spin size="large" />
           </div>
-        ) : filteredEntries.length > 0 ? (
+        )}
+        {filteredEntries.length > 0 ? (
           filteredEntries.map((entry) => (
             <LabCard
               key={entry.id}

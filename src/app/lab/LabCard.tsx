@@ -3,12 +3,22 @@ import {
   DeleteOutlined,
   EditOutlined,
   ExclamationCircleOutlined,
+  PauseCircleOutlined,
   PlayCircleOutlined,
 } from "@ant-design/icons";
 import { App } from "antd";
 import { motion } from "framer-motion";
-import { cardVariants, statusColor, typeEmoji, typeStyle } from "./constant";
+import { useState } from "react";
+import Confetti from "react-confetti";
+import {
+  cardVariants,
+  confettiColors,
+  statusColor,
+  typeEmoji,
+  typeStyle,
+} from "./constant";
 import { LabEntry } from "./type";
+
 const isProd = process.env.NODE_ENV === "production";
 
 interface LabCardProps extends LabEntry {
@@ -30,6 +40,14 @@ export default function LabCard({
   onEdit,
 }: LabCardProps) {
   const { modal } = App.useApp();
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  const handleComplete = () => {
+    setShowConfetti(true);
+    onStatusChange("resolved");
+    setTimeout(() => setShowConfetti(false), 2000); // 2秒后关闭彩带
+  };
+
   const handleDelete = () => {
     modal.confirm({
       title: "Are you sure you want to delete?",
@@ -46,10 +64,20 @@ export default function LabCard({
   return (
     <motion.div
       key={id}
-      className="group bg-white rounded-xl shadow-sm hover:shadow-lg p-5 border border-gray-100 transition-all duration-200 hover:border-mint-300 relative"
+      className="group bg-white rounded-2xl shadow-sm hover:shadow-xl p-5 border border-gray-100 transition-all duration-200 hover:border-mint-300 relative"
       variants={cardVariants}
       whileHover={{ y: -2 }}
     >
+      {showConfetti && (
+        <Confetti
+          colors={confettiColors}
+          style={{ position: "absolute" }}
+          width={window.innerWidth}
+          height={window.innerHeight}
+          numberOfPieces={120}
+          recycle={false}
+        />
+      )}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <span
@@ -94,11 +122,20 @@ export default function LabCard({
                 <PlayCircleOutlined /> Start
               </button>
             )}
+            {status === "inProgress" && (
+              <button
+                className="px-2 py-1 rounded text-mint-500 hover:bg-mint-100 flex items-center gap-1 border border-transparent transition"
+                title="starting"
+                onClick={() => onStatusChange("open")}
+              >
+                <PauseCircleOutlined /> Pause
+              </button>
+            )}
             {status !== "resolved" && (
               <button
                 className="px-2 py-1 rounded hover:bg-nepal-100 text-nepal-300 gap-1 border border-transparent transition"
                 title="标记为已完成"
-                onClick={() => onStatusChange("resolved")}
+                onClick={handleComplete}
               >
                 <CheckOutlined /> Complete
               </button>
