@@ -87,9 +87,9 @@ export default function LabCard({
           <div className="flex gap-2 text-sm mt-2">
             {status === "open" && (
               <button
-                className="px-2 py-1 rounded  text-mint-500 hover:bg-mint-100 flex items-center gap-1 border border-transparent transition"
+                className="px-2 py-1 rounded text-mint-500 hover:bg-mint-100 flex items-center gap-1 border border-transparent transition"
                 title="starting"
-                onClick={() => onStatusChange("thinking")}
+                onClick={() => onStatusChange("inProgress")}
               >
                 <PlayCircleOutlined /> Start
               </button>

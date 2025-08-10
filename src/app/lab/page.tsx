@@ -166,21 +166,22 @@ const LabPageContainer = () => {
           </motion.div>
         )}
       </motion.div>
-      <App>
-        {/* 新建弹窗 */}
-        {labInit.modal}
-        {/* 编辑抽屉 */}
-        {labUpdater.drawer}
-      </App>
+
+      {/* 新建弹窗 */}
+      {labInit.modal}
+      {/* 编辑抽屉 */}
+      {labUpdater.drawer}
     </motion.main>
   );
 };
 
 const LabPage = () => {
   return withTheme(
-    <div className="lab-page-container">
-      <LabPageContainer />
-    </div>,
+    <App>
+      <div className="lab-page-container">
+        <LabPageContainer />
+      </div>
+    </App>,
   );
 };
 export default LabPage;

@@ -1,9 +1,13 @@
 import { Category, LabItemType } from "./type";
 
+function genStatusColor(name: string) {
+  return `bg-${name}-50 text-${name}-500 border border-${name}-100`;
+}
+
 export const statusColor = {
-  open: "bg-red-50 text-red-600 border border-red-200",
-  thinking: "bg-blue-50 text-blue-600 border border-blue-200",
-  resolved: "bg-green-50 text-green-600 border border-green-200",
+  open: genStatusColor("macaron-blue"),
+  inProgress: genStatusColor("warmOrange"),
+  resolved: genStatusColor("rose"),
 };
 
 export const containerVariants = {
@@ -20,10 +24,14 @@ export const cardVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
 };
+function genTypeColor(name: string) {
+  return `bg-${name}-50 text-${name}-800`;
+}
+
 export const typeStyle: Record<LabItemType, string> = {
-  issue: "bg-green-100 text-green-800",
-  bug: "bg-red-100 text-red-800",
-  idea: "bg-blue-100 text-blue-800",
+  issue: genTypeColor("mint"),
+  bug: genTypeColor("rose"),
+  idea: genTypeColor("nepal"),
 };
 
 export const typeEmoji: Record<LabItemType, string> = {

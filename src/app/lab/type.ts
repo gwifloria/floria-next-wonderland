@@ -1,6 +1,6 @@
 export type Category = "tech" | "life";
 export type LabItemType = "bug" | "idea" | "issue";
-export type LabItemStatus = "open" | "thinking" | "resolved";
+export type LabItemStatus = "open" | "inProgress" | "resolved";
 export type LabEntry = {
   id: string;
   title: string;
