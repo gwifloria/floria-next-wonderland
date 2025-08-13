@@ -1,7 +1,14 @@
 export const routes = {
   posts: "✏️",
-  dance: "💃",
   space: "🌌",
   lab: "🧪",
+  about: "👋",
 };
-export const hiddenRoutes = ["blog", "tools", "lib", "travel"];
+export const hiddenRoutes = [
+  "blog",
+  "tools",
+  "lib",
+  "travel",
+  "dance",
+  "about",
+];

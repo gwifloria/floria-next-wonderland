@@ -6,6 +6,7 @@ import SayHiButton from "@/app/components/SayHiButton";
 import { AuthProvider } from "@/context";
 import withTheme from "@/theme";
 import { StyleProvider } from "@ant-design/cssinjs";
+import { App } from "antd";
 
 const HomeContainer = () => {
   return (
@@ -19,7 +20,9 @@ const HomeContainer = () => {
           <div className="w-full max-w-6xl bg-white rounded-[2.5rem] shadow-md p-2 sm:p-8 md:p-12 lg:p-16 my-8 border border-mint-100/30">
             <PersonalIntroduction />
           </div>
-          <SayHiButton />
+          <App>
+            <SayHiButton />
+          </App>
         </main>
       </AuthProvider>
     </StyleProvider>

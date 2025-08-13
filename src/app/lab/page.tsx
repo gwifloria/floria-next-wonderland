@@ -71,6 +71,34 @@ const LabPageContainer = () => {
       animate="visible"
       transition={{ duration: 0.5 }}
     >
+      {/* 右侧悬浮 slogan */}
+      <motion.div
+        className="fixed right-6 top-1/3 max-w-[200px] text-sm text-gray-500 italic leading-relaxed"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 0.8, y: 0 }}
+        transition={{ duration: 1 }}
+        style={{ pointerEvents: "none" }} // 不影响点击操作
+      >
+        <p>
+          生活的意义是体验无限可能，
+          <br />
+          上班是体验生活的一种途径
+        </p>
+      </motion.div>
+      {/* 右侧悬浮 slogan */}
+      <motion.div
+        className="fixed left-6 top-2/3 max-w-[200px] text-sm text-gray-500 italic leading-relaxed"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 0.8, y: 0 }}
+        transition={{ duration: 1 }}
+        style={{ pointerEvents: "none" }} // 不影响点击操作
+      >
+        <p>
+          重要的是过程
+          <br />
+          而非结果
+        </p>
+      </motion.div>
       <motion.h1
         className="text-xl font-bold mb-8 bg-gradient-to-r from-mint-600 to-mint-400 bg-clip-text text-transparent"
         variants={tabVariants}
