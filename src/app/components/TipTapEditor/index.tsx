@@ -5,7 +5,6 @@ import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { Button } from "antd";
 import { useCallback, useRef, useState } from "react";
 // lowlight v3
 import { common, createLowlight } from "lowlight";
@@ -52,9 +51,9 @@ export default function TipTapEditor({
 
   const handlePost = useCallback(() => {
     if (!editor) return;
+    setPosting(true);
     const html = editor.getHTML();
     if (!html || html === "<p></p>") return;
-    setPosting(true);
     try {
       onPost?.(html);
       editor.commands.clearContent();
@@ -79,9 +78,13 @@ export default function TipTapEditor({
       )}
 
       <div className="flex justify-end mt-2">
-        <Button type="primary" loading={posting} onClick={handlePost}>
+        <button
+          disabled={posting}
+          onClick={handlePost}
+          className="bg-mint-400 hover:bg-mint-300 text-white px-4 py-2 rounded disabled:opacity-50 transition-colors"
+        >
           发布
-        </Button>
+        </button>
       </div>
     </div>
   );
