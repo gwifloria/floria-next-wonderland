@@ -3,12 +3,6 @@ export const routes = {
   space: "🌌",
   lab: "🧪",
   about: "👋",
+  forum: "💬",
 };
-export const hiddenRoutes = [
-  "blog",
-  "tools",
-  "lib",
-  "travel",
-  "dance",
-  "about",
-];
+export const hiddenRoutes = ["tools", "lib", "travel", "dance", "about"];
