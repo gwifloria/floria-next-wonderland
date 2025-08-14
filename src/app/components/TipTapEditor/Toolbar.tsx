@@ -1,15 +1,7 @@
 import { Editor } from "@tiptap/react";
 import { Button, Space } from "antd";
 
-export default function Toolbar({
-  editor,
-  fileRef,
-  promptLink,
-}: {
-  editor: Editor | null;
-  fileRef: React.RefObject<HTMLInputElement>;
-  promptLink: () => void;
-}) {
+export default function Toolbar({ editor }: { editor: Editor | null }) {
   const canUndo = !!editor?.can().undo();
   const canRedo = !!editor?.can().redo();
 
@@ -81,9 +73,6 @@ export default function Toolbar({
         onClick={() => editor?.chain().focus().toggleCodeBlock().run()}
       >
         代码
-      </Button>
-      <Button size="small" onClick={promptLink}>
-        链接
       </Button>
 
       <Button

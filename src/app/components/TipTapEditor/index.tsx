@@ -5,7 +5,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 // lowlight v3
 import { common, createLowlight } from "lowlight";
 import "./index.scss";
@@ -18,7 +18,6 @@ export default function TipTapEditor({
   onPost?: (content: string) => void;
 }) {
   const [posting, setPosting] = useState(false);
-  const fileRef = useRef<HTMLInputElement | null>(null);
 
   const editor = useEditor({
     extensions: [
@@ -38,17 +37,6 @@ export default function TipTapEditor({
     content: "",
   });
 
-  const promptLink = useCallback(() => {
-    const url = window.prompt("输入链接（以 http/https 开头）:")?.trim();
-    if (!url) return;
-    editor
-      ?.chain()
-      .focus()
-      .extendMarkRange("link")
-      .setLink({ href: url })
-      .run();
-  }, [editor]);
-
   const handlePost = useCallback(() => {
     if (!editor) return;
     setPosting(true);
@@ -66,7 +54,7 @@ export default function TipTapEditor({
     <div className="border rounded-xl p-4 bg-white mb-6">
       {/* Toolbar */}
       <div className="mb-2 flex gap-2 flex-wrap items-center">
-        <Toolbar editor={editor} fileRef={fileRef} promptLink={promptLink} />
+        <Toolbar editor={editor} />
       </div>
 
       {editor && (
