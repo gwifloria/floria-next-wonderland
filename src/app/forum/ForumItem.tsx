@@ -5,7 +5,13 @@ import { MessageItem } from "./forumUtils";
 
 const { Text } = Typography;
 
-export default function ForumItem({ item }: { item: MessageItem }) {
+export default function ForumItem({
+  item,
+  onDelete,
+}: {
+  item: MessageItem;
+  onDelete: () => void;
+}) {
   const { trigger } = useSWRMutation("/floria-service/message/delete", {
     method: "post",
   });
@@ -13,6 +19,7 @@ export default function ForumItem({ item }: { item: MessageItem }) {
   const handleDelete = async (id: string) => {
     try {
       await trigger({ id });
+      onDelete();
     } catch (e: any) {
       antdMessage.error(e?.message || "删除失败");
     }

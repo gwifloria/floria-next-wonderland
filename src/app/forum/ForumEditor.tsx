@@ -2,11 +2,11 @@ import { useSWRMutation } from "@/api/useFetch";
 import { App } from "antd";
 import TipTapEditor from "../components/TipTapEditor";
 
-interface ForumEditorProps {
-  refresh: () => void;
-}
-
-export default function ForumEditor({ refresh }: ForumEditorProps) {
+export default function ForumEditor({
+  onPostSuccess,
+}: {
+  onPostSuccess: () => void;
+}) {
   const message = App.useApp().message;
   const { trigger } = useSWRMutation("/floria-service/message/send", {
     method: "POST",
@@ -15,7 +15,7 @@ export default function ForumEditor({ refresh }: ForumEditorProps) {
   const handleUpload = async (html: string) => {
     try {
       await trigger({ content: html });
-      refresh();
+      onPostSuccess();
       message.success("留言已发送");
     } catch {
       message.error("发送失败");
