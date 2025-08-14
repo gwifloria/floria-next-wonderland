@@ -1,0 +1,13 @@
+.tiptap:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+.tiptap *:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+/* Optional: also remove focus ring from Ant Design buttons in this editor area */
+.ant-btn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
