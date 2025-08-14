@@ -1,6 +1,6 @@
 "use client";
 import { useSWR } from "@/api/useFetch";
-import { Typography } from "antd";
+import { App, Typography } from "antd";
 import ForumEditor from "./ForumEditor";
 import ForumList from "./ForumList";
 import { MessageItem } from "./forumUtils";
@@ -17,7 +17,9 @@ export default function ForumPage() {
       <Title level={2} className="mb-4">
         留言板 Message Board
       </Title>
-      <ForumEditor />
+      <App>
+        <ForumEditor refresh={mutate} />
+      </App>
       {isLoading ? (
         <div className="text-slate-500">加载中…</div>
       ) : error ? (
