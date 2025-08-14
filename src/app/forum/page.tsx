@@ -1,7 +1,6 @@
 "use client";
 import { useSWR } from "@/api/useFetch";
 import { App, Spin, Typography } from "antd";
-import { useEffect } from "react";
 import ForumEditor from "./ForumEditor";
 import ForumList from "./ForumList";
 import { MessageItem } from "./forumUtils";
@@ -15,10 +14,6 @@ export default function ForumPage() {
     isValidating,
     mutate,
   } = useSWR<MessageItem[]>("/floria-service/message/list");
-
-  useEffect(() => {
-    console.log("isLoading", isLoading, "isValidating", isValidating);
-  }, [isLoading, isValidating]);
 
   return (
     <Spin spinning={isLoading || isValidating}>
