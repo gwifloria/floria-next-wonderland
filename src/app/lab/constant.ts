@@ -1,3 +1,4 @@
+import { type Variants } from "framer-motion";
 import { Category, LabItemType } from "./type";
 
 export const statusColor = {
@@ -7,17 +8,17 @@ export const statusColor = {
   resolved: "bg-rose-50 text-rose-600 border border-rose-200",
 };
 
-export const containerVariants = {
+export const containerVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 },
 };
 
-export const tabVariants = {
+export const tabVariants: Variants = {
   hidden: { opacity: 0, y: -20 },
   visible: { opacity: 1, y: 0 },
 };
 
-export const cardVariants = {
+export const cardVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
 };

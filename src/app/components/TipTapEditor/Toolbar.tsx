@@ -8,6 +8,7 @@ export default function Toolbar({ editor }: { editor: Editor | null }) {
   return (
     <Space size={4} wrap>
       <Button
+        data-testid="tt-btn-bold"
         size="small"
         type={editor?.isActive("bold") ? "primary" : "default"}
         onClick={() => editor?.chain().focus().toggleBold().run()}
@@ -15,6 +16,7 @@ export default function Toolbar({ editor }: { editor: Editor | null }) {
         B
       </Button>
       <Button
+        data-testid="tt-btn-italic"
         size="small"
         type={editor?.isActive("italic") ? "primary" : "default"}
         onClick={() => editor?.chain().focus().toggleItalic().run()}
@@ -22,6 +24,7 @@ export default function Toolbar({ editor }: { editor: Editor | null }) {
         I
       </Button>
       <Button
+        data-testid="tt-btn-underline"
         size="small"
         type={editor?.isActive("underline") ? "primary" : "default"}
         onClick={() => editor?.chain().focus().toggleUnderline().run()}
@@ -29,6 +32,7 @@ export default function Toolbar({ editor }: { editor: Editor | null }) {
         U
       </Button>
       <Button
+        data-testid="tt-btn-h2"
         size="small"
         type={editor?.isActive("heading", { level: 2 }) ? "primary" : "default"}
         onClick={() =>
@@ -38,6 +42,7 @@ export default function Toolbar({ editor }: { editor: Editor | null }) {
         H2
       </Button>
       <Button
+        data-testid="tt-btn-h3"
         size="small"
         type={editor?.isActive("heading", { level: 3 }) ? "primary" : "default"}
         onClick={() =>
@@ -47,6 +52,7 @@ export default function Toolbar({ editor }: { editor: Editor | null }) {
         H3
       </Button>
       <Button
+        data-testid="tt-btn-bullet"
         size="small"
         type={editor?.isActive("bulletList") ? "primary" : "default"}
         onClick={() => editor?.chain().focus().toggleBulletList().run()}
@@ -54,6 +60,7 @@ export default function Toolbar({ editor }: { editor: Editor | null }) {
         • 列表
       </Button>
       <Button
+        data-testid="tt-btn-ordered"
         size="small"
         type={editor?.isActive("orderedList") ? "primary" : "default"}
         onClick={() => editor?.chain().focus().toggleOrderedList().run()}
@@ -61,6 +68,7 @@ export default function Toolbar({ editor }: { editor: Editor | null }) {
         1. 列表
       </Button>
       <Button
+        data-testid="tt-btn-quote"
         size="small"
         type={editor?.isActive("blockquote") ? "primary" : "default"}
         onClick={() => editor?.chain().focus().toggleBlockquote().run()}
@@ -68,6 +76,7 @@ export default function Toolbar({ editor }: { editor: Editor | null }) {
         引用
       </Button>
       <Button
+        data-testid="tt-btn-code"
         size="small"
         type={editor?.isActive("codeBlock") ? "primary" : "default"}
         onClick={() => editor?.chain().focus().toggleCodeBlock().run()}
@@ -76,6 +85,7 @@ export default function Toolbar({ editor }: { editor: Editor | null }) {
       </Button>
 
       <Button
+        data-testid="tt-btn-undo"
         size="small"
         disabled={!canUndo}
         onClick={() => editor?.chain().focus().undo().run()}
@@ -83,6 +93,7 @@ export default function Toolbar({ editor }: { editor: Editor | null }) {
         撤销
       </Button>
       <Button
+        data-testid="tt-btn-redo"
         size="small"
         disabled={!canRedo}
         onClick={() => editor?.chain().focus().redo().run()}
@@ -90,6 +101,7 @@ export default function Toolbar({ editor }: { editor: Editor | null }) {
         重做
       </Button>
       <Button
+        data-testid="tt-btn-clear"
         size="small"
         danger
         onClick={() =>

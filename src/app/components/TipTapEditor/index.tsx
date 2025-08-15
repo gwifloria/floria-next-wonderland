@@ -7,81 +7,42 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useCallback, useState } from "react";
 // lowlight v3
+import DOMPurify from "dompurify";
 import { common, createLowlight } from "lowlight";
 import "./index.scss";
 import Toolbar from "./Toolbar";
 
-// --- Minimal client-side HTML sanitizer (allow‑list) ---
-// NOTE: Server already sanitizes, this is an extra guard in the client to mitigate XSS before sending/previewing.
-const ALLOWED_TAGS = new Set([
-  "b",
-  "strong",
-  "i",
-  "em",
-  "u",
-  "s",
-  "span",
-  "p",
-  "br",
-  "ul",
-  "ol",
-  "li",
-  "a",
-  "blockquote",
-  "code",
-  "pre",
-  "h2",
-  "h3",
-  "img",
-]);
-const DROP_ON_ATTR = /\son[a-z]+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi; // onClick= etc.
-const SRC_ATTR = /\s(src)\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/i;
-const HREF_ATTR = /\s(href)\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/i;
-
-function safeUrl(url: string) {
-  const val = (url || "").trim();
-  if (!val) return "";
-  // allow http/https and data:image only
-  if (/^https?:\/\//i.test(val)) return val;
-  if (/^data:image\//i.test(val)) return val;
-  return "#"; // neutralize others (javascript:, data:text, etc.)
-}
-
+// Client-side sanitizer using DOMPurify (extra guard; server also sanitizes)
 function sanitizeHtml(html: string): string {
   if (!html) return "";
-  let out = String(html);
-  // strip script/style blocks completely
-  out = out.replace(/<script[\s\S]*?<\/script>/gi, "");
-  out = out.replace(/<style[\s\S]*?<\/style>/gi, "");
-  // drop inline event handlers
-  out = out.replace(DROP_ON_ATTR, "");
-  // normalize/opening tags & attributes
-  out = out.replace(/<([^>\s\/]+)([^>]*)>/gi, (m, tag, attrs) => {
-    const t = String(tag).toLowerCase();
-    if (!ALLOWED_TAGS.has(t)) return ""; // drop unknown opening tags
-
-    // handle <a> and <img> attributes safely
-    if (t === "a") {
-      const match = attrs.match(HREF_ATTR);
-      const href = match ? match[3] || match[4] || match[5] || "" : "";
-      const safe = safeUrl(href);
-      return `<a href="${safe}" rel="noopener noreferrer" target="_blank">`;
-    }
-    if (t === "img") {
-      const match = attrs.match(SRC_ATTR);
-      const src = match ? match[3] || match[4] || match[5] || "" : "";
-      const safe = safeUrl(src);
-      return `<img src="${safe}" alt="" />`;
-    }
-    return `<${t}>`;
-  });
-  // keep only allowed closing tags
-  out = out.replace(/<\/([^>]+)>/gi, (m, tag) =>
-    ALLOWED_TAGS.has(String(tag).toLowerCase()) ? m : "",
-  );
-  // collapse empty paragraphs
-  out = out.replace(/<p>\s*<\/p>/g, "");
-  return out.trim();
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: [
+      "b",
+      "strong",
+      "i",
+      "em",
+      "u",
+      "s",
+      "span",
+      "p",
+      "br",
+      "ul",
+      "ol",
+      "li",
+      "a",
+      "blockquote",
+      "code",
+      "pre",
+      "h2",
+      "h3",
+      "img",
+    ],
+    ALLOWED_ATTR: ["href", "src", "alt", "title", "target", "rel"],
+    ALLOWED_URI_REGEXP: /^https?:|^data:image\//i,
+    FORBID_TAGS: ["script", "style"],
+    FORBID_ATTR: ["on*"],
+    ADD_ATTR: ["rel", "target"],
+  }) as string;
 }
 
 const lowlight = createLowlight(common);
@@ -114,20 +75,14 @@ export default function TipTapEditor({
         const e = event as ClipboardEvent;
         const html = e.clipboardData?.getData("text/html");
         if (html) {
+          e.preventDefault();
           const clean = sanitizeHtml(html);
-          // Insert sanitized HTML instead of raw paste
-          // @ts-ignore
-          view?.state?.schema && view.dispatch(view.state.tr.insertText(""));
-          // Use command API to insert content
-          setTimeout(() => {
-            // defer to ensure focus
-            view.dom?.focus();
-            // @ts-ignore TipTap command chain available via editor instance
-            (editor as any)?.chain?.().focus().insertContent(clean).run();
-          }, 0);
-          return true; // handled
+          // Insert sanitized HTML
+          // @ts-ignore editor is captured from outer scope
+          (editor as any)?.chain?.().focus().insertContent(clean).run();
+          return true;
         }
-        return false; // default handling for plain text
+        return false;
       },
     },
   });

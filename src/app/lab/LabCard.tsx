@@ -82,7 +82,6 @@ export default function LabCard({
         <div className="flex items-center gap-2">
           <span
             className={`text-xs px-2 py-1 rounded font-medium ${typeStyle[type]}`}
-            title={type === "issue" ? "待办" : type === "bug" ? "问题" : "想法"}
           >
             {typeEmoji[type]}
           </span>

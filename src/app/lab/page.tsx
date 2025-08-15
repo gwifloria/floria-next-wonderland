@@ -15,6 +15,7 @@ import { Category, LabEntry } from "./type";
 import { useLabApi } from "./useLab";
 import { useLabInitializer } from "./useLabInitializer";
 import { useLabUpdater } from "./useLabUpdater";
+type _Check = React.ComponentProps<typeof motion.div>; // Hover 看看是否包含 variants
 
 const LabPageContainer = () => {
   const [activeCategory, setActiveCategory] = useState<Category>("tech");
