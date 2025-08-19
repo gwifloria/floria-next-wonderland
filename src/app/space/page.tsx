@@ -10,12 +10,10 @@ const RoomScene = dynamic(() => import("./Scene").then((mod) => mod.default), {
   ),
 });
 
-const SpacePage = () => {
+export default function SpacePage() {
   return (
     <div className="space-page-container h-screen ">
       <RoomScene />
     </div>
   );
-};
-
-export default SpacePage;
+}

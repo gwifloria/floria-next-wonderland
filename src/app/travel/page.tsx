@@ -3,7 +3,7 @@ import { AuthProvider } from "@/context";
 import "./index.scss";
 import { useTravelTabs } from "./useTravelTabs";
 
-const Travel = () => {
+export default function Travel() {
   const Tabs = useTravelTabs();
 
   return (
@@ -11,6 +11,4 @@ const Travel = () => {
       <div className="travel-container justify-between h-dvh">{Tabs}</div>
     </AuthProvider>
   );
-};
-
-export default Travel;
+}

@@ -100,7 +100,7 @@ const CourseList = ({
   );
 };
 
-const DanceBooking = () => {
+export default function DanceBooking() {
   const {
     schedules: casterSchedules,
     subscribe: casterSubscribe,
@@ -170,6 +170,4 @@ const DanceBooking = () => {
       </div>
     </AuthProvider>
   );
-};
-
-export default <DanceBooking />;
+}
