@@ -6,23 +6,6 @@ test.describe("Toolbar behavior on /forum", () => {
     await page.locator(".ant-spin").waitFor({ state: "detached" });
     const editor = page.getByRole("textbox");
     await editor.click();
-    // await editor.pressSequentially("hello");
-
-    // // 加粗
-    // await page.getByTestId("tt-btn-bold").click();
-    // await editor.pressSequentially(" world");
-    // const strong = editor.locator("strong");
-    // await expect(strong).toHaveText(/world$/);
-
-    // // 斜体
-    // await page.getByTestId("tt-btn-italic").click();
-    // await editor.pressSequentially(" italic");
-    // await expect(editor.locator("em")).toHaveText(/italic$/);
-
-    // // 下划线
-    // await page.getByTestId("tt-btn-underline").click();
-    // await editor.pressSequentially(" underline");
-    // await expect(editor.locator("u")).toHaveText(/underline$/);
   });
 
   test("lists and code block toggle", async ({ page }) => {

@@ -32,14 +32,13 @@ test("forum: render editor and post message", async ({ page }) => {
   await expect(page.getByRole("heading", { name: /留言板/i })).toBeVisible();
   const editor = page.locator('[contenteditable="true"]').first();
   await expect(editor).toBeVisible();
-  await expect(page.getByRole("button", { name: "发布" })).toBeVisible();
-
+  await expect(page.getByTestId("post-btn")).toBeVisible();
   // 输入内容
   await editor.click();
   await editor.type("Hello world!");
 
   // 发布
-  await page.getByRole("button", { name: "发布" }).click();
+  await page.getByTestId("post-btn").click();
 
   // 新消息出现在顶部
   const firstArticle = page.locator("article").first();

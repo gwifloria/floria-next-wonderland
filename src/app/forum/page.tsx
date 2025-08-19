@@ -16,17 +16,17 @@ export default function ForumPage() {
   } = useSWR<MessageItem[]>("/floria-service/message/list");
 
   return (
-    <Spin spinning={isLoading || isValidating}>
-      <div className="container mx-auto max-w-4xl px-4 py-8">
-        <Title level={2} className="mb-4">
-          留言板 Message Board
-        </Title>
-        <App>
+    <App>
+      <Spin spinning={isLoading || isValidating}>
+        <div className="container mx-auto max-w-4xl px-4 py-8">
+          <Title level={2} className="mb-4">
+            留言板 Message Board
+          </Title>
           <ForumEditor onPostSuccess={mutate} />
-        </App>
 
-        <ForumList messages={messages} refresh={mutate} />
-      </div>
-    </Spin>
+          <ForumList messages={messages} refresh={mutate} />
+        </div>
+      </Spin>{" "}
+    </App>
   );
 }
