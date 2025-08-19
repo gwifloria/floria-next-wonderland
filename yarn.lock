@@ -3038,7 +3038,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tiptap/core@npm:^3.2.0":
+"@tiptap/core@npm:^3.1.0, @tiptap/core@npm:^3.2.0":
   version: 3.2.0
   resolution: "@tiptap/core@npm:3.2.0"
   peerDependencies:
@@ -3099,7 +3099,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tiptap/extension-code-block@npm:^3.2.0":
+"@tiptap/extension-code-block@npm:^3.1.0, @tiptap/extension-code-block@npm:^3.2.0":
   version: 3.2.0
   resolution: "@tiptap/extension-code-block@npm:3.2.0"
   peerDependencies:
@@ -4928,6 +4928,8 @@ __metadata:
     "@testing-library/jest-dom": "npm:^6.7.0"
     "@testing-library/react": "npm:^16.3.0"
     "@testing-library/user-event": "npm:^14.6.1"
+    "@tiptap/core": "npm:^3.1.0"
+    "@tiptap/extension-code-block": "npm:^3.1.0"
     "@tiptap/extension-code-block-lowlight": "npm:^3.1.0"
     "@tiptap/extension-highlight": "npm:^3.1.0"
     "@tiptap/extension-horizontal-rule": "npm:^3.1.0"
@@ -4972,6 +4974,7 @@ __metadata:
     framer-motion: "npm:^12.23.12"
     fs: "npm:^0.0.1-security"
     gray-matter: "npm:^4.0.3"
+    highlight.js: "npm:^11.9.0"
     husky: "npm:^9.1.7"
     jest: "npm:^30.0.5"
     jest-environment-jsdom: "npm:^30.0.5"
@@ -5005,6 +5008,7 @@ __metadata:
     tslib: "npm:^2.6.2"
     typescript: "npm:^5"
     web-vitals: "npm:^3.5.2"
+    which-country: "npm:^1.0.0"
   languageName: unknown
   linkType: soft
 
@@ -7565,7 +7569,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"highlight.js@npm:~11.11.0":
+"highlight.js@npm:^11.9.0, highlight.js@npm:~11.11.0":
   version: 11.11.1
   resolution: "highlight.js@npm:11.11.1"
   checksum: 10c0/40f53ac19dac079891fcefd5bd8a21cf2e8931fd47da5bd1dca73b7e4375c1defed0636fc39120c639b9c44119b7d110f7f0c15aa899557a5a1c8910f3c0144c
@@ -11180,6 +11184,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"point-in-polygon@npm:0.0.0":
+  version: 0.0.0
+  resolution: "point-in-polygon@npm:0.0.0"
+  checksum: 10c0/e464ed51074c1a04535417b09585cb8c97c43a5231d812450d54005f947fcbc2c3938ecac9cb15eccf12dde00412f88097f6200101668b39a830777cad6c8e5a
+  languageName: node
+  linkType: hard
+
 "possible-typed-array-names@npm:^1.0.0":
   version: 1.1.0
   resolution: "possible-typed-array-names@npm:1.1.0"
@@ -11643,6 +11654,13 @@ __metadata:
   version: 3.0.0
   resolution: "quickselect@npm:3.0.0"
   checksum: 10c0/3a0d33b0ec06841d953accdfd735aa3d8b7922cddd12970544a2c4b0278871280d8f5ba496803600693c1e7b7b2fb57c31d2b14d99132f478888006a1be6e6b7
+  languageName: node
+  linkType: hard
+
+"rbush@npm:^1.3.2":
+  version: 1.4.3
+  resolution: "rbush@npm:1.4.3"
+  checksum: 10c0/53269c91afd99bdd7449cb0da8e29a8c01c49469dc711683423f638b91a66cdee1bf052856d4d76077939c5465e1ac3146c22678d7567d42cd5deb0096ff460b
   languageName: node
   linkType: hard
 
@@ -14970,6 +14988,16 @@ __metadata:
     is-weakmap: "npm:^2.0.2"
     is-weakset: "npm:^2.0.3"
   checksum: 10c0/3345fde20964525a04cdf7c4a96821f85f0cc198f1b2ecb4576e08096746d129eb133571998fe121c77782ac8f21cbd67745a3d35ce100d26d4e684c142ea1f2
+  languageName: node
+  linkType: hard
+
+"which-country@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "which-country@npm:1.0.0"
+  dependencies:
+    point-in-polygon: "npm:0.0.0"
+    rbush: "npm:^1.3.2"
+  checksum: 10c0/68fe621d913110b6a8ac228f645a0261921e498228ebf3142217707cca793b64975c7fe12b573e148aed86ae8c1c27c7c6bd29cce056a75ed6cd5ac1af20c556
   languageName: node
   linkType: hard
 

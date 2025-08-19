@@ -37,6 +37,8 @@
     "@testing-library/jest-dom": "^6.7.0",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
+    "@tiptap/core": "^3.1.0",
+    "@tiptap/extension-code-block": "^3.1.0",
     "@tiptap/extension-code-block-lowlight": "^3.1.0",
     "@tiptap/extension-highlight": "^3.1.0",
     "@tiptap/extension-horizontal-rule": "^3.1.0",
@@ -67,6 +69,7 @@
     "framer-motion": "^12.23.12",
     "fs": "^0.0.1-security",
     "gray-matter": "^4.0.3",
+    "highlight.js": "^11.9.0",
     "jest": "^30.0.5",
     "jest-environment-jsdom": "^30.0.5",
     "lodash": "^4.17.21",
@@ -92,7 +95,8 @@
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
     "tslib": "^2.6.2",
-    "web-vitals": "^3.5.2"
+    "web-vitals": "^3.5.2",
+    "which-country": "^1.0.0"
   },
   "devDependencies": {
     "@ant-design/static-style-extract": "^1.0.2",

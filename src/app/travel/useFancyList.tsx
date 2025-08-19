@@ -1,7 +1,7 @@
 import { useSWRMutation } from "@/api/useFetch";
 import { MapDestinationMarker } from "@/types";
 import type { PopconfirmProps } from "antd";
-import { Button, Card, Popconfirm, Space, Tag } from "antd";
+import { Button, Card, Image, Popconfirm, Space, Tag } from "antd";
 const { Meta } = Card;
 // TODO
 interface FancyItem extends MapDestinationMarker {
@@ -24,7 +24,12 @@ const FancyItem = ({ item }: { item: FancyItem }) => {
       hoverable
       style={{ width: 240 }}
       cover={
-        <img alt={item.destination} src={item?.gitImages?.[0]?.download_url} />
+        <Image
+          alt={item.destination}
+          src={item?.gitImages?.[0]?.download_url}
+          width={240}
+          height={160}
+        />
       }
     >
       <Meta title={item.destination} description={item.destination} />

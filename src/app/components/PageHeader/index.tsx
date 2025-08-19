@@ -12,12 +12,12 @@ const PageHeader = () => {
     >
       <div className="flex items-center gap-2">
         <span className="text-2xl font-extrabold text-mint-500 tracking-tight mr-6 select-none drop-shadow-sm">
-          <a
+          <Link
             href="/"
             className="hover:text-rose-400 transition-colors duration-200"
           >
             🍸 Wonderland
-          </a>
+          </Link>
         </span>
         <div className="navigation-bar flex gap-2 sm:gap-4 md:gap-8">
           {routesKeys.map((route) => (
