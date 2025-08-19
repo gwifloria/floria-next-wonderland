@@ -1,3 +1,4 @@
+import { useConfetti } from "@/hooks/useConfetti";
 import {
   CheckOutlined,
   DeleteOutlined,
@@ -8,15 +9,7 @@ import {
 } from "@ant-design/icons";
 import { App } from "antd";
 import { motion } from "framer-motion";
-import { useState } from "react";
-import Confetti from "react-confetti";
-import {
-  cardVariants,
-  confettiColors,
-  statusColor,
-  typeEmoji,
-  typeStyle,
-} from "./constant";
+import { cardVariants, statusColor, typeEmoji, typeStyle } from "./constant";
 import { LabEntry } from "./type";
 
 const isProd = process.env.NODE_ENV === "production";
@@ -40,12 +33,11 @@ export default function LabCard({
   onEdit,
 }: LabCardProps) {
   const { modal } = App.useApp();
-  const [showConfetti, setShowConfetti] = useState(false);
+  const { show, confettiContext } = useConfetti();
 
   const handleComplete = () => {
-    setShowConfetti(true);
     onStatusChange("resolved");
-    setTimeout(() => setShowConfetti(false), 2000); // 2秒后关闭彩带
+    show();
   };
 
   const handleDelete = () => {
@@ -68,16 +60,7 @@ export default function LabCard({
       variants={cardVariants}
       whileHover={{ y: -2 }}
     >
-      {showConfetti && (
-        <Confetti
-          colors={confettiColors}
-          style={{ position: "absolute" }}
-          width={window.innerWidth}
-          height={window.innerHeight}
-          numberOfPieces={120}
-          recycle={false}
-        />
-      )}
+      {confettiContext}
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <span
