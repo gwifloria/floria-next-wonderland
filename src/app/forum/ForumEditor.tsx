@@ -1,4 +1,6 @@
+"use client";
 import { useSWRMutation } from "@/api/useFetch";
+import { useConfetti } from "@/hooks/useConfetti";
 import { App, Button } from "antd";
 import { useCallback } from "react";
 import { useTipTapEditor } from "../components/TipTapEditor/useTipTapEditor";
@@ -11,7 +13,7 @@ export default function ForumEditor({
   const { element, editor } = useTipTapEditor();
 
   const { message } = App.useApp();
-
+  const { show, confettiContext } = useConfetti();
   const { trigger } = useSWRMutation("/floria-service/message/send", {
     method: "POST",
   });
@@ -23,18 +25,21 @@ export default function ForumEditor({
     try {
       await trigger({ content: content });
       message.success("留言已发送");
+      show({ numberOfPieces: 300, duration: 5000 });
       onPostSuccess();
       editor.commands.clearContent();
     } catch (err) {
       console.log(err);
       message.error("发送失败");
     }
-  }, [editor, message, onPostSuccess, trigger]);
+  }, [editor, message, onPostSuccess, show, trigger]);
 
   const throttledPost = useThrottle(handleUpload, 3000);
 
   return (
     <div className="border rounded-xl p-4 bg-white mb-6">
+      {confettiContext}
+
       {editor && (
         <>
           {element}

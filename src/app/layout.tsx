@@ -3,6 +3,7 @@
 import "@ant-design/v5-patch-for-react-19";
 
 import PageHeader from "@/app/components/PageHeader";
+import { useConfetti } from "@/hooks/useConfetti";
 import { themeConfig } from "@/theme";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { App, ConfigProvider } from "antd";
@@ -16,6 +17,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { confettiContext } = useConfetti();
+
   return (
     <html className="dark" lang="en">
       <link

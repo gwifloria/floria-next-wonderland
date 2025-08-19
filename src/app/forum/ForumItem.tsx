@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { MessageItem } from "./forumUtils";
 
 const { Text } = Typography;
+const isProd = process.env.NODE_ENV === "production";
 
 export default function ForumItem({
   item,
@@ -38,7 +39,7 @@ export default function ForumItem({
             {format(item.createdAt, "yyyy-MM-dd HH:mm:ss")}
           </Text>
           {/* 删除按钮，仅在 hover 时可见（可改为始终显示） */}
-          {item._id && (
+          {item._id && !isProd && (
             <Popconfirm
               title="删除确认"
               description="确定要删除这条留言吗？"
