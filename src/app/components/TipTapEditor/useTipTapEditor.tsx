@@ -1,7 +1,7 @@
 import { TextStyleKit } from "@tiptap/extension-text-style";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import "./Editor.scss";
+import "./index.scss";
 import Toolbar from "./Toolbar";
 
 const extensions = [TextStyleKit, StarterKit];
@@ -16,7 +16,7 @@ export const useTipTapEditor = () => {
   const element = (
     <div>
       {editor && <Toolbar editor={editor}></Toolbar>}
-      <EditorContent editor={editor} />
+      <EditorContent className="tiptap-editor" editor={editor} />
     </div>
   );
   return { element, editor };

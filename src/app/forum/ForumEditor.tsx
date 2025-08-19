@@ -1,25 +1,53 @@
 import { useSWRMutation } from "@/api/useFetch";
-import { App } from "antd";
-import TipTapEditor from "../components/TipTapEditor";
-
+import { App, Button } from "antd";
+import { useCallback } from "react";
+import { useTipTapEditor } from "../components/TipTapEditor/useTipTapEditor";
+import { useThrottle } from "../tools/useThrottle";
 export default function ForumEditor({
   onPostSuccess,
 }: {
   onPostSuccess: () => void;
 }) {
-  const message = App.useApp().message;
+  const { element, editor } = useTipTapEditor();
+
+  const { message } = App.useApp();
+
   const { trigger } = useSWRMutation("/floria-service/message/send", {
     method: "POST",
   });
 
-  const handleUpload = async (html: string) => {
+  const handleUpload = useCallback(async () => {
+    if (!editor) return;
+    const content = editor.getHTML();
+
     try {
-      await trigger({ content: html });
-      onPostSuccess();
+      await trigger({ content: content });
       message.success("留言已发送");
-    } catch {
+      editor.commands.clearContent();
+    } catch (err) {
+      console.log(err);
       message.error("发送失败");
     }
-  };
-  return <TipTapEditor onPost={handleUpload} />;
+  }, [editor, message, trigger]);
+
+  const throttledPost = useThrottle(handleUpload, 3000);
+
+  return (
+    <div className="border rounded-xl p-4 bg-white mb-6">
+      {editor && (
+        <>
+          {element}
+          <div className="flex justify-end mt-2">
+            <Button
+              onClick={throttledPost}
+              data-testid="post-btn"
+              className="bg-mint-400 hover:bg-mint-300 text-white px-4 py-2 rounded disabled:opacity-50 transition-colors"
+            >
+              发布
+            </Button>
+          </div>
+        </>
+      )}
+    </div>
+  );
 }

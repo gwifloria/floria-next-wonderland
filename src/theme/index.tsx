@@ -1,6 +1,6 @@
 "use client";
 
-import { ConfigProvider, ThemeConfig } from "antd";
+import { ThemeConfig } from "antd";
 
 export const themeConfig: ThemeConfig = {
   token: {
@@ -41,12 +41,3 @@ export const themeConfig: ThemeConfig = {
   hashed: false,
   cssVar: true,
 };
-const withTheme = (node: JSX.Element) => {
-  return (
-    <>
-      <ConfigProvider theme={themeConfig}>{node}</ConfigProvider>
-    </>
-  );
-};
-
-export default withTheme;

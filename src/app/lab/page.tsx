@@ -1,9 +1,8 @@
 "use client";
-import withTheme from "@/theme";
 import { PlusOutlined } from "@ant-design/icons";
-import { App, Button, Spin } from "antd";
+import { Button, Spin } from "antd";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   cardVariants,
   categoryLabelEmoji,
@@ -15,7 +14,6 @@ import { Category, LabEntry } from "./type";
 import { useLabApi } from "./useLab";
 import { useLabInitializer } from "./useLabInitializer";
 import { useLabUpdater } from "./useLabUpdater";
-type _Check = React.ComponentProps<typeof motion.div>; // Hover 看看是否包含 variants
 
 const LabPageContainer = () => {
   const [activeCategory, setActiveCategory] = useState<Category>("tech");
@@ -24,18 +22,19 @@ const LabPageContainer = () => {
 
   const { entries, isLoading, deleteEntry, updateEntry, refresh } = useLabApi();
 
-  // 新建弹窗
   const labInit = useLabInitializer({ defaultCategory: activeCategory });
 
-  // 编辑抽屉
   const labUpdater = useLabUpdater({ entry: editingEntry });
 
-  const filteredEntries =
-    entries?.filter(
-      (entry) =>
-        entry.category === activeCategory &&
-        (!showOnlyPending || entry.status !== "resolved"),
-    ) || [];
+  const filteredEntries = useMemo(() => {
+    return (
+      entries?.filter(
+        (entry) =>
+          entry.category === activeCategory &&
+          (!showOnlyPending || entry.status !== "resolved"),
+      ) || []
+    );
+  }, [activeCategory, entries, showOnlyPending]);
 
   const handleDelete = async (id: string) => {
     try {
@@ -59,10 +58,6 @@ const LabPageContainer = () => {
     setEditingEntry(entry);
     labUpdater.open();
   };
-
-  if (!labUpdater.visible && editingEntry) {
-    setEditingEntry(null);
-  }
 
   return (
     <motion.main
@@ -194,13 +189,8 @@ const LabPageContainer = () => {
   );
 };
 
-const LabPage = () => {
-  return withTheme(
-    <App>
-      <div className="lab-page-container">
-        <LabPageContainer />
-      </div>
-    </App>,
-  );
-};
-export default LabPage;
+export default (
+  <div className="lab-page-container">
+    <LabPageContainer />
+  </div>
+);

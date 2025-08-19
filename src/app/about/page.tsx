@@ -1,5 +1,4 @@
 "use client";
-import withTheme from "@/theme";
 import { Avatar, Segmented, Typography } from "antd";
 import { useState } from "react";
 import { skills } from "../components/PersonalIntro/constant";
@@ -290,5 +289,4 @@ const AboutMePage = () => {
   );
 };
 
-const AboutPage = () => withTheme(<AboutMePage />);
-export default AboutPage;
+export default <AboutMePage />;
