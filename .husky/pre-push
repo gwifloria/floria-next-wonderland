@@ -1,0 +1,5 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "🔍 Running tests before push..."
+yarn test --watchAll=false && echo "✅ Unit tests passed!"
