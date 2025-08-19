@@ -1,12 +1,12 @@
 "use client";
 import MapContainer from "@/app/components/MapContainer";
+import { MapDestinationMarker } from "@/types";
 import { MapMouseEvent } from "mapbox-gl";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import { DestinationModal } from "./DestinationModal";
-import { Destination, MapDestinationMarker } from "@/types";
 
 export const useMapTab = (destinations?: MapDestinationMarker[]) => {
-  const ref = useRef();
+  const ref = useRef(null);
 
   const clickEvent = useCallback((e: MapMouseEvent) => {
     if (!ref.current) return;

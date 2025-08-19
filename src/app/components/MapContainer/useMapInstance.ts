@@ -7,7 +7,7 @@ export const useMapInstance = () => {
   const mapContainerRef = useRef(null);
   const [mapInstance, setMap] = useState<mapboxgl.Map | undefined>();
 
-  const mapSearchRef = useRef<IControl>();
+  const mapSearchRef = useRef<IControl>(null);
 
   const { data: mapKeyData } = useSWR<{ mapKey: string }>(
     "/floria-service/auth/info",

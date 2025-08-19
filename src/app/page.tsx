@@ -1,12 +1,12 @@
 "use client";
 import HeroSection from "@/app/components/HeroSection";
 import ParallaxFavs from "@/app/components/ParallaxFavs";
-import { PersonalIntroduction } from "@/app/components/PersonalIntro";
 import SayHiButton from "@/app/components/SayHiButton";
 import { AuthProvider } from "@/context";
 import { StyleProvider } from "@ant-design/cssinjs";
+import PersonalIntroduction from "./components/PersonalIntro";
 
-const HomeContainer = () => {
+export default function HomeContainer() {
   return (
     <StyleProvider hashPriority="high">
       <AuthProvider>
@@ -23,6 +23,4 @@ const HomeContainer = () => {
       </AuthProvider>
     </StyleProvider>
   );
-};
-
-export default <HomeContainer />;
+}

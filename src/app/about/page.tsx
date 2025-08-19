@@ -33,7 +33,7 @@ const CardSection = ({ title, children, className = "" }: CardSectionProps) => (
   </div>
 );
 
-const AboutMePage = () => {
+export default function AboutMePage() {
   const [lang, setLang] = useState<"zh" | "en">("zh");
 
   return (
@@ -287,6 +287,4 @@ const AboutMePage = () => {
       </div>
     </main>
   );
-};
-
-export default <AboutMePage />;
+}
