@@ -23,12 +23,13 @@ export default function ForumEditor({
     try {
       await trigger({ content: content });
       message.success("留言已发送");
+      onPostSuccess();
       editor.commands.clearContent();
     } catch (err) {
       console.log(err);
       message.error("发送失败");
     }
-  }, [editor, message, trigger]);
+  }, [editor, message, onPostSuccess, trigger]);
 
   const throttledPost = useThrottle(handleUpload, 3000);
 
@@ -39,6 +40,7 @@ export default function ForumEditor({
           {element}
           <div className="flex justify-end mt-2">
             <Button
+              danger
               onClick={throttledPost}
               data-testid="post-btn"
               className="bg-mint-400 hover:bg-mint-300 text-white px-4 py-2 rounded disabled:opacity-50 transition-colors"

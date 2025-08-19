@@ -132,18 +132,8 @@ export default function Toolbar({ editor }: { editor: Editor }) {
       </Button>
 
       <Button
-        data-testid="tt-btn-redo"
-        size="small"
-        disabled={!s.canRedo}
-        onClick={() => editor.chain().focus().redo().run()}
-      >
-        重做
-      </Button>
-
-      <Button
         data-testid="tt-btn-clear"
         size="small"
-        danger
         disabled={!s.canClearMarks}
         onClick={() =>
           editor.chain().focus().clearNodes().unsetAllMarks().run()

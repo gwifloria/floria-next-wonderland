@@ -15,7 +15,7 @@ import { useLabApi } from "./useLab";
 import { useLabInitializer } from "./useLabInitializer";
 import { useLabUpdater } from "./useLabUpdater";
 
-const LabPageContainer = () => {
+export default function LabPageContainer() {
   const [activeCategory, setActiveCategory] = useState<Category>("tech");
   const [showOnlyPending, setShowOnlyPending] = useState(false);
   const [editingEntry, setEditingEntry] = useState<LabEntry | null>(null);
@@ -60,137 +60,135 @@ const LabPageContainer = () => {
   };
 
   return (
-    <motion.main
-      className="max-w-4xl mx-auto px-4 py-10"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      transition={{ duration: 0.5 }}
-    >
-      {/* 右侧悬浮 slogan */}
-      <motion.div
-        className="fixed right-6 top-1/3 max-w-[200px] text-sm text-gray-500 italic leading-relaxed"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 0.8, y: 0 }}
-        transition={{ duration: 1 }}
-        style={{ pointerEvents: "none" }} // 不影响点击操作
-      >
-        <p>
-          生活的意义是体验无限可能，
-          <br />
-          上班是体验生活的一种途径
-        </p>
-      </motion.div>
-      {/* 右侧悬浮 slogan */}
-      <motion.div
-        className="fixed left-6 top-2/3 max-w-[200px] text-sm text-gray-500 italic leading-relaxed"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 0.8, y: 0 }}
-        transition={{ duration: 1 }}
-        style={{ pointerEvents: "none" }} // 不影响点击操作
-      >
-        <p>
-          重要的是过程
-          <br />
-          而非结果
-        </p>
-      </motion.div>
-      <motion.h1
-        className="text-xl font-bold mb-8 bg-gradient-to-r from-mint-600 to-mint-400 bg-clip-text text-transparent"
-        variants={tabVariants}
+    <div className="lab-page-container">
+      <motion.main
+        className="max-w-4xl mx-auto px-4 py-10"
+        variants={containerVariants}
         initial="hidden"
         animate="visible"
+        transition={{ duration: 0.5 }}
       >
-        🧪实验室
-      </motion.h1>
+        {/* 右侧悬浮 slogan */}
+        <motion.div
+          className="fixed right-6 top-1/3 max-w-[200px] text-sm text-gray-500 italic leading-relaxed"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 0.8, y: 0 }}
+          transition={{ duration: 1 }}
+          style={{ pointerEvents: "none" }} // 不影响点击操作
+        >
+          <p>
+            生活的意义是体验无限可能，
+            <br />
+            上班是体验生活的一种途径
+          </p>
+        </motion.div>
+        {/* 右侧悬浮 slogan */}
+        <motion.div
+          className="fixed left-6 top-2/3 max-w-[200px] text-sm text-gray-500 italic leading-relaxed"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 0.8, y: 0 }}
+          transition={{ duration: 1 }}
+          style={{ pointerEvents: "none" }} // 不影响点击操作
+        >
+          <p>
+            重要的是过程
+            <br />
+            而非结果
+          </p>
+        </motion.div>
+        <motion.h1
+          className="text-xl font-bold mb-8 bg-gradient-to-r from-mint-600 to-mint-400 bg-clip-text text-transparent"
+          variants={tabVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          🧪实验室
+        </motion.h1>
 
-      <motion.div
-        className="flex flex-wrap justify-between items-center gap-4 mb-8"
-        variants={tabVariants}
-        initial="hidden"
-        animate="visible"
-        transition={{ duration: 0.4 }}
-      >
-        <div className="flex gap-4">
-          {(Object.keys(categoryLabelEmoji) as Category[]).map((category) => (
-            <motion.button
-              key={category}
-              onClick={() => setActiveCategory(category)}
-              className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
-                activeCategory === category
-                  ? "bg-mint-500 text-white shadow-lg shadow-mint-500/30"
-                  : "bg-gray-50 text-gray-600 hover:bg-gray-100 hover:shadow-md"
-              }`}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              {categoryLabelEmoji[category]} {category.toUpperCase()}
-            </motion.button>
-          ))}
-        </div>
-        <div className="flex items-center gap-4">
-          <Button
-            type="default"
-            icon={<PlusOutlined />}
-            onClick={labInit.open}
-            className="bg-mint-500 hover:bg-mint-600"
-          >
-            New
-          </Button>
-          <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={showOnlyPending}
-              onChange={(e) => setShowOnlyPending(e.target.checked)}
-              className="w-4 h-4 accent-yellow-500"
-            />
-            👀 仅看未完成
-          </label>
-        </div>
-      </motion.div>
-
-      <motion.div
-        className="grid gap-6"
-        variants={cardVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {isLoading && (
-          <div className="inset-0 z-10 flex items-center bg-white bg-opacity-70 align-center z-50 absolute justify-center py-12">
-            <Spin size="large" />
+        <motion.div
+          className="flex flex-wrap justify-between items-center gap-4 mb-8"
+          variants={tabVariants}
+          initial="hidden"
+          animate="visible"
+          transition={{ duration: 0.4 }}
+        >
+          <div className="flex gap-4">
+            {(Object.keys(categoryLabelEmoji) as Category[]).map((category) => (
+              <motion.button
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
+                  activeCategory === category
+                    ? "bg-mint-500 text-white shadow-lg shadow-mint-500/30"
+                    : "bg-gray-50 text-gray-600 hover:bg-gray-100 hover:shadow-md"
+                }`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {categoryLabelEmoji[category]} {category.toUpperCase()}
+              </motion.button>
+            ))}
           </div>
-        )}
-        {filteredEntries.length > 0 ? (
-          filteredEntries.map((entry) => (
-            <LabCard
-              key={entry.id}
-              {...entry}
-              onDelete={() => handleDelete(entry.id)}
-              onStatusChange={(status) => handleStatusChange(entry.id, status)}
-              onEdit={() => handleEdit(entry)}
-            />
-          ))
-        ) : (
-          <motion.div
-            className="text-center py-12 text-gray-500"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            暂无符合条件的记录 🤔
-          </motion.div>
-        )}
-      </motion.div>
+          <div className="flex items-center gap-4">
+            <Button
+              type="default"
+              icon={<PlusOutlined />}
+              onClick={labInit.open}
+              className="bg-mint-500 hover:bg-mint-600"
+            >
+              New
+            </Button>
+            <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={showOnlyPending}
+                onChange={(e) => setShowOnlyPending(e.target.checked)}
+                className="w-4 h-4 accent-yellow-500"
+              />
+              👀 仅看未完成
+            </label>
+          </div>
+        </motion.div>
 
-      {/* 新建弹窗 */}
-      {labInit.modal}
-      {/* 编辑抽屉 */}
-      {labUpdater.drawer}
-    </motion.main>
+        <motion.div
+          className="grid gap-6"
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {isLoading && (
+            <div className="inset-0 z-10 flex items-center bg-white bg-opacity-70 align-center z-50 absolute justify-center py-12">
+              <Spin size="large" />
+            </div>
+          )}
+          {filteredEntries.length > 0 ? (
+            filteredEntries.map((entry) => (
+              <LabCard
+                key={entry.id}
+                {...entry}
+                onDelete={() => handleDelete(entry.id)}
+                onStatusChange={(status) =>
+                  handleStatusChange(entry.id, status)
+                }
+                onEdit={() => handleEdit(entry)}
+              />
+            ))
+          ) : (
+            <motion.div
+              className="text-center py-12 text-gray-500"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              暂无符合条件的记录 🤔
+            </motion.div>
+          )}
+        </motion.div>
+
+        {/* 新建弹窗 */}
+        {labInit.modal}
+        {/* 编辑抽屉 */}
+        {labUpdater.drawer}
+      </motion.main>{" "}
+    </div>
   );
-};
-
-export default (
-  <div className="lab-page-container">
-    <LabPageContainer />
-  </div>
-);
+}

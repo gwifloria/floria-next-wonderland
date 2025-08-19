@@ -1,5 +1,5 @@
 import { useSWRMutation } from "@/api/useFetch";
-import { message as antdMessage, Popconfirm, Typography } from "antd";
+import { App, Popconfirm, Typography } from "antd";
 import { format } from "date-fns";
 import { MessageItem } from "./forumUtils";
 
@@ -15,15 +15,16 @@ export default function ForumItem({
   const { trigger } = useSWRMutation("/floria-service/message/delete", {
     method: "post",
   });
+  const { message } = App.useApp();
 
   const handleDelete = async (id: string) => {
     try {
       await trigger({ id });
       onDelete();
+      message.success("已删除");
     } catch (e: any) {
-      antdMessage.error(e?.message || "删除失败");
+      message.error(e?.message || "删除失败");
     }
-    antdMessage.success("已删除");
   };
   return (
     <article
@@ -46,7 +47,7 @@ export default function ForumItem({
               onConfirm={() => handleDelete(String(item._id))}
             >
               <button
-                className="opacity-0 group-hover:opacity-100 transition-opacity text-red-500 text-xs border border-red-200 px-2 py-0.5 rounded"
+                className="opacity-0 text-rose-500 bg-rose-100 group-hover:opacity-100 transition-opacity text-xs border px-2 py-0.5 rounded"
                 aria-label="删除"
               >
                 删除
