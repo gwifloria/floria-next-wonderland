@@ -27,12 +27,6 @@ export default function HeroSection() {
         >
           View Portfolio
         </a>
-        <a
-          href="#blog"
-          className="bg-rose-100 hover:bg-rose-200 text-rose-500 font-semibold py-2 px-6 rounded-full shadow transition-all duration-200"
-        >
-          Read Blog
-        </a>
       </div>
     </section>
   );

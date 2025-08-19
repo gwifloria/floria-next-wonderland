@@ -1,17 +1,19 @@
 // src/api/useLabApi.ts
 import { useSWR, useSWRMutation } from "@/api/useFetch";
-import { LabEntry } from "./constant";
+import { LabEntry } from "./type";
 
 export function useLabApi() {
-  const { data: entries, mutate } = useSWR<{ data: LabEntry[] }>(
-    "/floria-service/lab/list",
-  );
+  const {
+    data: entries,
+    mutate,
+    isLoading: isFetchingList,
+  } = useSWR<{ data: LabEntry[] }>("/floria-service/lab/list");
 
   const { trigger: addEntry } = useSWRMutation("/floria-service/lab/add", {
     method: "POST",
   });
 
-  const { trigger: updateEntry } = useSWRMutation(
+  const { trigger: updateEntry, isMutating: isUpdating } = useSWRMutation(
     "/floria-service/lab/update",
     { method: "POST" },
   );
@@ -23,11 +25,10 @@ export function useLabApi() {
 
   return {
     entries: entries?.data,
-    isLoading: !entries,
+    isLoading: isFetchingList || isDeleting || isUpdating,
     addEntry,
     updateEntry,
     deleteEntry,
-    isDeleting,
     refresh: mutate,
   };
 }

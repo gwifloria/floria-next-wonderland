@@ -1,8 +1,7 @@
-import { Modal, message } from "antd";
+import { App, Modal } from "antd";
 import { useState } from "react";
-import { Category, LabEntry } from "./constant";
-import "./index.scss";
 import LabForm from "./LabForm";
+import { Category, LabEntry } from "./type";
 import { useLabApi } from "./useLab";
 
 interface UseLabInitializerProps {
@@ -15,6 +14,7 @@ export function useLabInitializer({
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const { addEntry, refresh } = useLabApi();
+  const { message } = App.useApp();
 
   const open = () => setVisible(true);
   const close = () => setVisible(false);
@@ -28,9 +28,9 @@ export function useLabInitializer({
         status: "open",
         createdAt: new Date().toISOString(),
       });
-      message.success("🎉 创建成功！");
       close();
       refresh();
+      message.success("🎉 创建成功！");
     } catch (err) {
       message.error("😢 创建失败，请重试！");
     } finally {
@@ -43,7 +43,7 @@ export function useLabInitializer({
       title={
         <span className="flex items-center gap-2 text-xl font-bold text-mint-600">
           <span>🌱</span>
-          <span>新增实验室内容</span>
+          <span>New Lab Inspiration</span>
         </span>
       }
       open={visible}
@@ -52,10 +52,10 @@ export function useLabInitializer({
       width={480}
       centered
       className="init-modal"
+      destroyOnHidden
       styles={{
         body: {
           borderRadius: 16,
-          background: "#f7fafc",
           boxShadow: "0 4px 24px 0 rgba(0,0,0,0.04)",
           padding: 32,
         },

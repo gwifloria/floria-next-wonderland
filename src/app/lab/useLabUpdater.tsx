@@ -1,7 +1,7 @@
-import { Drawer, message } from "antd";
+import { App, Drawer } from "antd";
 import { useState } from "react";
 import LabForm from "./LabForm";
-import { LabEntry } from "./constant";
+import { LabEntry } from "./type";
 import { useLabApi } from "./useLab";
 
 interface UseLabUpdaterProps {
@@ -9,6 +9,7 @@ interface UseLabUpdaterProps {
 }
 
 export function useLabUpdater({ entry }: UseLabUpdaterProps) {
+  const { message } = App.useApp();
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const { updateEntry, refresh } = useLabApi();
@@ -24,9 +25,10 @@ export function useLabUpdater({ entry }: UseLabUpdaterProps) {
         id: entry.id,
         ...values,
       });
-      message.success("更新成功");
       close();
       refresh();
+      console.log(message);
+      message.success("更新成功");
     } catch (err) {
       message.error("更新失败");
     } finally {
@@ -40,7 +42,7 @@ export function useLabUpdater({ entry }: UseLabUpdaterProps) {
       open={visible}
       onClose={close}
       width={480}
-      destroyOnClose
+      destroyOnHidden
     >
       <LabForm
         initialValues={entry ?? undefined}

@@ -9,7 +9,7 @@ const { Dragger } = Upload;
 
 export const MarkdownUpload = () => {
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-  const { message } = App.useApp(); // Use App.useApp instead of direct Modal usage
+  const { message } = App.useApp();
 
   const { addPost, isPosting, getMarkdownList } = useMarkdown();
 

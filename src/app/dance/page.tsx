@@ -1,6 +1,5 @@
 "use client";
 import { AuthProvider } from "@/context";
-import withTheme from "@/theme";
 import { FilterOutlined, SearchOutlined } from "@ant-design/icons";
 import { Empty, Input, Select, Spin, Tabs } from "antd";
 import { AnimatePresence, motion } from "framer-motion";
@@ -173,8 +172,4 @@ const DanceBooking = () => {
   );
 };
 
-const DanceBookingPage = () => {
-  return withTheme(<DanceBooking />);
-};
-
-export default DanceBookingPage;
+export default <DanceBooking />;

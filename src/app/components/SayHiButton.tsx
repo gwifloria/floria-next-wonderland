@@ -1,10 +1,33 @@
 "use client";
+import { useSWRMutation } from "@/api/useFetch";
+import { App } from "antd";
 import { useState } from "react";
 
 export default function SayHiButton() {
+  const { message } = App.useApp();
   const [show, setShow] = useState(false);
   const [sent, setSent] = useState(false);
   const [msg, setMsg] = useState("");
+  const { trigger } = useSWRMutation("/floria-service/message/send", {
+    method: "POST",
+  });
+
+  const send = async () => {
+    try {
+      await trigger({ content: msg });
+      setSent(true);
+    } catch (error) {
+      const errorMsg =
+        typeof error === "object" &&
+        error !== null &&
+        "message" in error &&
+        typeof (error as any).message === "string"
+          ? (error as any).message
+          : "Error sending message";
+      message.error(errorMsg);
+    }
+  };
+
   return (
     <div className="fixed bottom-6 right-6 z-50">
       <button
@@ -24,15 +47,7 @@ export default function SayHiButton() {
           />
           <button
             className="bg-mint-200 hover:bg-mint-300 text-mint-900 font-bold rounded-full px-4 py-2 mt-1 float-right"
-            onClick={() => {
-              setSent(true);
-              setTimeout(() => {
-                setShow(false);
-                setSent(false);
-                setMsg("");
-              }, 1800);
-            }}
-            disabled={!msg.trim()}
+            onClick={send}
           >
             Send
           </button>

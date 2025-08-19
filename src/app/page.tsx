@@ -4,7 +4,6 @@ import ParallaxFavs from "@/app/components/ParallaxFavs";
 import { PersonalIntroduction } from "@/app/components/PersonalIntro";
 import SayHiButton from "@/app/components/SayHiButton";
 import { AuthProvider } from "@/context";
-import withTheme from "@/theme";
 import { StyleProvider } from "@ant-design/cssinjs";
 
 const HomeContainer = () => {
@@ -25,7 +24,5 @@ const HomeContainer = () => {
     </StyleProvider>
   );
 };
-const Home = () => {
-  return withTheme(<HomeContainer />);
-};
-export default Home;
+
+export default <HomeContainer />;

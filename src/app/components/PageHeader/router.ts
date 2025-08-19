@@ -1,7 +1,8 @@
 export const routes = {
   posts: "✏️",
-  dance: "💃",
   space: "🌌",
   lab: "🧪",
+  about: "👋",
+  forum: "💬",
 };
-export const hiddenRoutes = ["blog", "tools", "lib", "travel"];
+export const hiddenRoutes = ["tools", "lib", "travel", "dance", "about"];

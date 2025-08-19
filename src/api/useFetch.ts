@@ -29,7 +29,8 @@ export const useFetch = () => {
         body: JSON.stringify(arg),
       });
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        const { error } = await response.json();
+        throw new Error(error || "Network response was not ok");
       }
       return await response.json();
     } catch (error) {
