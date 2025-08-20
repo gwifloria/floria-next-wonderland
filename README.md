@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🌟 Floria's Wonderland
 
-## Getting Started
+我的个人网站，用 Next.js 搭的。主要用来展示作品、写博客，还有记录一些想法。
+考虑到有后端功能，我又有点想省钱，目前线上地址
+https://floria-next-wonderland.onrender.com
 
-First, run the development server:
+## ✨ 功能
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- 🎨 **作品集** - 展示项目和技术能力
+- 📝 **博客** - 分享技术心得和生活感悟
+- 🗺️ **旅行** - 记录去过的地方
+- 🎭 **个人故事** - 聊聊经历和想法
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ 技术
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Next.js 14** - 网站框架
+- **React 18** - 页面交互
+- **TypeScript** - 代码类型
+- **Tailwind CSS** - 样式
+- **Ant Design** - 组件库
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 🤝 交流
 
-## Learn More
+有问题或建议欢迎：
 
-To learn more about Next.js, take a look at the following resources:
+- 提 Issue
+- 发 PR
+- 直接联系
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📞 联系
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- **邮箱**: gwifloria@outlook.com
+- **GitHub**: [@yourusername](https://github.com/gwifloria)
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+---

@@ -55,6 +55,7 @@ jobs:
       - name: Build & Export with Next.js
         env:
           NEXT_TELEMETRY_DISABLED: 1
+          NEXT_STATIC_EXPORT: "true"
         run: |
           yarn next build
       - name: Upload artifact
