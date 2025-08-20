@@ -9,6 +9,7 @@ const nextConfig = {
   output: "export",
 
   basePath: isProd ? "/bj-next-wonderland" : "",
+
   images: {
     unoptimized: true,
   },
