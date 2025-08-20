@@ -1,4 +1,5 @@
 "use client";
+import "antd/dist/reset.css"; // ✅ 必须放在最靠前
 
 import "@ant-design/v5-patch-for-react-19";
 

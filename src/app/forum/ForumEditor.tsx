@@ -5,6 +5,7 @@ import { App, Button } from "antd";
 import { useCallback } from "react";
 import { useTipTapEditor } from "../components/TipTapEditor/useTipTapEditor";
 import { useThrottle } from "../tools/useThrottle";
+const MAX_CHARS = 200;
 export default function ForumEditor({
   onPostSuccess,
 }: {
@@ -21,6 +22,18 @@ export default function ForumEditor({
   const handleUpload = useCallback(async () => {
     if (!editor) return;
     const content = editor.getHTML();
+    const plain = editor.getText().trim();
+
+    if (!plain) {
+      message.warning("内容不能为空");
+      editor.commands.focus("end");
+      return;
+    }
+    if (plain.length > MAX_CHARS) {
+      message.warning(`最多只能输入 ${MAX_CHARS} 个字`);
+      editor.commands.focus("end");
+      return;
+    }
 
     try {
       await trigger({ content: content });
