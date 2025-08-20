@@ -1,0 +1,4 @@
+[submodule "src/app/content"]
+	path = src/app/content
+	url = git@github.com:gwifloria/eriko-whispers.git
+	branch = main
