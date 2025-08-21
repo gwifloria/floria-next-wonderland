@@ -1,5 +1,5 @@
 export const routes = {
-  posts: "✏️",
+  blog: "✏️",
   lab: "🧪",
   about: "👋",
   forum: "💬",
