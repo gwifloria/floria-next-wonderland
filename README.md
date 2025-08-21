@@ -15,8 +15,8 @@ https://floria-next-wonderland.onrender.com
 
 ## 🛠️ 技术
 
-- **Next.js 14** - 网站框架
-- **React 18** - 页面交互
+- **Next.js 15** - 网站框架
+- **React 19** - 页面交互
 - **TypeScript** - 代码类型
 - **Tailwind CSS** - 样式
 - **Ant Design** - 组件库
@@ -32,6 +32,6 @@ https://floria-next-wonderland.onrender.com
 ## 📞 联系
 
 - **邮箱**: gwifloria@outlook.com
-- **GitHub**: [@yourusername](https://github.com/gwifloria)
+- **GitHub**: [@gwifloria](https://github.com/gwifloria)
 
 ---
