@@ -1,7 +1,12 @@
-import Link from "next/link";
-import { readdirSync } from "node:fs";
 import path from "node:path";
+import { categories, CatKey } from "./constants";
 import { MdxPost } from "./MdxPost";
+import { Sidebar } from "./SideBar";
+import { buildGroups, catStyles, CONTENT_ROOT, cx } from "./util";
+
+// ---------- Types & utils ----------
+
+// ---------- Small components ----------
 
 export default async function BlogPage({
   searchParams,
@@ -10,48 +15,34 @@ export default async function BlogPage({
 }) {
   const params = await searchParams; // Next 15: searchParams is a Promise
 
-  const postsDir = path.join(process.cwd(), "src/app/content");
-  const files = readdirSync(postsDir).filter((f) => f.endsWith(".md"));
+  const groups = buildGroups(CONTENT_ROOT, categories);
+  const flat = groups.flatMap((g) => g.files);
 
-  if (files.length === 0) {
+  if (flat.length === 0) {
     return (
       <div className="mx-auto max-w-2xl p-8 text-sm text-neutral-600 dark:text-neutral-300">
         <h2 className="mb-2 text-lg font-semibold">Blog</h2>
         <p>
-          暂无可用文章（.md）。请在 <code>src/app/content</code> 目录下添加
-          Markdown 文件。
+          暂无可用文章（.md）。请在 <code>src/app/content/bytenotes</code> 或
+          <code> src/app/content/murmurs</code> 目录下添加 Markdown 文件。
         </p>
       </div>
     );
   }
 
-  const postFile =
-    params?.post && files.includes(params.post) ? params.post : files[0];
+  const activePost =
+    params?.post && flat.includes(params.post) ? params.post : flat[0];
+  const filePath = path.join(CONTENT_ROOT, activePost);
+  const activeCat = activePost.split("/")[0] as CatKey;
 
-  const filePath = path.join(postsDir, postFile);
+  const { mainAccent } = catStyles(activeCat);
 
   return (
-    <div className="flex min-h-screen">
-      <aside className="w-64 bg-gray-50 border-r p-8 my-12">
-        <h2 className="font-bold text-lg mb-4">Blog</h2>
-        <ul>
-          {files.map((file) => (
-            <li key={file}>
-              <Link
-                className={`block px-3 py-2 rounded-md transition-colors text-neutral-700 hover:text-neutral-900 hover:bg-mint-100 ${
-                  file === postFile
-                    ? "bg-mint-100 font-semibold text-neutral-900"
-                    : ""
-                }`}
-                href={{ pathname: "/blog", query: { post: file } }}
-              >
-                {file.replace(/\.md$/, "")}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </aside>
-      <main className="flex-1 ">
+    <div className="flex max-h-[calc(100vh-4rem)]">
+      <Sidebar groups={groups} activePost={activePost} />
+
+      <main className="flex-1 max-w-4xl mx-auto my-12 bg-white rounded-2xl shadow-lg px-6 py-8 max-h-[calc(100vh-16rem)] overflow-auto">
+        <div className={cx("mb-4 h-1 w-full rounded-full", mainAccent)} />
         <MdxPost filePath={filePath} />
       </main>
     </div>
