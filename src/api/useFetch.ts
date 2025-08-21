@@ -1,4 +1,3 @@
-import { useAuth } from "@/context";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 
@@ -7,14 +6,12 @@ export interface CustomFetchOptions extends RequestInit {
 }
 
 export const useFetch = () => {
-  const { token: userToken } = useAuth();
-
   const fetcher = async <T>(
     url: string,
     options?: CustomFetchOptions,
-    arg?: undefined,
+    arg?: undefined
   ): Promise<T> => {
-    const token = options?.token || userToken;
+    const token = "";
     const headers: { [key: string]: string } = token
       ? { Authorization: `Bearer ${token}` }
       : {};
@@ -41,7 +38,7 @@ export const useFetch = () => {
 };
 const useCustomSWR = <T = any>(
   key: string | undefined | null,
-  fetchOptions?: CustomFetchOptions,
+  fetchOptions?: CustomFetchOptions
 ) => {
   const fetcher = useFetch();
   return useSWR<T>(key, (url: string) => fetcher<T>(url, fetchOptions));
@@ -49,7 +46,7 @@ const useCustomSWR = <T = any>(
 
 const useCustomSWRMutation = <T>(
   key: string,
-  fetchOptions?: CustomFetchOptions,
+  fetchOptions?: CustomFetchOptions
 ) => {
   const fetcher = useFetch();
 
