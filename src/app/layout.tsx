@@ -8,6 +8,7 @@ import { themeConfig } from "@/theme";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { App, ConfigProvider } from "antd";
 import { Delius } from "next/font/google";
+import CommitInfo from "./components/CommitInfo";
 import "./globals.css";
 
 const delius = Delius({ subsets: ["latin"], weight: "400" });
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body className={delius.className}>
         <div className="main-background bg-mint-100 mx-auto min-h-screen p-20">
           <PageHeader />
+          <CommitInfo></CommitInfo>
           <AntdRegistry>
             <App>
               <ConfigProvider theme={themeConfig}>{children}</ConfigProvider>

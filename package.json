@@ -16,7 +16,7 @@
     "prepare": "husky",
     "predev": "ts-node --project ./tsconfig.node.json ./scripts/genAntdCss.tsx",
     "prepush": "yarn test --watchAll=false && docker build --target builder -t floria-next-wonderland:buildcheck --build-arg CI=true .",
-    "prebuild": "cross-env NODE_ENV=production ts-node --project ./tsconfig.node.json ./scripts/genAntdCss.tsx"
+    "prebuild": "cross-env NODE_ENV=production ts-node --project ./tsconfig.node.json ./scripts/inject-commit.js ./scripts/genAntdCss.tsx "
   },
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [
