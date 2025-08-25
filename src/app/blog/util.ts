@@ -2,16 +2,16 @@ import { existsSync, readdirSync } from "node:fs";
 import path from "node:path";
 
 import { Category, CateGroup, CatKey } from "./constants";
+
 function resolveContentRoot() {
   const cwd = process.cwd();
-  // Primary: submodule path during local dev / CI
+
   const primary = path.join(cwd, "src/app/content");
-  // Fallback: mirrored at build time into public/_content for Vercel runtime
   const fallback = path.join(cwd, "public/_content");
 
   if (existsSync(primary)) return primary;
   if (existsSync(fallback)) return fallback;
-  return fallback; // default to fallback so callers can still attempt to read
+  return fallback;
 }
 
 export const CONTENT_ROOT = resolveContentRoot();
