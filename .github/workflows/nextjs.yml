@@ -16,6 +16,7 @@ jobs:
       - name: Checkout (with submodules)
         uses: actions/checkout@v4
         with:
+          token:${{ secrets.SUBMODULE_TOKEN }}
           submodules: recursive
           fetch-depth: 0
 
