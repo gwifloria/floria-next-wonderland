@@ -1,7 +1,36 @@
-import { existsSync, readdirSync } from "fs";
-import path from "path";
+import { existsSync, readdirSync } from "node:fs";
+import path from "node:path";
+
 import { Category, CateGroup, CatKey } from "./constants";
-export const CONTENT_ROOT = path.join(process.cwd(), "src/app/content");
+function resolveContentRoot() {
+  const cwd = process.cwd();
+  // Primary: submodule path during local dev / CI
+  const primary = path.join(cwd, "src/app/content");
+  // Fallback: mirrored at build time into public/_content for Vercel runtime
+  const fallback = path.join(cwd, "public/_content");
+
+  if (existsSync(primary)) return primary;
+  if (existsSync(fallback)) return fallback;
+  return fallback; // default to fallback so callers can still attempt to read
+}
+
+export const CONTENT_ROOT = resolveContentRoot();
+
+export function debugContentRoot() {
+  try {
+    const root = CONTENT_ROOT;
+    const groups = readdirSync(root, { withFileTypes: true });
+    return {
+      root,
+      entries: groups.map((d) => ({
+        name: d.name,
+        type: d.isDirectory() ? "dir" : "file",
+      })),
+    } as const;
+  } catch (e) {
+    return { root: CONTENT_ROOT, error: String(e) } as const;
+  }
+}
 
 export function readMdFiles(dir: string) {
   if (!existsSync(dir)) return [] as string[];
@@ -10,7 +39,7 @@ export function readMdFiles(dir: string) {
 
 export function buildGroups(
   root: string,
-  cats: readonly Category[],
+  cats: readonly Category[]
 ): CateGroup[] {
   return cats.map((c) => ({
     ...c,

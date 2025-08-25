@@ -4,6 +4,7 @@ on:
   push:
     branches: [main, dev]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -12,20 +13,62 @@ jobs:
   build:
     name: Build (with submodules)
     runs-on: ubuntu-latest
+
+    # ⭐ 把 secret 提前映射到 env
+    env:
+      SUBMODULE_TOKEN: ${{ secrets.SUBMODULE_TOKEN }}
+
     steps:
-      - name: Checkout (with submodules)
+      - name: Checkout (no submodules yet)
         uses: actions/checkout@v4
         with:
-          token:${{ secrets.SUBMODULE_TOKEN }}
-          submodules: recursive
           fetch-depth: 0
+          submodules: false
 
-      - name: Setup Node (v20) + Corepack
+      - name: Debug .gitmodules & gitlink
+        run: |
+          echo "--- .gitmodules ---" && (cat .gitmodules || true)
+          echo "--- git ls-tree (expect 160000) ---" && (git ls-tree HEAD src/app/content || true)
+
+      # ⭐ 用 env 判断，而不是 secrets 判断
+      - name: Rewrite submodule URL if using PAT (private repos)
+        if: env.SUBMODULE_TOKEN != ''
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE" || true
+          # 只改这一个子模块；如有更多，按需追加
+          git config -f .gitmodules submodule.src/app/content.url \
+            "https://${SUBMODULE_TOKEN}@github.com/gwifloria/eriko-whispers.git"
+          # 兜底：把任何 SSH 形式改为 HTTPS+token
+          git config --global url."https://${SUBMODULE_TOKEN}@github.com/".insteadOf "git@github.com:"
+          git config --global url."https://${SUBMODULE_TOKEN}@github.com/".insteadOf "ssh://git@github.com/"
+          git submodule sync --recursive
+
+      - name: Ensure submodules are populated
+        run: |
+          git submodule update --init --recursive --depth 1
+          echo "--- list files in src/app/content ---"
+          ls -la src/app/content || true
+          test -d src/app/content && test "$(ls -A src/app/content | wc -l)" -gt 0 \
+            || (echo "[ERROR] submodule appears empty. Check SUBMODULE_TOKEN permissions and .gitmodules path/url." && exit 1)
+
+      - name: Setup Node (v20)
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: yarn
-      - run: corepack enable
+
+      - name: Enable Corepack (Yarn 4)
+        run: |
+          corepack enable
+          corepack prepare yarn@4.2.2 --activate
+          yarn -v
+
+      - name: Cache Yarn Berry artifacts
+        uses: actions/cache@v4
+        with:
+          path: .yarn/cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
       - name: Inject commit ids (app & content)
         run: |
@@ -33,7 +76,7 @@ jobs:
           CONTENT_SHA=$(git rev-parse --short HEAD:src/app/content 2>/dev/null || git -C src/app/content rev-parse --short HEAD || echo unknown)
           echo "NEXT_PUBLIC_SUBMODULE_COMMIT_ID=${CONTENT_SHA}" >> $GITHUB_ENV
 
-      - name: Install deps (Yarn 4 immutable)
+      - name: Install deps
         run: yarn install --immutable
 
       - name: Build
@@ -42,10 +85,3 @@ jobs:
           NEXT_PUBLIC_SUBMODULE_COMMIT_ID: ${{ env.NEXT_PUBLIC_SUBMODULE_COMMIT_ID }}
           NEXT_TELEMETRY_DISABLED: 1
         run: yarn build
-
-      - name: Upload build artifact (optional)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: next-build
-          path: .next

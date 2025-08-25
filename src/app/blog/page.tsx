@@ -4,17 +4,13 @@ import { MdxPost } from "./MdxPost";
 import { Sidebar } from "./SideBar";
 import { buildGroups, catStyles, CONTENT_ROOT, cx } from "./util";
 
-// ---------- Types & utils ----------
-
-// ---------- Small components ----------
-
 export default async function BlogPage({
   searchParams,
 }: {
   searchParams?: Promise<{ post?: string }>;
 }) {
-  const params = await searchParams; // Next 15: searchParams is a Promise
-
+  const params = await searchParams;
+  console.log(CONTENT_ROOT);
   const groups = buildGroups(CONTENT_ROOT, categories);
   const flat = groups.flatMap((g) => g.files);
 

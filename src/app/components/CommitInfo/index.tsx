@@ -1,5 +1,3 @@
-"use client";
-
 export default function CommitInfo() {
   const app = process.env.NEXT_PUBLIC_COMMIT_ID ?? "unknown";
   const content = process.env.NEXT_PUBLIC_SUBMODULE_COMMIT_ID ?? "unknown";

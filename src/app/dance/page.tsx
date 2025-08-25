@@ -1,5 +1,4 @@
 "use client";
-import { AuthProvider } from "@/context";
 import { FilterOutlined, SearchOutlined } from "@ant-design/icons";
 import { Empty, Input, Select, Spin, Tabs } from "antd";
 import { AnimatePresence, motion } from "framer-motion";
@@ -28,7 +27,7 @@ const CourseList = ({
       .filter(
         (course) =>
           course.teacherName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          course.courseName.toLowerCase().includes(searchTerm.toLowerCase()),
+          course.courseName.toLowerCase().includes(searchTerm.toLowerCase())
       )
       .sort((a, b) => {
         if (sortBy === "time") {
@@ -127,7 +126,7 @@ export default function DanceBooking() {
         />
       ),
     }),
-    [casterSchedules, casterSubscribe, casterUnsubscribe, isCasterLoading],
+    [casterSchedules, casterSubscribe, casterUnsubscribe, isCasterLoading]
   );
 
   const onewayTabItem = useMemo(
@@ -143,31 +142,29 @@ export default function DanceBooking() {
         />
       ),
     }),
-    [onewaySchedules, onewaySubscribe, onewayUnsubscribe, isOnewayLoading],
+    [onewaySchedules, onewaySubscribe, onewayUnsubscribe, isOnewayLoading]
   );
 
   const items = [casterTabItem, onewayTabItem];
 
   return (
-    <AuthProvider>
-      <div className="max-w-4xl mx-auto py-6 px-4">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">
-          Dance Class Booking
-        </h1>
-        <h2 className="text-gray-600 mb-8 text-lg">
-          Automatically monitor and subscribe to available dance class seats to
-          save time on manual checking(personal use only)
-        </h2>
-        <Tabs
-          items={items}
-          className="bg-white rounded-lg shadow-sm p-4"
-          tabBarStyle={{
-            marginBottom: 24,
-            padding: "0 16px",
-          }}
-          tabBarGutter={32}
-        />
-      </div>
-    </AuthProvider>
+    <div className="max-w-4xl mx-auto py-6 px-4">
+      <h1 className="text-2xl font-bold text-gray-800 mb-6">
+        Dance Class Booking
+      </h1>
+      <h2 className="text-gray-600 mb-8 text-lg">
+        Automatically monitor and subscribe to available dance class seats to
+        save time on manual checking(personal use only)
+      </h2>
+      <Tabs
+        items={items}
+        className="bg-white rounded-lg shadow-sm p-4"
+        tabBarStyle={{
+          marginBottom: 24,
+          padding: "0 16px",
+        }}
+        tabBarGutter={32}
+      />
+    </div>
   );
 }
