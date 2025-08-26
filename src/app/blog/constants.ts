@@ -1,10 +1,15 @@
-export type CatKey = "bytenotes" | "murmurs";
+export type CatKey = "ByteNotes" | "Murmurs";
 
 export type Category = { key: CatKey; label: string };
 
 export type CateGroup = Category & { files: string[] };
 
 export const categories: readonly Category[] = [
-  { key: "bytenotes", label: "ByteNotes" },
-  { key: "murmurs", label: "Murmurs" },
-] as const;
+  { key: "ByteNotes", label: "ByteNotes" },
+  { key: "Murmurs", label: "Murmurs" },
+];
+export interface GitHubItem {
+  name: string;
+  path: string;
+  type: string;
+}

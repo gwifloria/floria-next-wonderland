@@ -10,7 +10,7 @@ export default function AntDProvider({
   children: React.ReactNode;
 }) {
   return (
-    <StyleProvider hashPriority="high">
+    <StyleProvider hashPriority="low">
       <App>
         <ConfigProvider theme={themeConfig}>{children}</ConfigProvider>
       </App>

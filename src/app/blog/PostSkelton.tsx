@@ -7,13 +7,19 @@ export function EmptyState() {
       <Empty
         image={Empty.PRESENTED_IMAGE_SIMPLE}
         description={
-          <div className="space-y-3 text-center">
-            <p className="text-xl font-semibold text-gray-700">
-              No Post Selected
-            </p>
-            <p className="text-sm text-gray-500 max-w-sm">
-              Select a post from the sidebar to view its content. You can also
-              upload new markdown files.
+          <div className="max-w-5xl mx-auto bg-white p-6">
+            <h2 className="text-xl font-semibold mb-4">欢迎来到 Blog</h2>
+            <p className="text-neutral-600 mb-2">在这里你可以浏览两类文章：</p>
+            <ul className="list-disc list-inside text-neutral-700">
+              <li>
+                <strong>ByteNotes</strong>：技术学习与开发笔记
+              </li>
+              <li>
+                <strong>Murmurs</strong>：日常感想与随笔
+              </li>
+            </ul>
+            <p className="mt-4 text-neutral-500 text-sm">
+              从左侧选择一篇文章开始阅读吧。
             </p>
           </div>
         }

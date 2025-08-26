@@ -21,11 +21,11 @@ export default function RootLayout({
   return (
     <html className="dark" lang="en">
       <body className={delius.className}>
-        <div className="main-background bg-mint-100 mx-auto min-h-screen p-20">
+        <div className="main-background bg-mint-100 mx-auto min-h-screen p-16">
           <PageHeader />
-          <Debug></Debug>
           <AntdRegistry>
             <ClientProviders>{children}</ClientProviders>
+            <Debug></Debug>
           </AntdRegistry>
         </div>
       </body>

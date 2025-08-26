@@ -5,13 +5,10 @@ const owner = "gwifloria";
 const repo = "album";
 
 export const useDestinationUrl = (
-  destinations?: Destination[],
+  destinations?: Destination[]
 ): MapDestinationMarker[] | undefined => {
   const { data } = useSWR<GitItem[]>(
-    `https://api.github.com/repos/${owner}/${repo}/contents/pics`,
-    {
-      token: `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`,
-    },
+    `https://api.github.com/repos/${owner}/${repo}/contents/pics`
   );
 
   const a = useMemo(() => {

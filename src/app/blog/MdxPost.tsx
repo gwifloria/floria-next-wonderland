@@ -1,21 +1,53 @@
+"use client";
 import matter from "gray-matter";
-import { MDXRemote } from "next-mdx-remote/rsc";
-import { readFileSync } from "node:fs";
+import ReactMarkdown from "react-markdown";
+import useSWR from "swr";
+import { EmptyState, PostSkeleton } from "./PostSkelton";
 
-type MdxPostProps = {
-  filePath: string;
-};
-export async function MdxPost({ filePath }: MdxPostProps) {
-  const rawContent = readFileSync(filePath, "utf-8");
+const fetcher = (url: string) => fetch(url).then((res) => res.text());
+
+export function MdxPost({ path }: { path: string }) {
+  const { data: rawContent, error } = useSWR(
+    path ? `/api/gh-content?path=${path}` : null,
+    fetcher
+  );
+
+  const metaUrl = path
+    ? `/api/gh-last-update?path=${encodeURIComponent(path)}`
+    : null;
+  const { data: info } = useSWR(metaUrl, (u) => fetch(u).then((r) => r.json()));
+
+  const infoDiv = () =>
+    info?.updatedAt && (
+      <div className="mb-4 text-xs text-neutral-500">
+        最后更新：
+        {new Intl.DateTimeFormat(undefined, {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+        }).format(new Date(info.updatedAt))}
+      </div>
+    );
+
+  if (!path) {
+    return <EmptyState></EmptyState>;
+  }
+
+  if (error) return <div>Error loading content.</div>;
+  if (!rawContent) {
+    return <PostSkeleton></PostSkeleton>;
+  }
+
   const { content, data } = matter(rawContent);
-  console.log(matter(rawContent));
+  console.log(data, content);
+
   return (
-    <div className="max-w-4xl mx-auto bg-white ">
-      {data.title && (
-        <h1 className="text-3xl font-bold mb-6 text-center">{data.title}</h1>
-      )}
+    <div className="max-w-5xl mx-auto bg-white transition-all duration-200 ease-in-out">
       <article className="prose prose-lg">
-        <MDXRemote source={content} />
+        <ReactMarkdown>{content}</ReactMarkdown>
+        {infoDiv()}
       </article>
     </div>
   );

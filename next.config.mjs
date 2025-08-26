@@ -14,10 +14,6 @@ const nextConfig = {
         destination: `http://localhost:4001/:path*`,
       },
       { source: "/floria-service/:path*", destination: `${ip}/:path*` },
-      {
-        source: "/github-service/:path*",
-        destination: `https://github.com/:path*`,
-      },
     ];
   },
 };

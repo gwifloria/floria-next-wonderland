@@ -11,45 +11,14 @@ permissions:
 
 jobs:
   build:
-    name: Build (with submodules)
+    name: Build
     runs-on: ubuntu-latest
 
-    # ⭐ 把 secret 提前映射到 env
-    env:
-      SUBMODULE_TOKEN: ${{ secrets.SUBMODULE_TOKEN }}
-
     steps:
-      - name: Checkout (no submodules yet)
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          submodules: false
-
-      - name: Debug .gitmodules & gitlink
-        run: |
-          echo "--- .gitmodules ---" && (cat .gitmodules || true)
-          echo "--- git ls-tree (expect 160000) ---" && (git ls-tree HEAD src/app/content || true)
-
-      # ⭐ 用 env 判断，而不是 secrets 判断
-      - name: Rewrite submodule URL if using PAT (private repos)
-        if: env.SUBMODULE_TOKEN != ''
-        run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE" || true
-          # 只改这一个子模块；如有更多，按需追加
-          git config -f .gitmodules submodule.src/app/content.url \
-            "https://${SUBMODULE_TOKEN}@github.com/gwifloria/eriko-whispers.git"
-          # 兜底：把任何 SSH 形式改为 HTTPS+token
-          git config --global url."https://${SUBMODULE_TOKEN}@github.com/".insteadOf "git@github.com:"
-          git config --global url."https://${SUBMODULE_TOKEN}@github.com/".insteadOf "ssh://git@github.com/"
-          git submodule sync --recursive
-
-      - name: Ensure submodules are populated
-        run: |
-          git submodule update --init --recursive --depth 1
-          echo "--- list files in src/app/content ---"
-          ls -la src/app/content || true
-          test -d src/app/content && test "$(ls -A src/app/content | wc -l)" -gt 0 \
-            || (echo "[ERROR] submodule appears empty. Check SUBMODULE_TOKEN permissions and .gitmodules path/url." && exit 1)
 
       - name: Setup Node (v20)
         uses: actions/setup-node@v4
@@ -70,11 +39,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - name: Inject commit ids (app & content)
+      - name: Inject commit id (app only)
         run: |
           echo "NEXT_PUBLIC_COMMIT_ID=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          CONTENT_SHA=$(git rev-parse --short HEAD:src/app/content 2>/dev/null || git -C src/app/content rev-parse --short HEAD || echo unknown)
-          echo "NEXT_PUBLIC_SUBMODULE_COMMIT_ID=${CONTENT_SHA}" >> $GITHUB_ENV
 
       - name: Install deps
         run: yarn install --immutable
@@ -82,6 +49,5 @@ jobs:
       - name: Build
         env:
           NEXT_PUBLIC_COMMIT_ID: ${{ env.NEXT_PUBLIC_COMMIT_ID }}
-          NEXT_PUBLIC_SUBMODULE_COMMIT_ID: ${{ env.NEXT_PUBLIC_SUBMODULE_COMMIT_ID }}
           NEXT_TELEMETRY_DISABLED: 1
         run: yarn build
