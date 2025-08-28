@@ -1,5 +1,5 @@
 {
-  "name": "bj-next-wonderland",
+  "name": "floria-next-wonderland",
   "version": "0.1.0",
   "private": true,
   "packageManager": "yarn@4.2.2",
@@ -16,7 +16,7 @@
     "prepare": "husky",
     "predev": "ts-node --project ./tsconfig.node.json ./scripts/genAntdCss.tsx",
     "prepush": "yarn test --watchAll=false && docker build --target builder -t floria-next-wonderland:buildcheck --build-arg CI=true .",
-    "prebuild": "cross-env NODE_ENV=production ts-node --project ./tsconfig.node.json ./scripts/genAntdCss.tsx"
+    "prebuild": "cross-env NODE_ENV=production ts-node --project ./tsconfig.node.json ./scripts/genAntdCss.tsx "
   },
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [
@@ -27,11 +27,7 @@
     "@ant-design/cssinjs": "^1.24.0",
     "@ant-design/nextjs-registry": "^1.0.0",
     "@ant-design/v5-patch-for-react-19": "^1.0.3",
-    "@floating-ui/react": "^0.27.15",
     "@mapbox/mapbox-gl-geocoder": "^5.0.2",
-    "@mdx-js/react": "^3.1.0",
-    "@radix-ui/react-dropdown-menu": "^2.1.16",
-    "@radix-ui/react-popover": "^1.1.15",
     "@react-three/drei": "^10.5.2",
     "@react-three/fiber": "^9.2.0",
     "@tiptap/core": "^3.2.0",
@@ -53,16 +49,13 @@
     "lodash.throttle": "^4.1.1",
     "lowlight": "^3.3.0",
     "mapbox-gl": "^3.5.2",
-    "mongoose": "^8.16.3",
     "next": "^15.4.3",
-    "next-mdx-remote": "^5.0.0",
     "react": "^19.0.0",
     "react-confetti": "^6.4.0",
     "react-dom": "^19.0.0",
     "react-hotkeys-hook": "^5.1.0",
     "react-markdown": "^10.1.0",
     "react-use": "^17.6.0",
-    "remark-gfm": "^4.0.0",
     "sharp": "^0.33.2",
     "splitting": "^1.0.6",
     "swr": "^2.2.5",
