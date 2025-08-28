@@ -6,6 +6,8 @@ const ip = isProd ? online : local;
 
 const nextConfig = {
   reactStrictMode: false,
+  basePath: "",
+  assetPrefix: undefined,
   async rewrites() {
     console.log("🚀 Rewrites configuration loaded");
     return [
