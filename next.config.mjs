@@ -1,8 +1,4 @@
-const isProd = process.env.NODE_ENV === "production";
-
-const online = "https://eco-node.onrender.com";
-const local = "http://localhost:8080";
-const ip = isProd ? online : local;
+const ip = process.env.NEXT_PUBLIC_DEPLOYMENT_URL;
 
 const nextConfig = {
   reactStrictMode: false,
