@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 export const revalidate = 3600; // cache directory listings for 1 hour
 
-// GET /api/gh/list?dir=<folder>
+// GET /api/github/list?dir=<folder>
 // Returns a simplified list of files under a folder in a private GitHub repo
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -21,7 +21,7 @@ export async function GET(req: Request) {
   if (!token) {
     return NextResponse.json(
       { error: "GITHUB_TOKEN required for private repo" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -40,7 +40,7 @@ export async function GET(req: Request) {
   if (!res.ok) {
     return NextResponse.json(
       { error: `GitHub API ${res.status}`, url: api },
-      { status: res.status }
+      { status: res.status },
     );
   }
 

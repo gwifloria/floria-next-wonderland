@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic"; // always run on server
 export const revalidate = 3600; // cache responses for 1h
 
-// GET /api/gh/commit?path=<dir/file.md>
+// GET /api/github/commit?path=<dir/file.md>
 // Returns the latest commit info for a given file in your private GitHub repo
 // Shape: { updatedAt: ISOString | null, sha: string | null, url: string | null }
 export async function GET(req: Request) {
@@ -19,7 +19,7 @@ export async function GET(req: Request) {
   if (!token) {
     return NextResponse.json(
       { error: "GITHUB_TOKEN required for private repo" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -38,7 +38,7 @@ export async function GET(req: Request) {
   if (!res.ok) {
     return NextResponse.json(
       { error: `GitHub API ${res.status}`, url: api },
-      { status: res.status }
+      { status: res.status },
     );
   }
 

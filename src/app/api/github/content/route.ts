@@ -4,7 +4,7 @@ export const revalidate = 0; // always dynamic; do not statically cache
 export const dynamic = "force-dynamic";
 
 /**
- * GET /api/gh/content?path=<dir/file.md>
+ * GET /api/github/content?path=<dir/file.md>
  * Returns raw markdown/text from a private GitHub repository using the
  * Contents API with Accept: application/vnd.github.raw.
  */
@@ -27,13 +27,13 @@ export async function GET(req: Request) {
           error:
             "GITHUB_TOKEN is required on the server for private repo access. Set it in your environment.",
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
     // Encode each path segment to preserve '/'
     const safe = p.split("/").map(encodeURIComponent).join("/");
     const api = `https://api.github.com/repos/${owner}/${repo}/contents/${safe}?ref=${encodeURIComponent(
-      branch
+      branch,
     )}`;
     console.log(api);
 
@@ -49,7 +49,7 @@ export async function GET(req: Request) {
     if (!res.ok) {
       return NextResponse.json(
         { error: `GitHub API ${res.status}`, url: api },
-        { status: res.status }
+        { status: res.status },
       );
     }
 
