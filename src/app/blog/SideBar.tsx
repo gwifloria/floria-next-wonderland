@@ -13,7 +13,9 @@ function SidebarSection({
 }) {
   const isByteNotes = category === "ByteNotes";
   const { dot } = catStyles(category);
-  const { data: group } = useSWR<GitHubItem[]>(`/api/gh/list?dir=${category}`);
+  const { data: group } = useSWR<GitHubItem[]>(
+    `/api/github/list?dir=${category}`,
+  );
 
   if (!group) {
     return (
@@ -71,7 +73,7 @@ function SidebarSection({
                   "relative block rounded-md px-3 py-2 text-sm transition-colors text-neutral-700",
                   "hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800/60",
                   isActive &&
-                    "bg-macaronblue-100 dark:bg-macaronblue-800/40 text-macaronblue-900 dark:text-macaronblue-100 font-semibold"
+                    "bg-macaronblue-100 dark:bg-macaronblue-800/40 text-macaronblue-900 dark:text-macaronblue-100 font-semibold",
                 )}
               >
                 {isActive && (
@@ -79,7 +81,7 @@ function SidebarSection({
                     aria-hidden
                     className={cx(
                       "absolute left-0 top-0 h-full w-1 rounded-l-md",
-                      "bg-macaronblue-500"
+                      "bg-macaronblue-500",
                     )}
                   />
                 )}
