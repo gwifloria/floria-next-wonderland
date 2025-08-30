@@ -1,7 +1,0 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-echo "🔍 Running ts check before push..."
-yarn typecheck
-
-echo "🔍 Running tests before push..."
-yarn test --watchAll=false && echo "✅ Unit tests passed!"

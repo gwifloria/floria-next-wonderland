@@ -7,3 +7,5 @@ yarn lint-staged || {
   echo "❌ lint-staged failed — aborting commit."
   exit 1
 }
+echo "🔍 Running ts check before push..."
+yarn typecheck
