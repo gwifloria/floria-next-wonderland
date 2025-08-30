@@ -20,7 +20,9 @@
   },
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [
-      "yarn prettier --write"
+      "yarn prettier --write",
+      "eslint --fix",
+      "yarn -s jest --findRelatedTests"
     ]
   },
   "dependencies": {

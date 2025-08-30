@@ -1,7 +1,7 @@
 // 4. API 错误处理工具 lib/api-helpers.ts
+import { ApiResponse } from "@/types/lab";
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
-import { ApiResponse } from "../type";
 
 export function handleError(error: any): NextResponse<ApiResponse> {
   console.error("API Error:", error);
