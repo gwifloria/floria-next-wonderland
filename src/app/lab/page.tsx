@@ -10,17 +10,23 @@ import {
   tabVariants,
 } from "./constant";
 import LabCard from "./LabCard";
-import { Category, LabEntry } from "./type";
-import { useLabApi } from "./useLab";
 import { useLabInitializer } from "./useLabInitializer";
 import { useLabUpdater } from "./useLabUpdater";
 
-export default function LabPageContainer() {
-  const [activeCategory, setActiveCategory] = useState<Category>("tech");
-  const [showOnlyPending, setShowOnlyPending] = useState(false);
-  const [editingEntry, setEditingEntry] = useState<LabEntry | null>(null);
+import { Lab, LabCategory, LabStatus } from "@/types/lab";
+import { useLabs } from "./useLabs";
 
-  const { entries, isLoading, deleteEntry, updateEntry, refresh } = useLabApi();
+export default function LabPageContainer() {
+  const [activeCategory, setActiveCategory] = useState<LabCategory>("tech");
+  const [showOnlyPending, setShowOnlyPending] = useState(false);
+  const [editingEntry, setEditingEntry] = useState<Lab | null>(null);
+  const {
+    labs: entries,
+    loading: isLoading,
+    fetchLabs,
+    updateLab,
+    deleteLab,
+  } = useLabs();
 
   const labInit = useLabInitializer({ defaultCategory: activeCategory });
 
@@ -31,30 +37,30 @@ export default function LabPageContainer() {
       entries?.filter(
         (entry) =>
           entry.category === activeCategory &&
-          (!showOnlyPending || entry.status !== "resolved"),
+          (!showOnlyPending || entry.status !== "resolved")
       ) || []
     );
   }, [activeCategory, entries, showOnlyPending]);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: any) => {
     try {
-      await deleteEntry({ id: id });
-      await refresh();
+      await deleteLab(id);
+      await fetchLabs();
     } catch (error) {
       console.error("Failed to delete entry:", error);
     }
   };
 
-  const handleStatusChange = async (id: string, newStatus: string) => {
+  const handleStatusChange = async (id: string, newStatus: LabStatus) => {
     try {
-      await updateEntry({ id, status: newStatus });
-      await refresh();
+      await updateLab(id, { status: newStatus });
+      await fetchLabs();
     } catch (error) {
       console.error("Failed to update entry:", error);
     }
   };
 
-  const handleEdit = (entry: LabEntry) => {
+  const handleEdit = (entry: Lab) => {
     setEditingEntry(entry);
     labUpdater.open();
   };
@@ -113,21 +119,23 @@ export default function LabPageContainer() {
           transition={{ duration: 0.4 }}
         >
           <div className="flex gap-4">
-            {(Object.keys(categoryLabelEmoji) as Category[]).map((category) => (
-              <motion.button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
-                  activeCategory === category
-                    ? "bg-mint-500 text-white shadow-lg shadow-mint-500/30"
-                    : "bg-gray-50 text-gray-600 hover:bg-gray-100 hover:shadow-md"
-                }`}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {categoryLabelEmoji[category]} {category.toUpperCase()}
-              </motion.button>
-            ))}
+            {(Object.keys(categoryLabelEmoji) as LabCategory[]).map(
+              (category) => (
+                <motion.button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
+                    activeCategory === category
+                      ? "bg-mint-500 text-white shadow-lg shadow-mint-500/30"
+                      : "bg-gray-50 text-gray-600 hover:bg-gray-100 hover:shadow-md"
+                  }`}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {categoryLabelEmoji[category]} {category.toUpperCase()}
+                </motion.button>
+              )
+            )}
           </div>
           <div className="flex items-center gap-4">
             <Button
@@ -164,13 +172,14 @@ export default function LabPageContainer() {
           {filteredEntries.length > 0 ? (
             filteredEntries.map((entry) => (
               <LabCard
-                key={entry.id}
                 {...entry}
+                id={entry.id}
+                key={entry.id}
+                onEdit={() => handleEdit(entry)}
                 onDelete={() => handleDelete(entry.id)}
-                onStatusChange={(status) =>
+                onStatusChange={(status: LabStatus) =>
                   handleStatusChange(entry.id, status)
                 }
-                onEdit={() => handleEdit(entry)}
               />
             ))
           ) : (

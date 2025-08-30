@@ -1,5 +1,5 @@
 export interface MessageItem {
-  _id?: string;
+  id?: string;
   content: string;
   createdAt: number;
 }

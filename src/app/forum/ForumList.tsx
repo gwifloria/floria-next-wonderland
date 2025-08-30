@@ -15,7 +15,7 @@ export default function ForumList({
       ) : (
         <>
           {messages?.map((m) => (
-            <ForumItem onDelete={refresh} key={m._id} item={m} />
+            <ForumItem onDelete={refresh} key={m.id} item={m} />
           ))}
         </>
       )}

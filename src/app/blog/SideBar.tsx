@@ -13,7 +13,7 @@ function SidebarSection({
 }) {
   const isByteNotes = category === "ByteNotes";
   const { dot } = catStyles(category);
-  const { data: group } = useSWR<GitHubItem[]>(`/api/gh-list?dir=${category}`);
+  const { data: group } = useSWR<GitHubItem[]>(`/api/gh/list?dir=${category}`);
 
   if (!group) {
     return (

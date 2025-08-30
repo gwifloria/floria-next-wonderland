@@ -1,5 +1,5 @@
+import { LabCategory, LabType } from "@/types/lab";
 import { type Variants } from "framer-motion";
-import { Category, LabItemType } from "./type";
 
 export const statusColor = {
   open: "bg-macaronblue-50 text-macaronblue-600 border border-macaronblue-200",
@@ -22,18 +22,18 @@ export const cardVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
 };
-export const typeStyle: Record<LabItemType, string> = {
+export const typeStyle: Record<LabType, string> = {
   issue: "bg-green-50 text-green-800",
   bug: "bg-rose-50 text-rose-800",
   idea: "bg-nepal-50 text-nepal-800",
 };
 
-export const typeEmoji: Record<LabItemType, string> = {
+export const typeEmoji: Record<LabType, string> = {
   bug: "🐛",
   idea: "💡",
   issue: "📌",
 };
-export const categoryLabelEmoji: Record<Category, string> = {
+export const categoryLabelEmoji: Record<LabCategory, string> = {
   tech: "🧑‍💻",
   life: "🍵",
 };

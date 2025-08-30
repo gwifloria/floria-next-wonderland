@@ -1,32 +1,31 @@
+import { Lab, LabUpdateInput } from "@/types/lab";
 import { App, Drawer } from "antd";
 import { useState } from "react";
 import LabForm from "./LabForm";
-import { LabEntry } from "./type";
-import { useLabApi } from "./useLab";
+import { useLabs } from "./useLabs";
 
 interface UseLabUpdaterProps {
-  entry?: LabEntry | null;
+  entry: Lab | null;
 }
 
 export function useLabUpdater({ entry }: UseLabUpdaterProps) {
   const { message } = App.useApp();
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { updateEntry, refresh } = useLabApi();
+  const { updateLab, fetchLabs } = useLabs();
 
   const open = () => setVisible(true);
   const close = () => setVisible(false);
 
-  const handleSubmit = async (values: Partial<LabEntry>) => {
+  const handleSubmit = async (values: Partial<LabUpdateInput>) => {
     if (!entry) return;
     setLoading(true);
     try {
-      await updateEntry({
-        id: entry.id,
+      await updateLab(entry.id, {
         ...values,
       });
       close();
-      refresh();
+      fetchLabs();
       console.log(message);
       message.success("更新成功");
     } catch (err) {

@@ -8,12 +8,12 @@ const fetcher = (url: string) => fetch(url).then((res) => res.text());
 
 export function MdxPost({ path }: { path: string }) {
   const { data: rawContent, error } = useSWR(
-    path ? `/api/gh-content?path=${path}` : null,
+    path ? `/api/github/content?path=${path}` : null,
     fetcher
   );
 
   const metaUrl = path
-    ? `/api/gh-last-update?path=${encodeURIComponent(path)}`
+    ? `/api/github/commit?path=${encodeURIComponent(path)}`
     : null;
   const { data: info } = useSWR(metaUrl, (u) => fetch(u).then((r) => r.json()));
 

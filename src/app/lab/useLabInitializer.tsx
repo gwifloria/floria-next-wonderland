@@ -1,11 +1,11 @@
+import { LabCategory, LabCreateInput } from "@/types/lab";
 import { App, Modal } from "antd";
 import { useState } from "react";
 import LabForm from "./LabForm";
-import { Category, LabEntry } from "./type";
-import { useLabApi } from "./useLab";
+import { useLabs } from "./useLabs";
 
 interface UseLabInitializerProps {
-  defaultCategory?: Category;
+  defaultCategory?: LabCategory;
 }
 
 export function useLabInitializer({
@@ -13,23 +13,25 @@ export function useLabInitializer({
 }: UseLabInitializerProps = {}) {
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { addEntry, refresh } = useLabApi();
+  const { addLab, fetchLabs } = useLabs();
+
   const { message } = App.useApp();
 
   const open = () => setVisible(true);
   const close = () => setVisible(false);
 
-  const handleSubmit = async (values: Partial<LabEntry>) => {
+  const handleSubmit = async (values: Partial<LabCreateInput>) => {
     setLoading(true);
     try {
-      await addEntry({
-        ...values,
-        category: defaultCategory,
+      await addLab({
+        category: values.category ?? defaultCategory,
         status: "open",
-        createdAt: new Date().toISOString(),
+        title: values.title ?? "",
+        content: values.content ?? "",
+        type: values.type ?? "idea",
       });
       close();
-      refresh();
+      fetchLabs();
       message.success("🎉 创建成功！");
     } catch (err) {
       message.error("😢 创建失败，请重试！");

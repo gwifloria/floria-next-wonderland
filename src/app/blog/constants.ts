@@ -1,10 +1,10 @@
 export type CatKey = "ByteNotes" | "Murmurs";
 
-export type Category = { key: CatKey; label: string };
+export type BlogCategory = { key: CatKey; label: string };
 
-export type CateGroup = Category & { files: string[] };
+export type CateGroup = BlogCategory & { files: string[] };
 
-export const categories: readonly Category[] = [
+export const categories: readonly BlogCategory[] = [
   { key: "ByteNotes", label: "ByteNotes" },
   { key: "Murmurs", label: "Murmurs" },
 ];

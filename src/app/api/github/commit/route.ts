@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic"; // always run on server
 export const revalidate = 3600; // cache responses for 1h
 
-// GET /api/github/commit?path=<dir/file.md>
+// GET /api/gh/commit?path=<dir/file.md>
 // Returns the latest commit info for a given file in your private GitHub repo
 // Shape: { updatedAt: ISOString | null, sha: string | null, url: string | null }
 export async function GET(req: Request) {
