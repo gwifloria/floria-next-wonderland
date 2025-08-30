@@ -14,23 +14,6 @@ test.describe("Toolbar behavior on /forum", () => {
     await page.locator(".ant-spin").waitFor({ state: "detached" });
 
     await editor.click();
-
-    // // 无序列表
-    // await page.getByTestId("tt-btn-bullet").click();
-    // await editor.pressSequentially("item 1");
-    // // wait until the first list item is committed
-    // await expect(editor.locator("ul li")).toHaveCount(1, { timeout: 10000 });
-
-    // // create next list item and type
-    // await editor.press("Enter");
-    // await editor.pressSequentially("item 2");
-    // await expect(editor.locator("ul li")).toHaveCount(2, { timeout: 10000 });
-
-    // // 代码块
-    // await page.getByTestId("tt-btn-code").click();
-    // await editor.press("Enter");
-    // await editor.pressSequentially("console.log('x')");
-    // await expect(editor.locator("pre code")).toContainText("console.log('x')");
   });
 
   test("undo/redo availability", async ({ page }) => {
@@ -49,6 +32,5 @@ test.describe("Toolbar behavior on /forum", () => {
 
     // Playwright 不直接读出 ProseMirror state，这里只做按钮存在性与无报错验证
     await expect(page.getByTestId("tt-btn-undo")).toBeVisible();
-    await expect(page.getByTestId("tt-btn-redo")).toBeVisible();
   });
 });

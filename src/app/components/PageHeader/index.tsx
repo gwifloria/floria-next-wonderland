@@ -1,4 +1,5 @@
 "use client";
+import { toAbsPath } from "@/util/path";
 import Link from "next/link";
 import { routes } from "./router";
 
@@ -22,7 +23,7 @@ const PageHeader = () => {
         <div className="navigation-bar flex gap-2 sm:gap-4 md:gap-8">
           {routesKeys.map((route) => (
             <Link
-              href={route}
+              href={toAbsPath(route)}
               key={route}
               className="px-3 py-1 rounded-full text-mint-800 text-sm md:text-lg font-mono font-semibold hover:bg-mint-100 hover:text-rose-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-mint-200"
             >

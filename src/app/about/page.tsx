@@ -2,7 +2,8 @@
 import { Avatar, Segmented, Typography } from "antd";
 import { useState } from "react";
 import { skills } from "../components/PersonalIntro/constant";
-import { education, experiences, labels, personalStory } from "./constant";
+import { education, experiences, labels } from "./constant";
+import { GapMarkdown } from "./Gap";
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -41,7 +42,7 @@ export default function AboutMePage() {
       <div className="container bg-white rounded-3xl mx-auto px-4 py-8 my-12 md:my-16 lg:my-20">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center gap-3 mb-4">
             <Segmented
               options={[
                 { label: "中文", value: "zh" },
@@ -65,7 +66,6 @@ export default function AboutMePage() {
             clean, maintainable code and always learning new technologies.
           </Paragraph>
         </div>
-
         <div className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-10">
           {/* Resume Section */}
           <section>
@@ -217,69 +217,13 @@ export default function AboutMePage() {
                 ))}
               </div>
             </CardSection>
-            {/* 
-            <CardSection title={labels[lang].connect} className=" mb-0">
-              <div className="flex justify-center space-x-6">
-                <a
-                  href="https://github.com/yourusername"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-2xl text-gray-700 hover:text-purple-500 transition-colors"
-                >
-                  <GithubOutlined />
-                </a>
-                <a
-                  href="https://linkedin.com/in/yourusername"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-2xl text-gray-700 hover:text-purple-500 transition-colors"
-                >
-                  <LinkedinOutlined />
-                </a>
-                <a
-                  href="mailto:gwifloria@outlook.com"
-                  className="text-2xl text-gray-700 hover:text-purple-500 transition-colors"
-                >
-                  <MailOutlined />
-                </a>
-              </div>
-              <Divider />
-              <div className="text-center">
-                <Text className="text-gray-500">
-                  Made with <HeartOutlined className="text-red-500 mx-1" />{" "}
-                  using Next.js & Ant Design
-                </Text>
-              </div>
-            </CardSection> */}
           </section>
-          {/* Brief Introduction Section */}
+
+          {/* Gap Section */}
           <section>
             <CardSection title={labels[lang].journey} className="mb-8 md:mb-0">
-              <div className="space-y-5 text-gray-700">
-                <div>
-                  <Text strong className="block mb-1">
-                    {STORY_LABELS[lang].gap}
-                  </Text>
-                  <Paragraph className="mb-0">
-                    {personalStory.gapReason[lang]}
-                  </Paragraph>
-                </div>
-                <div>
-                  <Text strong className="block mb-1">
-                    {STORY_LABELS[lang].major}
-                  </Text>
-                  <Paragraph className="mb-0">
-                    {personalStory.whyMajor[lang]}
-                  </Paragraph>
-                </div>
-                <div>
-                  <Text strong className="block mb-1">
-                    {STORY_LABELS[lang].now}
-                  </Text>
-                  <Paragraph className="mb-0">
-                    {personalStory.careerThoughts[lang]}
-                  </Paragraph>
-                </div>
+              <div className="max-w-3xl mx-auto leading-8">
+                <GapMarkdown />
               </div>
             </CardSection>
           </section>

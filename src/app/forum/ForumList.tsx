@@ -1,5 +1,5 @@
 import ForumItem from "./ForumItem";
-import { MessageItem } from "./forumUtils";
+import { MessageItem } from "./type";
 
 export default function ForumList({
   messages,

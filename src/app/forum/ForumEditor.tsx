@@ -7,15 +7,15 @@ import { useTipTapEditor } from "../components/TipTapEditor/useTipTapEditor";
 import { useThrottle } from "../tools/useThrottle";
 const MAX_CHARS = 200;
 export default function ForumEditor({
-  onPostSuccess,
+  onSendSuccess,
 }: {
-  onPostSuccess: () => void;
+  onSendSuccess: () => void;
 }) {
   const { element, editor } = useTipTapEditor();
 
   const { message } = App.useApp();
   const { show, confettiContext } = useConfetti();
-  const { trigger } = useSWRMutation("/floria-service/message/send", {
+  const { trigger } = useSWRMutation("/api/forum/send", {
     method: "POST",
   });
 
@@ -39,13 +39,13 @@ export default function ForumEditor({
       await trigger({ content: content });
       message.success("留言已发送");
       show({ numberOfPieces: 300, duration: 5000 });
-      onPostSuccess();
+      onSendSuccess();
       editor.commands.clearContent();
     } catch (err) {
       console.log(err);
       message.error("发送失败");
     }
-  }, [editor, message, onPostSuccess, show, trigger]);
+  }, [editor, message, onSendSuccess, show, trigger]);
 
   const throttledPost = useThrottle(handleUpload, 3000);
 

@@ -1,7 +1,7 @@
 import { useSWRMutation } from "@/api/useFetch";
 import { App, Popconfirm, Typography } from "antd";
 import { format } from "date-fns";
-import { MessageItem } from "./forumUtils";
+import { MessageItem } from "./type";
 
 const { Text } = Typography;
 const isProd = process.env.NODE_ENV === "production";
@@ -13,7 +13,7 @@ export default function ForumItem({
   item: MessageItem;
   onDelete: () => void;
 }) {
-  const { trigger } = useSWRMutation("/floria-service/message/delete", {
+  const { trigger } = useSWRMutation("/api/forum/delete", {
     method: "post",
   });
   const { message } = App.useApp();
