@@ -80,18 +80,16 @@ export const GapMarkdown = () => {
   const { content } = matter(rawContent ?? "");
 
   return (
-    <div className="md:grid md:grid-cols-[1fr,14rem] md:gap-8">
-      <div
-        ref={containerRef}
-        className="prose prose-neutral dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-a:no-underline"
+    <div
+      ref={containerRef}
+      className="prose prose-neutral dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-a:no-underline"
+    >
+      <ReactMarkdown
+        rehypePlugins={[rehypeSlug, rehypeAutolinkHeadings]}
+        components={mdxComponents}
       >
-        <ReactMarkdown
-          rehypePlugins={[rehypeSlug, rehypeAutolinkHeadings]}
-          components={mdxComponents}
-        >
-          {content}
-        </ReactMarkdown>
-      </div>
+        {content}
+      </ReactMarkdown>
     </div>
   );
 };
