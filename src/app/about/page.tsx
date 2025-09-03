@@ -1,10 +1,12 @@
 "use client";
-import { Avatar, Segmented, Typography } from "antd";
+import { PrinterOutlined } from "@ant-design/icons";
+import { Avatar, FloatButton, Segmented, Typography } from "antd";
 import Image from "next/image";
 import { useState } from "react";
 import { skills } from "../components/PersonalIntro/constant";
 import { education, experiences, labels } from "./constant";
 import { GapMarkdown } from "./Gap";
+import "./print.css";
 
 // Shared types / utils
 type Lang = "zh" | "en";
@@ -310,7 +312,7 @@ export default function AboutMePage() {
             </ScrapbookCard>
             <ScrapbookCard
               title={L.journey}
-              className="space-y-6"
+              className="space-y-6 print:hidden"
               tapeVariant="beige"
             >
               <div className="mx-auto leading-8">
@@ -320,6 +322,15 @@ export default function AboutMePage() {
           </section>
         </div>
       </div>
+      <FloatButton
+        icon={<PrinterOutlined />}
+        tooltip="导出 PDF"
+        type="primary"
+        className="print:hidden"
+        shape="circle"
+        style={{ right: 24, bottom: 24 }}
+        onClick={() => typeof window !== "undefined" && window.print()}
+      />
     </main>
   );
 }

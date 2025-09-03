@@ -1,0 +1,55 @@
+/* End of file */
+
+/* globals.css file appended with: */
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm; /* safe printable area */
+  }
+
+  /* Remove noisy backgrounds & shadows for clean PDF */
+  html,
+  body {
+    background: #fff !important;
+  }
+  .about-page .container {
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+  .about-page [class*="shadow"],
+  .about-page [class*="shadow-"] {
+    box-shadow: none !important;
+  }
+  .about-page [style*="background-image"] {
+    background-image: none !important;
+  }
+
+  /* Hide decorative stickers, segmented switch, and any print:hidden utility */
+  img[src*="/tape/"] {
+    display: none !important;
+  }
+  .ant-segmented {
+    display: none !important;
+  }
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Improve text contrast for print */
+  .prose,
+  .about-page {
+    color: #111 !important;
+  }
+  .text-neutral-700,
+  .text-neutral-700\/90,
+  .text-neutral-600 {
+    color: #111 !important;
+  }
+
+  /* Avoid page breaks inside cards */
+  .about-page .rounded-3xl {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
