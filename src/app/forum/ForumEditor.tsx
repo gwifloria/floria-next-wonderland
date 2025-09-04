@@ -3,7 +3,7 @@ import { useSWRMutation } from "@/api/useFetch";
 import { useConfetti } from "@/hooks/useConfetti";
 import { App, Button } from "antd";
 import { useCallback } from "react";
-import { useTipTapEditor } from "../components/TipTapEditor/useTipTapEditor";
+import { useTipTapEditor } from "../../components/TipTapEditor/useTipTapEditor";
 import { useThrottle } from "../tools/useThrottle";
 const MAX_CHARS = 200;
 export default function ForumEditor({

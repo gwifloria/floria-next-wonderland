@@ -2,7 +2,7 @@ import "antd/dist/reset.css"; // ✅ 必须放在最靠前
 
 import "@ant-design/v5-patch-for-react-19";
 
-import PageHeader from "@/app/components/PageHeader";
+import PageHeader from "@/components/PageHeader";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 
 import ClientProviders from "./AntDProvider";
