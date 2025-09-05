@@ -1,9 +1,27 @@
 "use client";
-import { useSWR } from "@/api/useFetch";
 import { Skeleton } from "antd";
 import Link from "next/link";
+import useSWR from "swr";
 import { categories, CatKey, GitHubItem } from "./constants";
 import { catStyles, cx } from "./util";
+// components/ui/SectionTape.tsx
+export function SectionTape({ label }: { label: string }) {
+  return (
+    <div className="relative inline-flex items-center gap-2 pl-2">
+      <span
+        className="absolute -top-2 -left-4 rotate-[-6deg] w-20 h-4
+        bg-[url('/stickers/tape-blue.png')] bg-contain bg-no-repeat opacity-90"
+      />
+      <span className="font-semibold tracking-wide text-neutral-700">
+        {label}
+      </span>
+    </div>
+  );
+}
+function toSlugPath(p: string) {
+  return p.split("/").map(encodeURIComponent).join("/");
+}
+
 function SidebarSection({
   category,
   activePost,
@@ -13,8 +31,9 @@ function SidebarSection({
 }) {
   const isByteNotes = category === "ByteNotes";
   const { dot } = catStyles(category);
-  const { data: group } = useSWR<GitHubItem[]>(`/api/gh-list?dir=${category}`);
-
+  const { data: group } = useSWR<GitHubItem[]>(
+    `/api/github/list?dir=${category}`,
+  );
   if (!group) {
     return (
       <section className="space-y-2">
@@ -59,9 +78,7 @@ function SidebarSection({
         {group?.map((file) => {
           const isActive = file.path === activePost;
           const display = file.name.replace(/\.(md|mdx)$/i, "");
-          const href = isActive
-            ? { pathname: "/blog" }
-            : { pathname: "/blog", query: { post: file.path } };
+          const href = `/blog/${toSlugPath(file.path)}`;
           return (
             <li key={file.path}>
               <Link
@@ -71,18 +88,9 @@ function SidebarSection({
                   "relative block rounded-md px-3 py-2 text-sm transition-colors text-neutral-700",
                   "hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800/60",
                   isActive &&
-                    "bg-macaronblue-100 dark:bg-macaronblue-800/40 text-macaronblue-900 dark:text-macaronblue-100 font-semibold"
+                    "bg-macaronblue-100 dark:bg-macaronblue-800/40 text-macaronblue-900 dark:text-macaronblue-100",
                 )}
               >
-                {isActive && (
-                  <span
-                    aria-hidden
-                    className={cx(
-                      "absolute left-0 top-0 h-full w-1 rounded-l-md",
-                      "bg-macaronblue-500"
-                    )}
-                  />
-                )}
                 {display}
               </Link>
             </li>
@@ -95,8 +103,14 @@ function SidebarSection({
 
 export const Sidebar = ({ activePost }: { activePost: string }) => {
   return (
-    <aside className="  rounded-2xl w-64 bg-neutral-50 border-r p-6 my-4 overflow-y-auto max-h-[calc(100vh-10rem)]">
-      <h2 className="font-bold text-lg mb-4">Posts</h2>
+    <aside className="">
+      <Link
+        href="/blog"
+        aria-label="Go to Blog home"
+        className="inline-block font-bold text-lg mb-4 text-neutral-800 dark:text-neutral-100 hover:text-nepal-600 dark:hover:text-nepal-300 transition-colors"
+      >
+        Blog
+      </Link>
       <nav className="space-y-5">
         {categories.map((g) => (
           <SidebarSection

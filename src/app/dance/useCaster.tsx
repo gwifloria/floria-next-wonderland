@@ -1,4 +1,6 @@
-import { useSWR, useSWRMutation } from "@/api/useFetch";
+import { postFetcher } from "@/util/fetch";
+import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 
 export enum teachers {
   "Key" = 535,
@@ -15,15 +17,11 @@ interface CasterSchedule {
 export const useCaster = () => {
   const { trigger: subscribe } = useSWRMutation(
     "/floria-service/caster/subscribe",
-    {
-      method: "POST",
-    },
+    postFetcher,
   );
   const { trigger: unsubscribe } = useSWRMutation(
     "/floria-service/caster/unsubscribe",
-    {
-      method: "POST",
-    },
+    postFetcher,
   );
 
   const { data, isLoading, mutate } = useSWR<CasterSchedule[]>(

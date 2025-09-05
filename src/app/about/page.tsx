@@ -1,18 +1,58 @@
 "use client";
-import { Avatar, Segmented, Typography } from "antd";
+import { PrinterOutlined } from "@ant-design/icons";
+import { Avatar, FloatButton, Segmented, Typography } from "antd";
+import Image from "next/image";
 import { useState } from "react";
-import { skills } from "../components/PersonalIntro/constant";
-import { education, experiences, labels, personalStory } from "./constant";
+import { skills } from "../../components/PersonalIntro/constant";
+import { education, experiences, labels } from "./constant";
+import { GapMarkdown } from "./Gap";
+import "./print.css";
+
+// Shared types / utils
+type Lang = "zh" | "en";
+
+const HAND_FONT = {
+  fontFamily:
+    "'Caveat', 'Patrick Hand', 'Segoe UI', system-ui, -apple-system, sans-serif",
+} as const;
+
+const PAPER_BG_STYLE: React.CSSProperties = {
+  backgroundImage:
+    "linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.92)), url('/textures/paper-fiber.png')",
+  backgroundRepeat: "repeat",
+  backgroundSize: "auto, 1024px 1024px",
+};
+
+const HERO_TITLE_STYLE: React.CSSProperties = {
+  ...HAND_FONT,
+  textShadow: "0.5px 0.5px 0.6px rgba(0,0,0,0.08)",
+};
 
 const { Title, Paragraph, Text } = Typography;
 
-const STORY_LABELS: Record<
-  "zh" | "en",
-  { gap: string; major: string; now: string }
-> = {
-  zh: { gap: "关于 Gap", major: "为什么选专业", now: "当下的思考" },
-  en: { gap: "About the gap", major: "Why this major", now: "Current mindset" },
-};
+const Sticker = ({
+  src,
+  className,
+  alt = "",
+}: {
+  src: string;
+  className?: string;
+  alt?: string;
+}) => (
+  <Image
+    src={src}
+    alt={alt}
+    width={75}
+    height={75}
+    className={className || ""}
+  />
+);
+
+const TAPE_SOURCES = {
+  pink: "/tape/tape-pink.png",
+  beige: "/tape/tape-beige.png",
+  blue: "/tape/tape-blue.png",
+} as const;
 
 type CardSectionProps = {
   title?: React.ReactNode;
@@ -20,105 +60,143 @@ type CardSectionProps = {
   className?: string;
 };
 
-const CardSection = ({ title, children, className = "" }: CardSectionProps) => (
-  <div
-    className={`p-6 bg-rose-100 backdrop-blur-sm shadow-lg rounded-3xl mb-10 ${className}`}
-  >
-    {title && (
-      <Title level={3} className="mb-6 text-xl font-semibold">
-        {title}
-      </Title>
-    )}
-    {children}
-  </div>
+const ScrapbookCard = ({
+  title,
+  children,
+  className = "",
+  tape = true,
+  tapeVariant,
+}: CardSectionProps & {
+  tape?: boolean;
+  tapeVariant?: keyof typeof TAPE_SOURCES;
+}) => {
+  const chosen = tapeVariant ?? "beige";
+  const tapeSrc = TAPE_SOURCES[chosen];
+  return (
+    <div
+      className={
+        `relative p-6 rounded-3xl mb-10 border border-milktea-200 shadow-sm ` +
+        className
+      }
+      style={PAPER_BG_STYLE}
+    >
+      {tape && (
+        <Sticker
+          src={tapeSrc}
+          className="pointer-events-none absolute -top-3 left-6 -rotate-6 opacity-90 h-8"
+          alt="tape"
+        />
+      )}
+
+      {title && (
+        <Title
+          level={3}
+          className="mb-6 text-xl font-semibold text-rose-700"
+          style={HAND_FONT}
+        >
+          {title}
+        </Title>
+      )}
+      {children}
+    </div>
+  );
+};
+
+const TimelineBar = () => (
+  <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-lg bg-gradient-to-b from-rose-200 to-rose-400" />
 );
 
 export default function AboutMePage() {
-  const [lang, setLang] = useState<"zh" | "en">("zh");
+  const [lang, setLang] = useState<Lang>("zh");
+  const L = labels[lang];
 
   return (
     <main className="about-page min-h-screen">
-      <div className="container bg-white rounded-3xl mx-auto px-4 py-8 my-12 md:my-16 lg:my-20">
+      <div className="container bg-milktea-100/90 border border-milktea-200 shadow-sm rounded-3xl mx-auto p-12 my-12 md:my-16 lg:my-20 bg-[url('/textures/paper-fiber.png')] bg-[length:1024px_1024px] bg-repeat">
         {/* Hero Section */}
-        <div className="text-center mb-16">
-          <div className="flex justify-center mb-4">
+        <div className="text-center mb-16 bg-milktea-50/85 border border-milktea-200 rounded-2xl p-6">
+          <div className="flex justify-center gap-3 mb-4">
             <Segmented
               options={[
                 { label: "中文", value: "zh" },
                 { label: "EN", value: "en" },
               ]}
               value={lang}
-              onChange={(val) => setLang(val as "zh" | "en")}
+              onChange={(val) => setLang(val as Lang)}
             />
           </div>
-          <Avatar
-            size={120}
-            src="/images/me.png"
-            className="mb-6 border-4 border-white shadow-lg"
-          />
-          <h1 className="text-rose-400 text-4xl font-bold mb-4 bg-clip-text ">
-            {labels[lang].about}
+          <div className="relative inline-block mb-6">
+            <Sticker
+              src="/tape/white-bow.png"
+              className="pointer-events-none absolute -top-6 left-1 -rotate-6 opacity-90 w-24 h-10"
+              alt="bow"
+            />
+            <Avatar
+              size={120}
+              src="/images/me.png"
+              className="border-4 border-white shadow-lg"
+            />
+          </div>
+          <h1
+            className="text-rose-600 text-4xl font-bold mb-4 tracking-wide"
+            style={HERO_TITLE_STYLE}
+          >
+            {L.about}
           </h1>
-          <Paragraph className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <Paragraph className="text-base leading-relaxed text-neutral-700/90 max-w-2xl mx-auto">
             Hi there! I&apos;m a passionate developer who loves creating
             beautiful and functional web experiences. I believe in writing
             clean, maintainable code and always learning new technologies.
           </Paragraph>
         </div>
-
-        <div className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-10">
+        <div className="space-y-10 md:space-y-0 ">
           {/* Resume Section */}
           <section>
-            <Title
-              level={2}
-              className="mb-6 text-2xl font-semibold bg-gradient-to-r bg-clip-text"
-            >
-              {labels[lang].resume}
-            </Title>
-
-            <CardSection title={labels[lang].personal}>
+            <ScrapbookCard title={L.personal} tape tapeVariant="beige">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <Text strong>{labels[lang].name}:</Text> 龚慧珏 / Floria
+                  <Text strong>{L.name}:</Text> 龚慧珏 / Floria
                   <br />
-                  <Text strong>{labels[lang].location}:</Text> —
+                  <Text strong>{L.location}:</Text> —
                   <br />
-                  <Text strong>{labels[lang].email}:</Text>{" "}
-                  gwifloria@outlook.com
+                  <Text strong>{L.email}:</Text> gwifloria@outlook.com
                   <br />
-                  <Text strong>{labels[lang].available}:</Text> Full-time,
-                  Freelance
+                  <Text strong>{L.available}:</Text> Full-time, Freelance
                 </div>
                 <div>
-                  <Text strong>{labels[lang].experience}:</Text> 5+ years
+                  <Text strong>{L.experience}:</Text> 5+ years
                   <br />
-                  <Text strong>{labels[lang].languages}:</Text> 中文 / English
-                  (TEM-8)
+                  <Text strong>{L.languages}:</Text> 中文 / English (TEM-8)
                   <br />
-                  <Text strong>{labels[lang].interests}:</Text> Web Development,
-                  Maps, Reusable UI
+                  <Text strong>{L.interests}:</Text> Web Development, Maps,
+                  Reusable UI
                 </div>
               </div>
-            </CardSection>
+              <Sticker
+                src="/tape/small-envelop.png"
+                className="pointer-events-none absolute -bottom-3 right-6 opacity-60 w-16 h-10"
+                alt="envelope"
+              />
+            </ScrapbookCard>
 
-            <CardSection title={labels[lang].skills}>
+            <ScrapbookCard title={L.skills} tapeVariant="pink">
               <div className="flex flex-wrap gap-2">
                 {skills.map((skill, idx) => (
                   <div
                     key={idx}
-                    className="px-4 py-2 text-sm font-medium rounded-full bg-gradient-to-r bg-rose-300 text-white"
+                    className="px-3 py-1.5 text-sm font-medium rounded-full bg-milktea-100 text-neutral-700 border border-milktea-300 hover:bg-rose-100 transition-colors"
                   >
                     {typeof skill === "string" ? skill : skill[lang]}
                   </div>
                 ))}
               </div>
-            </CardSection>
+            </ScrapbookCard>
 
-            <CardSection title={labels[lang].work}>
+            <ScrapbookCard title={L.work} tapeVariant="beige">
               <div className="space-y-6">
                 {experiences.map((exp, idx) => (
                   <div key={idx} className="relative pl-6">
-                    <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-lg bg-gradient-to-b from-[#d8b4a6] to-[#c1a192]" />
+                    <TimelineBar />
                     <div className="flex justify-between items-start mb-1">
                       <Title level={4} className="mb-0 text-lg font-semibold">
                         {typeof exp.company === "string"
@@ -133,7 +211,7 @@ export default function AboutMePage() {
                         {exp.period}
                       </Text>
                     </div>
-                    <Paragraph className="text-gray-600 mb-0">
+                    <Paragraph className="text-neutral-700 mb-0">
                       {typeof exp.description === "string"
                         ? exp.description
                         : exp.description[lang]}
@@ -147,7 +225,7 @@ export default function AboutMePage() {
                               className="pl-3 border-l border-slate-200"
                             >
                               <div className="flex justify-between items-start">
-                                <Text strong className="text-slate-800">
+                                <Text strong className="text-neutral-800">
                                   {"✎ "}
                                   {p.name[lang]}
                                 </Text>
@@ -163,14 +241,14 @@ export default function AboutMePage() {
                                   ) => (
                                     <span
                                       key={j}
-                                      className="px-2 py-1 text-xs rounded-full bg-white border border-slate-300 text-slate-700"
+                                      className="px-2 py-1 text-xs rounded-full bg-white border border-neutral-300 text-neutral-700"
                                     >
                                       {t[lang]}
                                     </span>
                                   ),
                                 )}
                               </div>
-                              <ul className="list-disc pl-5 text-slate-700">
+                              <ul className="list-disc pl-5 text-neutral-700">
                                 {p.highlights[lang].map(
                                   (li: string, k: number) => (
                                     <li key={k} className="mb-1">
@@ -186,13 +264,18 @@ export default function AboutMePage() {
                   </div>
                 ))}
               </div>
-            </CardSection>
+              <Sticker
+                src="/tape/phone-white.png"
+                className="pointer-events-none absolute -bottom-4 right-5 opacity-60 w-12 h-12"
+                alt="phone"
+              />
+            </ScrapbookCard>
 
-            <CardSection title={labels[lang].edu}>
+            <ScrapbookCard title={L.edu} tape tapeVariant="pink">
               <div className="space-y-6">
                 {education.map((edu, idx) => (
                   <div key={idx} className="relative pl-6">
-                    <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-lg bg-gradient-to-b from-[#d8b4a6] to-[#c1a192]" />
+                    <TimelineBar />
                     <div className="flex justify-between items-start mb-2">
                       <Title level={4} className="mb-1 text-lg font-semibold">
                         {typeof edu.degree === "string"
@@ -203,12 +286,12 @@ export default function AboutMePage() {
                         {edu.period}
                       </Text>
                     </div>
-                    <Text className="mb-2 block bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent font-semibold">
+                    <Text className="mb-2 block bg-gradient-to-r from-rose-500 to-rose-700 bg-clip-text text-transparent font-semibold">
                       {typeof edu.school === "string"
                         ? edu.school
                         : edu.school[lang]}
                     </Text>
-                    <Paragraph className="text-gray-600 mb-0">
+                    <Paragraph className="text-neutral-700 mb-0">
                       {typeof edu.description === "string"
                         ? edu.description
                         : edu.description[lang]}
@@ -216,75 +299,28 @@ export default function AboutMePage() {
                   </div>
                 ))}
               </div>
-            </CardSection>
-            {/* 
-            <CardSection title={labels[lang].connect} className=" mb-0">
-              <div className="flex justify-center space-x-6">
-                <a
-                  href="https://github.com/yourusername"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-2xl text-gray-700 hover:text-purple-500 transition-colors"
-                >
-                  <GithubOutlined />
-                </a>
-                <a
-                  href="https://linkedin.com/in/yourusername"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-2xl text-gray-700 hover:text-purple-500 transition-colors"
-                >
-                  <LinkedinOutlined />
-                </a>
-                <a
-                  href="mailto:gwifloria@outlook.com"
-                  className="text-2xl text-gray-700 hover:text-purple-500 transition-colors"
-                >
-                  <MailOutlined />
-                </a>
+            </ScrapbookCard>
+            <ScrapbookCard
+              title={L.journey}
+              className="space-y-6 print:hidden"
+              tapeVariant="beige"
+            >
+              <div className="mx-auto leading-8">
+                <GapMarkdown />
               </div>
-              <Divider />
-              <div className="text-center">
-                <Text className="text-gray-500">
-                  Made with <HeartOutlined className="text-red-500 mx-1" />{" "}
-                  using Next.js & Ant Design
-                </Text>
-              </div>
-            </CardSection> */}
-          </section>
-          {/* Brief Introduction Section */}
-          <section>
-            <CardSection title={labels[lang].journey} className="mb-8 md:mb-0">
-              <div className="space-y-5 text-gray-700">
-                <div>
-                  <Text strong className="block mb-1">
-                    {STORY_LABELS[lang].gap}
-                  </Text>
-                  <Paragraph className="mb-0">
-                    {personalStory.gapReason[lang]}
-                  </Paragraph>
-                </div>
-                <div>
-                  <Text strong className="block mb-1">
-                    {STORY_LABELS[lang].major}
-                  </Text>
-                  <Paragraph className="mb-0">
-                    {personalStory.whyMajor[lang]}
-                  </Paragraph>
-                </div>
-                <div>
-                  <Text strong className="block mb-1">
-                    {STORY_LABELS[lang].now}
-                  </Text>
-                  <Paragraph className="mb-0">
-                    {personalStory.careerThoughts[lang]}
-                  </Paragraph>
-                </div>
-              </div>
-            </CardSection>
+            </ScrapbookCard>
           </section>
         </div>
       </div>
+      <FloatButton
+        icon={<PrinterOutlined />}
+        tooltip="导出 PDF"
+        type="primary"
+        className="print:hidden"
+        shape="circle"
+        style={{ right: 24, bottom: 24 }}
+        onClick={() => typeof window !== "undefined" && window.print()}
+      />
     </main>
   );
 }

@@ -1,11 +1,11 @@
+import { Lab, LabCategory, LabType } from "@/types/lab";
 import { Button, Form, Input, Select } from "antd";
 import { useRef } from "react";
 import { categoryLabelEmoji, typeEmoji } from "./constant";
-import { Category, LabEntry, LabItemType } from "./type";
 
 interface LabFormProps {
-  initialValues?: Partial<LabEntry>;
-  onSubmit: (values: Partial<LabEntry>) => void;
+  initialValues?: Partial<Lab>;
+  onSubmit: (values: Partial<Lab>) => void;
   onCancel: () => void;
   loading?: boolean;
 }
@@ -43,7 +43,7 @@ export default function LabForm({
         <Select placeholder="请选择分类">
           {Object.keys(categoryLabelEmoji).map((cat) => (
             <Select.Option key={cat} value={cat}>
-              {categoryLabelEmoji[cat as Category]} {cat}
+              {categoryLabelEmoji[cat as LabCategory]} {cat}
             </Select.Option>
           ))}
         </Select>
@@ -57,7 +57,7 @@ export default function LabForm({
         <Select>
           {Object.keys(typeEmoji).map((type) => (
             <Select.Option key={type} value={type}>
-              {typeEmoji[type as LabItemType]} {type}
+              {typeEmoji[type as LabType]} {type}
             </Select.Option>
           ))}
         </Select>

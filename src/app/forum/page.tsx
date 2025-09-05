@@ -1,9 +1,9 @@
 "use client";
-import { useSWR } from "@/api/useFetch";
 import { Spin, Typography } from "antd";
+import useSWR from "swr";
 import ForumEditor from "./ForumEditor";
 import ForumList from "./ForumList";
-import { MessageItem } from "./forumUtils";
+import { MessageItem } from "./type";
 
 const { Title } = Typography;
 
@@ -13,7 +13,7 @@ export default function ForumPage() {
     isLoading,
     isValidating,
     mutate,
-  } = useSWR<MessageItem[]>("/floria-service/message/list");
+  } = useSWR<MessageItem[]>("/api/forum/list");
 
   return (
     <>
@@ -27,7 +27,7 @@ export default function ForumPage() {
         <Title level={2} className="mb-4">
           留言板 Message Board
         </Title>
-        <ForumEditor onPostSuccess={mutate} />
+        <ForumEditor onSendSuccess={mutate} />
 
         <ForumList messages={messages} refresh={mutate} />
       </div>

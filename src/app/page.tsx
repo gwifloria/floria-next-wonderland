@@ -1,17 +1,13 @@
-import HeroSection from "@/app/components/HeroSection";
-import ParallaxFavs from "@/app/components/ParallaxFavs";
-import SayHiButton from "@/app/components/SayHiButton";
-import PersonalIntroduction from "./components/PersonalIntro";
+import { HeroSection, NavCards, PaperBackdrop } from "@/components/Homepage";
+import SayHiButton from "@/components/SayHiButton";
 
 export default function HomeContainer() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between ">
-      <div className="w-full max-w-6xl bg-white rounded-[2.5rem] shadow-xl p-2 sm:p-8 md:p-12 lg:p-16 my-8 border-2 border-mint-100/40">
-        <ParallaxFavs />
+    <main className="relative px-12 py-24 flex flex-col items-center justify-between h-full overflow-hidden">
+      <PaperBackdrop />
+      <div className="backdrop-blur-[1px] w-full">
         <HeroSection />
-      </div>
-      <div className="w-full max-w-6xl bg-white rounded-[2.5rem] shadow-md p-2 sm:p-8 md:p-12 lg:p-16 my-8 border border-mint-100/30">
-        <PersonalIntroduction />
+        <NavCards></NavCards>
       </div>
       <SayHiButton />
     </main>

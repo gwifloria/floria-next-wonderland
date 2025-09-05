@@ -1,23 +1,23 @@
 "use client";
-import { useSWRMutation } from "@/api/useFetch";
+import { useMessage } from "@/hooks/UIProviders";
 import { useConfetti } from "@/hooks/useConfetti";
-import { App, Button } from "antd";
+import { postFetcher } from "@/util/fetch";
+import { Button } from "antd";
 import { useCallback } from "react";
-import { useTipTapEditor } from "../components/TipTapEditor/useTipTapEditor";
+import useSWRMutation from "swr/mutation";
+import { useTipTapEditor } from "../../components/TipTapEditor/useTipTapEditor";
 import { useThrottle } from "../tools/useThrottle";
 const MAX_CHARS = 200;
 export default function ForumEditor({
-  onPostSuccess,
+  onSendSuccess,
 }: {
-  onPostSuccess: () => void;
+  onSendSuccess: () => void;
 }) {
   const { element, editor } = useTipTapEditor();
+  const message = useMessage();
 
-  const { message } = App.useApp();
   const { show, confettiContext } = useConfetti();
-  const { trigger } = useSWRMutation("/floria-service/message/send", {
-    method: "POST",
-  });
+  const { trigger } = useSWRMutation("/api/forum/send", postFetcher);
 
   const handleUpload = useCallback(async () => {
     if (!editor) return;
@@ -39,20 +39,19 @@ export default function ForumEditor({
       await trigger({ content: content });
       message.success("留言已发送");
       show({ numberOfPieces: 300, duration: 5000 });
-      onPostSuccess();
+      onSendSuccess();
       editor.commands.clearContent();
     } catch (err) {
       console.log(err);
       message.error("发送失败");
     }
-  }, [editor, message, onPostSuccess, show, trigger]);
+  }, [editor, message, onSendSuccess, show, trigger]);
 
   const throttledPost = useThrottle(handleUpload, 3000);
 
   return (
     <div className="border rounded-xl p-4 bg-white mb-6">
       {confettiContext}
-
       {editor && (
         <>
           {element}
