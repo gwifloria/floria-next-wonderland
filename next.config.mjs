@@ -1,4 +1,4 @@
-const ip = process.env.NEXT_PUBLIC_DEPLOYMENT_URL;
+const ip = process.env.NEXT_PUBLIC_DEPLOYMENT_URL ?? "http://localhost:8080";
 
 const nextConfig = {
   reactStrictMode: false,
