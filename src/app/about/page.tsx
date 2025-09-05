@@ -42,8 +42,8 @@ const Sticker = ({
   <Image
     src={src}
     alt={alt}
-    width={120}
-    height={120}
+    width={75}
+    height={75}
     className={className || ""}
   />
 );
@@ -83,7 +83,7 @@ const ScrapbookCard = ({
       {tape && (
         <Sticker
           src={tapeSrc}
-          className="pointer-events-none absolute -top-3 left-6 -rotate-6 opacity-90 w-28 h-7"
+          className="pointer-events-none absolute -top-3 left-6 -rotate-6 opacity-90 h-8"
           alt="tape"
         />
       )}

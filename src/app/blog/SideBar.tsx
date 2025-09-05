@@ -4,7 +4,20 @@ import { Skeleton } from "antd";
 import Link from "next/link";
 import { categories, CatKey, GitHubItem } from "./constants";
 import { catStyles, cx } from "./util";
-
+// components/ui/SectionTape.tsx
+export function SectionTape({ label }: { label: string }) {
+  return (
+    <div className="relative inline-flex items-center gap-2 pl-2">
+      <span
+        className="absolute -top-2 -left-4 rotate-[-6deg] w-20 h-4
+        bg-[url('/stickers/tape-blue.png')] bg-contain bg-no-repeat opacity-90"
+      />
+      <span className="font-semibold tracking-wide text-neutral-700">
+        {label}
+      </span>
+    </div>
+  );
+}
 function toSlugPath(p: string) {
   return p.split("/").map(encodeURIComponent).join("/");
 }
