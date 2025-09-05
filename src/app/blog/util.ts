@@ -13,8 +13,7 @@ export function catStyles(cat: CatKey) {
   } as const;
 }
 export const textFetcher = (url: string) => fetch(url).then((r) => r.text());
-export const jsonFetcher = <T>(url: string) =>
-  fetch(url).then((r) => r.json() as Promise<T>);
+
 // src/utils/dom.ts
 export function getScrollParent(el: HTMLElement | null): HTMLElement {
   if (!el) return document.documentElement;

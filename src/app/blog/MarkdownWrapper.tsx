@@ -9,7 +9,7 @@ import { BlogSkeleton, EmptyState } from "./BlogSkelton";
 import { CommitMeta, CONTAINER_CLASS, dtf, PROSE_CLASS } from "./constants";
 import { mdxComponents } from "./mdxComponents";
 import { useTableOfContents } from "./useToc";
-import { jsonFetcher, textFetcher } from "./util";
+import { textFetcher } from "./util";
 
 export function MarkdownWrapper({ path }: { path?: string | null }) {
   const activePath = path ?? null;
@@ -22,7 +22,6 @@ export function MarkdownWrapper({ path }: { path?: string | null }) {
   );
   const { data: info } = useSWR<CommitMeta>(
     encoded ? `/api/github/commit?path=${encoded}` : null,
-    jsonFetcher,
   );
 
   // Parse front-matter

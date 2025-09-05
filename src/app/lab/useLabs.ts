@@ -31,12 +31,6 @@ interface UseLabsReturn {
   clearAllLabs: () => Promise<void>;
 }
 
-const jsonFetcher = async (url: string): Promise<LabListResponse> => {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
-};
-
 export function useLabs(): UseLabsReturn {
   const [filters, setFilters] = useState<UseLabsFilters>({});
 
@@ -49,11 +43,7 @@ export function useLabs(): UseLabsReturn {
     return `/api/lab/list${qs ? `?${qs}` : ""}`;
   }, [filters]);
 
-  const { data, error, isLoading, mutate } = useSWR<LabListResponse>(
-    listKey,
-    jsonFetcher,
-    { revalidateOnFocus: false }
-  );
+  const { data, error, isLoading, mutate } = useSWR<LabListResponse>(listKey);
 
   const fetchLabs = useCallback(
     async (next?: UseLabsFilters) => {
@@ -61,7 +51,7 @@ export function useLabs(): UseLabsReturn {
       // 让 SWR 使用新 key 重新请求
       await mutate();
     },
-    [mutate]
+    [mutate],
   );
 
   const addLab = useCallback(
@@ -76,7 +66,7 @@ export function useLabs(): UseLabsReturn {
       await mutate();
       return result.data as Lab;
     },
-    [mutate]
+    [mutate],
   );
 
   const updateLab = useCallback(
@@ -91,7 +81,7 @@ export function useLabs(): UseLabsReturn {
       await mutate();
       return result.data as Lab;
     },
-    [mutate]
+    [mutate],
   );
 
   const deleteLab = useCallback(
@@ -101,7 +91,7 @@ export function useLabs(): UseLabsReturn {
       if (!response.ok) throw new Error(result?.error || "删除失败");
       await mutate();
     },
-    [mutate]
+    [mutate],
   );
 
   const clearAllLabs = useCallback(async (): Promise<void> => {

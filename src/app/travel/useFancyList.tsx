@@ -1,7 +1,8 @@
-import { useSWRMutation } from "@/api/useFetch";
 import { MapDestinationMarker } from "@/types";
+import { postFetcher } from "@/util/fetch";
 import type { PopconfirmProps } from "antd";
 import { Button, Card, Image, Popconfirm, Space, Tag } from "antd";
+import useSWRMutation from "swr/mutation";
 const { Meta } = Card;
 // TODO
 interface FancyItem extends MapDestinationMarker {
@@ -9,9 +10,10 @@ interface FancyItem extends MapDestinationMarker {
 }
 
 const FancyItem = ({ item }: { item: FancyItem }) => {
-  const { trigger } = useSWRMutation("/floria-service/destination/delete", {
-    method: "DELETE",
-  });
+  const { trigger } = useSWRMutation(
+    "/floria-service/destination/delete",
+    postFetcher,
+  );
 
   const handleDelete: PopconfirmProps["onConfirm"] = (e) => {
     trigger({ id: item._id });

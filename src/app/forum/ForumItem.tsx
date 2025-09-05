@@ -1,6 +1,7 @@
-import { useSWRMutation } from "@/api/useFetch";
+import { postFetcher } from "@/util/fetch";
 import { App, Popconfirm, Typography } from "antd";
 import { format } from "date-fns";
+import useSWRMutation from "swr/mutation";
 import { MessageItem } from "./type";
 
 const { Text } = Typography;
@@ -13,9 +14,7 @@ export default function ForumItem({
   item: MessageItem;
   onDelete: () => void;
 }) {
-  const { trigger } = useSWRMutation("/api/forum/delete", {
-    method: "post",
-  });
+  const { trigger } = useSWRMutation("/api/forum/delete", postFetcher);
   const { message } = App.useApp();
 
   const handleDelete = async (id: string) => {

@@ -1,6 +1,6 @@
 "use client";
-import { useSWR } from "@/api/useFetch";
 import { Spin, Typography } from "antd";
+import useSWR from "swr";
 import ForumEditor from "./ForumEditor";
 import ForumList from "./ForumList";
 import { MessageItem } from "./type";

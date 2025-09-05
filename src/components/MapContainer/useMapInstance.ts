@@ -1,7 +1,7 @@
-import { useSWR } from "@/api/useFetch";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import mapboxgl, { IControl } from "mapbox-gl";
 import { useEffect, useRef, useState } from "react";
+import useSWR from "swr";
 
 export const useMapInstance = () => {
   const mapContainerRef = useRef(null);

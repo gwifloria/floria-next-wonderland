@@ -1,7 +1,8 @@
-import { useSWRMutation } from "@/api/useFetch";
-import { DatePicker, Form, Input, Modal, Switch } from "antd";
+import { postFetcher } from "@/util/fetch";
+import { Form, Input, Modal, Switch } from "antd";
 import { MapMouseEvent } from "mapbox-gl";
 import { forwardRef, useCallback, useImperativeHandle, useState } from "react";
+import useSWRMutation from "swr/mutation";
 import layout from "../layout";
 const wc = require("which-country");
 
@@ -9,9 +10,10 @@ export const DestinationModal = forwardRef(function A(props, ref) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
 
-  const { trigger } = useSWRMutation("/floria-service/destination/add", {
-    method: "POST",
-  });
+  const { trigger } = useSWRMutation(
+    "/floria-service/destination/add",
+    postFetcher,
+  );
 
   const showModal = useCallback(
     (e: MapMouseEvent) => {
@@ -36,15 +38,11 @@ export const DestinationModal = forwardRef(function A(props, ref) {
     form.resetFields();
     setIsModalOpen(false);
   };
-  useImperativeHandle(
-    ref,
-    () => {
-      return {
-        showModal,
-      };
-    },
-    [showModal],
-  );
+  useImperativeHandle(ref, () => {
+    return {
+      showModal,
+    };
+  }, [showModal]);
   const dom = (
     <>
       <Modal

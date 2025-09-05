@@ -1,4 +1,6 @@
-import { useSWR, useSWRMutation } from "@/api/useFetch";
+import { postFetcher } from "@/util/fetch";
+import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 
 interface Schedule {
   scheduleid: string | number;
@@ -10,16 +12,12 @@ export const useOneway = () => {
 
   const { trigger: subscribe } = useSWRMutation(
     "/floria-service/oneway/subscribe",
-    {
-      method: "POST",
-    },
+    postFetcher,
   );
 
   const { trigger: unsubscribe } = useSWRMutation(
     "/floria-service/oneway/unsubscribe",
-    {
-      method: "POST",
-    },
+    postFetcher,
   );
 
   const schedules = data?.map((item) => ({

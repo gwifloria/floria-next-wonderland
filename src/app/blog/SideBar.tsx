@@ -1,7 +1,7 @@
 "use client";
-import { useSWR } from "@/api/useFetch";
 import { Skeleton } from "antd";
 import Link from "next/link";
+import useSWR from "swr";
 import { categories, CatKey, GitHubItem } from "./constants";
 import { catStyles, cx } from "./util";
 // components/ui/SectionTape.tsx
@@ -88,18 +88,9 @@ function SidebarSection({
                   "relative block rounded-md px-3 py-2 text-sm transition-colors text-neutral-700",
                   "hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800/60",
                   isActive &&
-                    "bg-macaronblue-100 dark:bg-macaronblue-800/40 text-macaronblue-900 dark:text-macaronblue-100 font-semibold",
+                    "bg-macaronblue-100 dark:bg-macaronblue-800/40 text-macaronblue-900 dark:text-macaronblue-100",
                 )}
               >
-                {isActive && (
-                  <span
-                    aria-hidden
-                    className={cx(
-                      "absolute left-0 top-0 h-full w-1 rounded-l-md",
-                      "bg-macaronblue-500",
-                    )}
-                  />
-                )}
                 {display}
               </Link>
             </li>

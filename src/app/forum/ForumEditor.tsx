@@ -1,9 +1,10 @@
 "use client";
-import { useSWRMutation } from "@/api/useFetch";
 import { useMessage } from "@/hooks/UIProviders";
 import { useConfetti } from "@/hooks/useConfetti";
+import { postFetcher } from "@/util/fetch";
 import { Button } from "antd";
 import { useCallback } from "react";
+import useSWRMutation from "swr/mutation";
 import { useTipTapEditor } from "../../components/TipTapEditor/useTipTapEditor";
 import { useThrottle } from "../tools/useThrottle";
 const MAX_CHARS = 200;
@@ -16,9 +17,7 @@ export default function ForumEditor({
   const message = useMessage();
 
   const { show, confettiContext } = useConfetti();
-  const { trigger } = useSWRMutation("/api/forum/send", {
-    method: "POST",
-  });
+  const { trigger } = useSWRMutation("/api/forum/send", postFetcher);
 
   const handleUpload = useCallback(async () => {
     if (!editor) return;

@@ -1,16 +1,18 @@
 "use client";
-import { useSWRMutation } from "@/api/useFetch";
+import { postFetcher } from "@/util/fetch";
 import { App } from "antd";
 import { useState } from "react";
+import useSWRMutation from "swr/mutation";
 
 export default function SayHiButton() {
   const { message } = App.useApp();
   const [show, setShow] = useState(false);
   const [sent, setSent] = useState(false);
   const [msg, setMsg] = useState("");
-  const { trigger } = useSWRMutation("/floria-service/message/send", {
-    method: "POST",
-  });
+  const { trigger } = useSWRMutation(
+    "/floria-service/message/send",
+    postFetcher,
+  );
 
   const send = async () => {
     try {
