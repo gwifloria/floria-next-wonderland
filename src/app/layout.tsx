@@ -6,6 +6,7 @@ import PageHeader from "@/components/PageHeader";
 
 import ClientProviders from "./AntDProvider";
 
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Delius } from "next/font/google";
 import Debug from "./Debug";
 import "./globals.css";
@@ -25,6 +26,7 @@ export default function RootLayout({
             <PageHeader />
             <div className="h-[calc(100vh-56px-8vh)] overflow-auto">
               {children}
+              <SpeedInsights></SpeedInsights>
               <Debug></Debug>
             </div>
           </div>
