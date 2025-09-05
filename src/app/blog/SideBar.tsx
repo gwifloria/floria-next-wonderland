@@ -86,9 +86,8 @@ function SidebarSection({
                 aria-pressed={isActive}
                 className={cx(
                   "relative block rounded-md px-3 py-2 text-sm transition-colors text-neutral-700",
-                  "hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800/60",
-                  isActive &&
-                    "bg-macaronblue-100 dark:bg-macaronblue-800/40 text-macaronblue-900 dark:text-macaronblue-100",
+                  "hover:text-neutral-900 hover:bg-neutral-100 ",
+                  isActive && "bg-macaronblue-100 text-macaronblue-900",
                 )}
               >
                 {display}
@@ -107,7 +106,7 @@ export const Sidebar = ({ activePost }: { activePost: string }) => {
       <Link
         href="/blog"
         aria-label="Go to Blog home"
-        className="inline-block font-bold text-lg mb-4 text-neutral-800 dark:text-neutral-100 hover:text-nepal-600 dark:hover:text-nepal-300 transition-colors"
+        className="inline-block font-bold text-lg mb-4 text-neutral-800 hover:text-nepal-600 transition-colors"
       >
         Blog
       </Link>

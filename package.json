@@ -28,6 +28,7 @@
     "@ant-design/nextjs-registry": "^1.0.0",
     "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@mapbox/mapbox-gl-geocoder": "^5.0.2",
+    "@next/bundle-analyzer": "^15.5.2",
     "@react-three/drei": "^10.5.2",
     "@react-three/fiber": "^9.2.0",
     "@tiptap/core": "^3.2.0",

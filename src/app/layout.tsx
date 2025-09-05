@@ -8,7 +8,6 @@ import ClientProviders from "./AntDProvider";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Delius } from "next/font/google";
-import Debug from "./Debug";
 import "./globals.css";
 
 const delius = Delius({ subsets: ["latin"], weight: "400" });
@@ -19,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className="dark" lang="en">
+    <html title="Floria-Wonderland" lang="en">
       <body className={delius.className}>
         <ClientProviders>
           <div className="main-background bg-mint-100 mx-auto min-h-screen p-16">
@@ -27,7 +26,6 @@ export default function RootLayout({
             <div className="h-[calc(100vh-56px-8vh)] overflow-auto">
               {children}
               <SpeedInsights></SpeedInsights>
-              <Debug></Debug>
             </div>
           </div>
         </ClientProviders>

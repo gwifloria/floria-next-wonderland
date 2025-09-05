@@ -13,31 +13,31 @@ import { textFetcher } from "../blog/util";
 const mdxComponents: Components = {
   h1: ({ node, ...props }) => (
     <h1
-      className="mt-2 scroll-m-20 text-2xl md:text-3xl font-bold tracking-tight text-neutral-800 dark:text-neutral-200"
+      className="mt-2 scroll-m-20 text-2xl md:text-3xl font-bold tracking-tight text-neutral-800"
       {...props}
     />
   ),
   h2: ({ node, ...props }) => (
     <h2
-      className="mt-8 scroll-m-20 text-lg md:text-xl font-semibold tracking-tight border-b border-neutral-200/70 dark:border-neutral-800/60 pb-2 text-neutral-700 dark:text-neutral-300"
+      className="mt-8 scroll-m-20 text-lg md:text-xl font-semibold tracking-tight border-b border-neutral-200/70pb-2 text-neutral-700"
       {...props}
     />
   ),
   h3: ({ node, ...props }) => (
     <h3
-      className="mt-6 scroll-m-20 text-base md:text-lg font-semibold tracking-tight text-neutral-700 dark:text-neutral-300"
+      className="mt-6 scroll-m-20 text-base md:text-lg font-semibold tracking-tight text-neutral-700 "
       {...props}
     />
   ),
   p: ({ node, ...props }) => (
     <p
-      className="leading-7 text-[13px] md:text-[14px] text-neutral-700 dark:text-neutral-300"
+      className="leading-7 text-[13px] md:text-[14px] text-neutral-700"
       {...props}
     />
   ),
   a: ({ node, ...props }) => (
     <a
-      className="font-medium underline-offset-4 text-nepal-600 hover:underline hover:text-nepal-500 dark:text-nepal-300 dark:hover:text-nepal-200"
+      className="font-medium underline-offset-4 text-nepal-600 hover:underline hover:text-nepal-500"
       target="_blank"
       rel="noreferrer noopener"
       {...props}
@@ -57,17 +57,17 @@ const mdxComponents: Components = {
   ),
   li: ({ node, ...props }) => (
     <li
-      className="pl-1 text-[13px] md:text-[14px] text-neutral-700 dark:text-neutral-300"
+      className="pl-1 text-[13px] md:text-[14px] text-neutral-700"
       {...props}
     />
   ),
   blockquote: ({ node, ...props }) => (
     <blockquote
-      className="my-6 border-l-4 border-nepal-300/60 pl-4 text-neutral-700 dark:text-neutral-300 bg-neutral-50/60 dark:bg-neutral-800/30 rounded-r"
+      className="my-6 border-l-4 border-nepal-300/60 pl-4 text-neutral-700 bg-neutral-50/60 rounded-r"
       {...props}
     />
   ),
-  hr: () => <hr className="my-8 border-neutral-200 dark:border-neutral-800" />,
+  hr: () => <hr className="my-8 border-neutral-200" />,
 };
 
 export const GapMarkdown = () => {
@@ -82,7 +82,7 @@ export const GapMarkdown = () => {
   return (
     <div
       ref={containerRef}
-      className="prose prose-neutral dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-a:no-underline"
+      className="prose prose-neutral max-w-none prose-headings:scroll-mt-20 prose-a:no-underline"
     >
       <ReactMarkdown
         rehypePlugins={[rehypeSlug, rehypeAutolinkHeadings]}

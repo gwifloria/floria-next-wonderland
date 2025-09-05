@@ -13,14 +13,13 @@ const NAV: NavItem[] = [
 
 export const PaperBackdrop = () => {
   return (
-    <div
-      aria-hidden
-      className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-0 mx-auto w-full min-w-[960px] max-w-[1600px] aspect-[7/5] z-0 bg-no-repeat bg-center"
-      style={{
-        backgroundImage: `url('/textures/paper-beige-texture-trimmed.png')`,
-        backgroundSize: "contain",
-        opacity: 0.95,
-      }}
+    <Image
+      src="/textures/paper-beige-texture-trimmed.png"
+      alt="texture"
+      fetchPriority="high"
+      loading="eager"
+      fill
+      className="pointer-events-none absolute max-w-[360px] left-1/2  top-0 mx-auto min-w-[90px] xl:rotate-90 xl:translate-y-1/4  z-0 bg-no-repeat bg-center contain opacity-90"
     />
   );
 };
@@ -73,7 +72,7 @@ export const HeroSection = () => {
           width={96}
           height={72}
           aria-hidden
-          className="w-20 sm:w-24 h-auto drop-shadow-md"
+          className="w-16 h-auto drop-shadow-md"
         />
       </div>
     </section>
