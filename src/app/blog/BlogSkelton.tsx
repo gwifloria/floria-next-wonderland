@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export function EmptyState() {
   return (
-    <div className=" flex items-center flex-col justify-center bg-gray-50/30 rounded-xl">
+    <div className="flex items-center flex-col justify-center bg-gray-50/30 rounded-xl">
       <div>
         <Image
           className="opacity-80 mx-auto mb-6"

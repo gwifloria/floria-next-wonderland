@@ -1,6 +1,6 @@
 "use client";
-import { useMessage } from "@/hooks/UIProviders";
 import { useConfetti } from "@/hooks/useConfetti";
+import { useMessage } from "@/provider/UIProviders";
 import { postFetcher } from "@/util/fetch";
 import { Button } from "antd";
 import { useCallback } from "react";

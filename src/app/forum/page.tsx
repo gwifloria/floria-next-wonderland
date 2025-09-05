@@ -1,4 +1,6 @@
 "use client";
+import AntDShell from "@/provider/AntDShell";
+import { SWRShell } from "@/provider/SWRShell";
 import { Spin, Typography } from "antd";
 import useSWR from "swr";
 import ForumEditor from "./ForumEditor";
@@ -17,20 +19,24 @@ export default function ForumPage() {
 
   return (
     <>
-      {!isLoading ||
-        (isValidating && (
-          <div className="inset-0 z-10 flex items-center bg-white bg-opacity-70 align-center z-50 absolute justify-center py-12">
-            <Spin size="large" />
-          </div>
-        ))}
-      <div className="container mx-auto max-w-4xl px-4 py-8">
-        <Title level={2} className="mb-4">
-          留言板 Message Board
-        </Title>
-        <ForumEditor onSendSuccess={mutate} />
+      <AntDShell>
+        <SWRShell>
+          {!isLoading ||
+            (isValidating && (
+              <div className="inset-0 z-10 flex items-center bg-white bg-opacity-70 align-center z-50 absolute justify-center py-12">
+                <Spin size="large" />
+              </div>
+            ))}
+          <div className="container mx-auto max-w-4xl px-4 py-8">
+            <Title level={2} className="mb-4">
+              留言板 Message Board
+            </Title>
+            <ForumEditor onSendSuccess={mutate} />
 
-        <ForumList messages={messages} refresh={mutate} />
-      </div>
+            <ForumList messages={messages} refresh={mutate} />
+          </div>
+        </SWRShell>
+      </AntDShell>
     </>
   );
 }

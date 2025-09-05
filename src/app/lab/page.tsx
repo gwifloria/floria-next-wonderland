@@ -13,10 +13,12 @@ import LabCard from "./LabCard";
 import { useLabInitializer } from "./useLabInitializer";
 import { useLabUpdater } from "./useLabUpdater";
 
+import AntDShell from "@/provider/AntDShell";
+import { SWRShell } from "@/provider/SWRShell";
 import { Lab, LabCategory, LabStatus } from "@/types/lab";
 import { useLabs } from "./useLabs";
 
-export default function LabPageContainer() {
+const LabPageContainer = () => {
   const [activeCategory, setActiveCategory] = useState<LabCategory>("tech");
   const [showOnlyPending, setShowOnlyPending] = useState(false);
   const [editingEntry, setEditingEntry] = useState<Lab | null>(null);
@@ -198,5 +200,14 @@ export default function LabPageContainer() {
         {labUpdater.drawer}
       </motion.main>{" "}
     </div>
+  );
+};
+export default function LabPage() {
+  return (
+    <AntDShell>
+      <SWRShell>
+        <LabPageContainer></LabPageContainer>
+      </SWRShell>
+    </AntDShell>
   );
 }

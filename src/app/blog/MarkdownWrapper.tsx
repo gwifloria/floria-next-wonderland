@@ -1,12 +1,21 @@
 "use client";
 import matter from "gray-matter";
+import "prismjs";
+import "prismjs/components/prism-bash";
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-json";
+import "prismjs/components/prism-jsx";
+import "prismjs/components/prism-tsx";
+import "prismjs/components/prism-typescript";
+import "prismjs/themes/prism-tomorrow.css";
 import { useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypePrism from "rehype-prism-plus";
 import rehypeSlug from "rehype-slug";
 import useSWR from "swr";
 import { BlogSkeleton, EmptyState } from "./BlogSkelton";
-import { CommitMeta, CONTAINER_CLASS, dtf, PROSE_CLASS } from "./constants";
+import { CommitMeta, dtf, PROSE_CLASS } from "./constants";
 import { mdxComponents } from "./mdxComponents";
 import { useTableOfContents } from "./useToc";
 import { textFetcher } from "./util";
@@ -43,13 +52,8 @@ export function MarkdownWrapper({ path }: { path?: string | null }) {
 
   return (
     <>
-      <div
-        ref={scrollerRef}
-        className={
-          "overflow-auto pb-20 h-full md:grid md:grid-cols-[1fr,14rem] md:gap-8"
-        }
-      >
-        <div ref={containerRef} className={CONTAINER_CLASS}>
+      <div ref={containerRef} className={"h-full flex w-full"}>
+        <div ref={scrollerRef} className="overflow-auto min-w-0 mr-16">
           <article className={PROSE_CLASS}>
             {info?.updatedAt && (
               <div className="mb-4 text-xs text-neutral-500">
@@ -57,14 +61,14 @@ export function MarkdownWrapper({ path }: { path?: string | null }) {
               </div>
             )}
             <ReactMarkdown
-              rehypePlugins={[rehypeSlug, rehypeAutolinkHeadings]}
+              rehypePlugins={[rehypeSlug, rehypeAutolinkHeadings, rehypePrism]}
               components={mdxComponents}
             >
               {content}
             </ReactMarkdown>
           </article>
         </div>
-        {Toc}
+        <div className="hidden lg:block">{Toc}</div>
       </div>
     </>
   );
