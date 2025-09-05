@@ -3,7 +3,7 @@ import { PrinterOutlined } from "@ant-design/icons";
 import { Avatar, FloatButton, Segmented, Typography } from "antd";
 import Image from "next/image";
 import { useState } from "react";
-import { skills } from "../components/PersonalIntro/constant";
+import { skills } from "../../components/PersonalIntro/constant";
 import { education, experiences, labels } from "./constant";
 import { GapMarkdown } from "./Gap";
 import "./print.css";
@@ -53,16 +53,6 @@ const TAPE_SOURCES = {
   beige: "/tape/tape-beige.png",
   blue: "/tape/tape-blue.png",
 } as const;
-
-const STORY_LABELS: Record<Lang, { gap: string; major: string; now: string }> =
-  {
-    zh: { gap: "关于 Gap", major: "为什么选专业", now: "当下的思考" },
-    en: {
-      gap: "About the gap",
-      major: "Why this major",
-      now: "Current mindset",
-    },
-  };
 
 type CardSectionProps = {
   title?: React.ReactNode;

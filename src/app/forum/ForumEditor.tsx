@@ -1,7 +1,8 @@
 "use client";
 import { useSWRMutation } from "@/api/useFetch";
+import { useMessage } from "@/hooks/UIProviders";
 import { useConfetti } from "@/hooks/useConfetti";
-import { App, Button } from "antd";
+import { Button } from "antd";
 import { useCallback } from "react";
 import { useTipTapEditor } from "../../components/TipTapEditor/useTipTapEditor";
 import { useThrottle } from "../tools/useThrottle";
@@ -12,8 +13,8 @@ export default function ForumEditor({
   onSendSuccess: () => void;
 }) {
   const { element, editor } = useTipTapEditor();
+  const message = useMessage();
 
-  const { message } = App.useApp();
   const { show, confettiContext } = useConfetti();
   const { trigger } = useSWRMutation("/api/forum/send", {
     method: "POST",
@@ -52,7 +53,6 @@ export default function ForumEditor({
   return (
     <div className="border rounded-xl p-4 bg-white mb-6">
       {confettiContext}
-
       {editor && (
         <>
           {element}

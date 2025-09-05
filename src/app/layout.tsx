@@ -3,7 +3,6 @@ import "antd/dist/reset.css"; // ✅ 必须放在最靠前
 import "@ant-design/v5-patch-for-react-19";
 
 import PageHeader from "@/components/PageHeader";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
 
 import ClientProviders from "./AntDProvider";
 
@@ -21,13 +20,15 @@ export default function RootLayout({
   return (
     <html className="dark" lang="en">
       <body className={delius.className}>
-        <div className="main-background bg-mint-100 mx-auto min-h-screen p-16">
-          <PageHeader />
-          <AntdRegistry>
-            <ClientProviders>{children}</ClientProviders>
-            <Debug></Debug>
-          </AntdRegistry>
-        </div>
+        <ClientProviders>
+          <div className="main-background bg-mint-100 mx-auto min-h-screen p-16">
+            <PageHeader />
+            <div className="h-[calc(100vh-56px-8vh)] overflow-auto">
+              {children}
+              <Debug></Debug>
+            </div>
+          </div>
+        </ClientProviders>
       </body>
     </html>
   );

@@ -37,7 +37,7 @@ export default function LabPageContainer() {
       entries?.filter(
         (entry) =>
           entry.category === activeCategory &&
-          (!showOnlyPending || entry.status !== "resolved")
+          (!showOnlyPending || entry.status !== "resolved"),
       ) || []
     );
   }, [activeCategory, entries, showOnlyPending]);
@@ -134,7 +134,7 @@ export default function LabPageContainer() {
                 >
                   {categoryLabelEmoji[category]} {category.toUpperCase()}
                 </motion.button>
-              )
+              ),
             )}
           </div>
           <div className="flex items-center gap-4">
@@ -142,7 +142,6 @@ export default function LabPageContainer() {
               type="default"
               icon={<PlusOutlined />}
               onClick={labInit.open}
-              className="bg-mint-500 hover:bg-mint-600"
             >
               New
             </Button>

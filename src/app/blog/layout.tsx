@@ -14,7 +14,7 @@ export default function BlogLayout({
     : "";
 
   return (
-    <div className="flex max-h-[calc(100vh-2rem)]">
+    <div className="flex max-h-[calc(100vh-56px)]">
       <div className="w-full md:w-64 rounded-2xl bg-neutral-50 border-r p-6 my-4 overflow-y-auto max-h-[calc(100vh-10rem)]">
         <Sidebar activePost={activePost} />
       </div>

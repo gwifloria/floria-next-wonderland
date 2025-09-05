@@ -1,4 +1,8 @@
-@tailwind base;
+@layer tailwind-base,reset, antd;
+
+@layer tailwind-base {
+  @tailwind base;
+}
 @tailwind components;
 @tailwind utilities;
 
@@ -18,10 +22,64 @@
 
 body {
   color: rgb(var(--foreground-rgb));
+  overflow: hidden;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+.typing {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid #94a3b8; /* neutral-400 光标 */
+  animation:
+    typing 3s steps(30, end) infinite alternate,
+    blink 0.75s step-end infinite;
+}
+.ant-app {
+  height: 100%;
+}
+/* 两侧打孔遮罩（支持 Safari/Chromium）*/
+.mask-ticket {
+  -webkit-mask:
+    radial-gradient(6px at left 6px top 6px, #0000 98%, #000) 0 0/12px 16px
+      repeat-y,
+    radial-gradient(6px at right 6px top 6px, #0000 98%, #000) 100% 0/12px 16px
+      repeat-y,
+    linear-gradient(#000 0 0);
+  mask:
+    radial-gradient(6px at left 6px top 6px, #0000 98%, #000) 0 0/12px 16px
+      repeat-y,
+    radial-gradient(6px at right 6px top 6px, #0000 98%, #000) 100% 0/12px 16px
+      repeat-y,
+    linear-gradient(#000 0 0);
+}
+.corner-peel::after {
+  content: "";
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0));
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  opacity: 0.6;
 }
