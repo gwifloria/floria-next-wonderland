@@ -50,4 +50,7 @@ jobs:
         env:
           NEXT_PUBLIC_COMMIT_ID: ${{ env.NEXT_PUBLIC_COMMIT_ID }}
           NEXT_TELEMETRY_DISABLED: 1
+          NEXT_PUBLIC_DEPLOYMENT_URL: ${{ secrets.NEXT_PUBLIC_DEPLOYMENT_URL }}
+          MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: yarn build

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-  throw new Error("请在 .env.local 中定义 MONGODB_URI 环境变量");
+  throw new Error("请在 .env 中定义 MONGODB_URI 环境变量");
 }
 
 let cached = global.mongoose;
