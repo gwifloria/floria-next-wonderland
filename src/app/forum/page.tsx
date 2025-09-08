@@ -1,20 +1,28 @@
 "use client";
-import { Spin, Typography } from "antd";
+import AntDShell from "@/provider/AntDShell";
+import { SWRShell } from "@/provider/SWRShell";
+import { Spin } from "antd";
 import useSWR from "swr";
 import ForumEditor from "./ForumEditor";
 import ForumList from "./ForumList";
 import { MessageItem } from "./type";
 
-const { Title } = Typography;
-
-export default function ForumPage() {
+export default function ForumContainer() {
+  return (
+    <AntDShell>
+      <SWRShell>
+        <ForumPage></ForumPage>
+      </SWRShell>
+    </AntDShell>
+  );
+}
+function ForumPage() {
   const {
     data: messages,
     isLoading,
     isValidating,
     mutate,
   } = useSWR<MessageItem[]>("/api/forum/list");
-
   return (
     <>
       {!isLoading ||
@@ -24,9 +32,7 @@ export default function ForumPage() {
           </div>
         ))}
       <div className="container mx-auto max-w-4xl px-4 py-8">
-        <Title level={2} className="mb-4">
-          留言板 Message Board
-        </Title>
+        <h1 className="mb-4 text-neutral-800">留言板 Message Board</h1>
         <ForumEditor onSendSuccess={mutate} />
 
         <ForumList messages={messages} refresh={mutate} />

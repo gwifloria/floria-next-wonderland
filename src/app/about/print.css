@@ -26,7 +26,7 @@
   }
 
   /* Hide decorative stickers, segmented switch, and any print:hidden utility */
-  img[src*="/tape/"] {
+  img[src*="/images/"] {
     display: none !important;
   }
   .ant-segmented {
