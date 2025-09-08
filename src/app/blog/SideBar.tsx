@@ -83,7 +83,7 @@ function SidebarSection({
             <li key={file.path}>
               <Link
                 href={href}
-                aria-pressed={isActive}
+                aria-label="page"
                 className={cx(
                   "relative block rounded-md px-3 py-2 text-sm transition-colors text-neutral-700",
                   "hover:text-neutral-900 hover:bg-neutral-100 ",

@@ -1,5 +1,10 @@
 import { Editor, useEditorState } from "@tiptap/react";
-import { Button, Space } from "antd";
+
+const btnBase =
+  "inline-flex items-center justify-center h-8 px-3 rounded-full border text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-300 focus-visible:ring-offset-2 focus-visible:ring-offset-rose-50";
+const btnDefault = "bg-rose-50 text-rose-800 border-rose-200 hover:bg-rose-100";
+const btnActive = "bg-rose-600 text-rose-50 border-rose-600 hover:bg-rose-700";
+const btnDisabled = "opacity-50 cursor-not-allowed";
 
 export default function Toolbar({ editor }: { editor: Editor }) {
   const s = useEditorState({
@@ -37,110 +42,145 @@ export default function Toolbar({ editor }: { editor: Editor }) {
   });
 
   return (
-    <Space size={4} wrap>
-      <Button
+    <div className="flex flex-wrap gap-1">
+      <button
         data-testid="tt-btn-bold"
-        size="small"
-        type={s.isBold ? "primary" : "default"}
+        className={[
+          btnBase,
+          s.isBold ? btnActive : btnDefault,
+          !s.canBold && btnDisabled,
+        ]
+          .filter(Boolean)
+          .join(" ")}
+        aria-pressed={s.isBold}
         disabled={!s.canBold}
+        title="加粗"
         onClick={() => editor.chain().focus().toggleBold().run()}
       >
         B
-      </Button>
+      </button>
 
-      <Button
+      <button
         data-testid="tt-btn-italic"
-        size="small"
-        type={s.isItalic ? "primary" : "default"}
+        className={[
+          btnBase,
+          s.isItalic ? btnActive : btnDefault,
+          !s.canItalic && btnDisabled,
+        ]
+          .filter(Boolean)
+          .join(" ")}
+        aria-pressed={s.isItalic}
         disabled={!s.canItalic}
+        title="斜体"
         onClick={() => editor.chain().focus().toggleItalic().run()}
       >
         I
-      </Button>
+      </button>
 
-      <Button
+      <button
         data-testid="tt-btn-underline"
-        size="small"
-        type={s.isUnderline ? "primary" : "default"}
+        className={[
+          btnBase,
+          s.isUnderline ? btnActive : btnDefault,
+          !s.canUnderline && btnDisabled,
+        ]
+          .filter(Boolean)
+          .join(" ")}
+        aria-pressed={s.isUnderline}
         disabled={!s.canUnderline}
+        title="下划线"
         onClick={() => editor.chain().focus().toggleUnderline?.().run?.()}
       >
         U
-      </Button>
+      </button>
 
-      <Button
+      <button
         data-testid="tt-btn-h2"
-        size="small"
-        type={s.isHeading2 ? "primary" : "default"}
+        className={[btnBase, s.isHeading2 ? btnActive : btnDefault].join(" ")}
+        aria-pressed={s.isHeading2}
+        title="标题2"
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
       >
         H2
-      </Button>
+      </button>
 
-      <Button
+      <button
         data-testid="tt-btn-h3"
-        size="small"
-        type={s.isHeading3 ? "primary" : "default"}
+        className={[btnBase, s.isHeading3 ? btnActive : btnDefault].join(" ")}
+        aria-pressed={s.isHeading3}
+        title="标题3"
         onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
       >
         H3
-      </Button>
+      </button>
 
-      <Button
+      <button
         data-testid="tt-btn-bullet"
-        size="small"
-        type={s.isBulletList ? "primary" : "default"}
+        className={[btnBase, s.isBulletList ? btnActive : btnDefault].join(" ")}
+        aria-pressed={s.isBulletList}
+        title="无序列表"
         onClick={() => editor.chain().focus().toggleBulletList().run()}
       >
         • 列表
-      </Button>
+      </button>
 
-      <Button
+      <button
         data-testid="tt-btn-ordered"
-        size="small"
-        type={s.isOrderedList ? "primary" : "default"}
+        className={[btnBase, s.isOrderedList ? btnActive : btnDefault].join(
+          " ",
+        )}
+        aria-pressed={s.isOrderedList}
+        title="有序列表"
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
       >
         1. 列表
-      </Button>
+      </button>
 
-      <Button
+      <button
         data-testid="tt-btn-quote"
-        size="small"
-        type={s.isBlockquote ? "primary" : "default"}
+        className={[btnBase, s.isBlockquote ? btnActive : btnDefault].join(" ")}
+        aria-pressed={s.isBlockquote}
+        title="引用"
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
       >
         引用
-      </Button>
+      </button>
 
-      <Button
+      <button
         data-testid="tt-btn-code"
-        size="small"
-        type={s.isCodeBlock ? "primary" : "default"}
+        className={[btnBase, s.isCodeBlock ? btnActive : btnDefault].join(" ")}
+        aria-pressed={s.isCodeBlock}
+        title="代码块"
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
       >
         代码
-      </Button>
+      </button>
 
-      <Button
+      <button
         data-testid="tt-btn-undo"
-        size="small"
+        className={[btnBase, btnDefault, !s.canUndo && btnDisabled]
+          .filter(Boolean)
+          .join(" ")}
         disabled={!s.canUndo}
+        title="撤销"
         onClick={() => editor.chain().focus().undo().run()}
       >
         撤销
-      </Button>
+      </button>
 
-      <Button
+      <button
         data-testid="tt-btn-clear"
-        size="small"
+        className={[btnBase, btnDefault, !s.canClearMarks && btnDisabled]
+          .filter(Boolean)
+          .join(" ")}
         disabled={!s.canClearMarks}
+        title="清除格式"
         onClick={() =>
           editor.chain().focus().clearNodes().unsetAllMarks().run()
         }
       >
         清除格式
-      </Button>
-    </Space>
+      </button>
+    </div>
   );
 }

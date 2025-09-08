@@ -6,7 +6,7 @@ import Message, { IMessage } from "../models/Message"; // 调整路径根据你�
 export async function GET(request: NextRequest) {
   try {
     await dbConnect();
-
+    console.log(22);
     const { searchParams } = new URL(request.url);
     const limit = Math.min(parseInt(searchParams.get("limit") || "20", 10), 50);
     const before = searchParams.get("before")
