@@ -3,7 +3,7 @@ import { useConfetti } from "@/hooks/useConfetti";
 import { useMessage } from "@/provider/UIProviders";
 import { postFetcher } from "@/util/fetch";
 import { Button } from "antd";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import useSWRMutation from "swr/mutation";
 import { useTipTapEditor } from "../../components/TipTapEditor/useTipTapEditor";
 import { useThrottle } from "../tools/useThrottle";
@@ -18,6 +18,8 @@ export default function ForumEditor({
 
   const { show, confettiContext } = useConfetti();
   const { trigger } = useSWRMutation("/api/forum/send", postFetcher);
+
+  const [loading, setLoading] = useState(false);
 
   const handleUpload = useCallback(async () => {
     if (!editor) return;
@@ -36,33 +38,37 @@ export default function ForumEditor({
     }
 
     try {
+      setLoading(true);
       await trigger({ content: content });
       message.success("留言已发送");
       show({ numberOfPieces: 300, duration: 5000 });
       onSendSuccess();
       editor.commands.clearContent();
+      setLoading(false);
     } catch (err) {
       console.log(err);
       message.error("发送失败");
+      setLoading(false);
     }
   }, [editor, message, onSendSuccess, show, trigger]);
 
   const throttledPost = useThrottle(handleUpload, 3000);
 
   return (
-    <div className="border rounded-xl p-4 bg-white mb-6">
+    <div className="rounded-2xl bg-white ring-1 ring-rose-200 shadow-sm p-3 md:p-4 mb-6">
       {confettiContext}
       {editor && (
         <>
           {element}
           <div className="flex justify-end mt-2">
             <Button
-              danger
+              disabled={loading}
+              aria-label="发布留言"
               onClick={throttledPost}
               data-testid="post-btn"
-              className="bg-mint-400 hover:bg-mint-300 text-white px-4 py-2 rounded disabled:opacity-50 transition-colors"
+              className={`rounded-full h-10 px-5 bg-rose-600 hover:bg-rose-700 text-rose-50 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-300 disabled:opacity-50 transition-colors ${loading ? "cursor-wait opacity-70" : ""}`}
             >
-              发布
+              {loading ? "发布中..." : "发布"}
             </Button>
           </div>
         </>

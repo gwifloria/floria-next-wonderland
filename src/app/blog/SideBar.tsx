@@ -74,16 +74,19 @@ function SidebarSection({
           <span className="ml-1 text-[13px]">💭</span>
         )}
       </header>
-      <ul className="space-y-1">
+      <ul className=" space-y-1">
         {group?.map((file) => {
           const isActive = file.path === activePost;
           const display = file.name.replace(/\.(md|mdx)$/i, "");
           const href = `/blog/${toSlugPath(file.path)}`;
           return (
-            <li key={file.path}>
+            <li
+              className="border-b border-dotted border-neutral-300/60 last:border-b"
+              key={file.path}
+            >
               <Link
                 href={href}
-                aria-pressed={isActive}
+                aria-label="page"
                 className={cx(
                   "relative block rounded-md px-3 py-2 text-sm transition-colors text-neutral-700",
                   "hover:text-neutral-900 hover:bg-neutral-100 ",

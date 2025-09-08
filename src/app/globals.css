@@ -74,3 +74,13 @@ body {
   clip-path: polygon(0 0, 100% 0, 0 100%);
   opacity: 0.6;
 }
+.big-bg {
+  transform: scale(1.56);
+}
+.big-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.04); /* 可调节深浅 */
+  pointer-events: none;
+}

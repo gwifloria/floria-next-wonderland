@@ -1,7 +1,4 @@
 "use client";
-import AntDShell from "@/provider/AntDShell";
-import { PrinterOutlined } from "@ant-design/icons";
-import { Avatar, FloatButton, Segmented, Typography } from "antd";
 import Image from "next/image";
 import { useState } from "react";
 import { skills } from "../../components/PersonalIntro/constant";
@@ -28,26 +25,6 @@ const HERO_TITLE_STYLE: React.CSSProperties = {
   ...HAND_FONT,
   textShadow: "0.5px 0.5px 0.6px rgba(0,0,0,0.08)",
 };
-
-const { Title, Paragraph, Text } = Typography;
-
-const Sticker = ({
-  src,
-  className,
-  alt = "",
-}: {
-  src: string;
-  className?: string;
-  alt?: string;
-}) => (
-  <Image
-    src={src}
-    alt={alt}
-    width={75}
-    height={75}
-    className={className || ""}
-  />
-);
 
 const TAPE_SOURCES = {
   pink: "/images/tape-pink.png",
@@ -82,21 +59,18 @@ const ScrapbookCard = ({
       style={PAPER_BG_STYLE}
     >
       {tape && (
-        <Sticker
-          src={tapeSrc}
-          className="pointer-events-none absolute -top-3 left-6 -rotate-6 opacity-90 h-8"
-          alt="tape"
-        />
+        <div className="pointer-events-none absolute -top-3 -left-4 rotate-9 opacity-90 w-[60px] h-[40px]">
+          <Image src={tapeSrc} alt="tape" fill className="object-contain" />
+        </div>
       )}
 
       {title && (
-        <Title
-          level={3}
+        <h2
           className="mb-6 text-xl font-semibold text-rose-700"
           style={HAND_FONT}
         >
           {title}
-        </Title>
+        </h2>
       )}
       {children}
     </div>
@@ -112,31 +86,56 @@ export default function AboutMePage() {
   const L = labels[lang];
 
   return (
-    <AntDShell>
+    <>
       <main className="about-page min-h-screen">
         <div className="container bg-milktea-100/90 border border-milktea-200 shadow-sm rounded-3xl mx-auto p-12 my-12 md:my-16 lg:my-20 bg-[url('/images/paper-fiber.png')] bg-[length:1024px_1024px] bg-repeat">
           {/* Hero Section */}
           <div className="text-center mb-16 bg-milktea-50/85 border border-milktea-200 rounded-2xl p-6">
             <div className="flex justify-center gap-3 mb-4">
-              <Segmented
-                options={[
-                  { label: "中文", value: "zh" },
-                  { label: "EN", value: "en" },
-                ]}
-                value={lang}
-                onChange={(val) => setLang(val as Lang)}
-              />
+              <div
+                role="radiogroup"
+                aria-label="Language"
+                className="inline-flex rounded-lg bg-neutral-100 p-1"
+              >
+                {(["zh", "en"] as const).map((v) => {
+                  const label = v === "zh" ? "中文" : "EN";
+                  const checked = lang === v;
+                  return (
+                    <button
+                      key={v}
+                      role="radio"
+                      aria-checked={checked}
+                      onClick={() => setLang(v)}
+                      className={[
+                        "px-3 py-1.5 rounded-md text-sm focus:outline-none focus-visible:ring-2 transition-colors",
+                        checked
+                          ? "bg-white shadow text-neutral-900"
+                          : "text-neutral-600 hover:bg-neutral-200",
+                      ].join(" ")}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
             <div className="relative inline-block mb-6">
-              <Sticker
-                src="/images/white-bow.png"
-                className="pointer-events-none absolute -top-6 left-1 -rotate-6 opacity-90 w-24 h-10"
-                alt="bow"
-              />
-              <Avatar
-                size={120}
+              <div className="pointer-events-none absolute -top-6 left-2 rotate-24 opacity-90 w-10 h-10">
+                <Image
+                  priority
+                  src="/images/white-bow.png"
+                  alt="bow"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <Image
+                priority
+                width={140}
+                height={120}
+                alt="avatar"
                 src="/images/me.png"
-                className="border-4 border-white shadow-lg"
+                className="border-4 rounded-full object-cover border-white shadow-lg"
               />
             </div>
             <h1
@@ -145,11 +144,11 @@ export default function AboutMePage() {
             >
               {L.about}
             </h1>
-            <Paragraph className="text-base leading-relaxed text-neutral-700/90 max-w-2xl mx-auto">
+            <p className="text-base leading-relaxed text-neutral-700/90 max-w-2xl mx-auto">
               Hi there! I&apos;m a passionate developer who loves creating
               beautiful and functional web experiences. I believe in writing
               clean, maintainable code and always learning new technologies.
-            </Paragraph>
+            </p>
           </div>
           <div className="space-y-10 md:space-y-0 ">
             {/* Resume Section */}
@@ -157,28 +156,52 @@ export default function AboutMePage() {
               <ScrapbookCard title={L.personal} tape tapeVariant="beige">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <Text strong>{L.name}:</Text> 龚慧珏 / Floria
+                    <strong className="text-neutral-500">{L.name}:</strong>{" "}
+                    龚慧珏 / Floria
                     <br />
-                    <Text strong>{L.location}:</Text> —
+                    <strong className="text-neutral-500">
+                      {L.location}:
+                    </strong>{" "}
+                    —
                     <br />
-                    <Text strong>{L.email}:</Text> gwifloria@outlook.com
+                    <strong className="text-neutral-500">
+                      {L.email}:
+                    </strong>{" "}
+                    gwifloria@outlook.com
                     <br />
-                    <Text strong>{L.available}:</Text> Full-time, Freelance
+                    <strong className="text-neutral-500">
+                      {L.available}:
+                    </strong>{" "}
+                    Full-time, Freelance
                   </div>
                   <div>
-                    <Text strong>{L.experience}:</Text> 5+ years
+                    <strong className="text-neutral-500">
+                      {L.experience}:
+                    </strong>{" "}
+                    5+ years
                     <br />
-                    <Text strong>{L.languages}:</Text> 中文 / English (TEM-8)
+                    <strong className="text-neutral-500">
+                      {L.languages}:
+                    </strong>{" "}
+                    中文 / English (TEM-8)
                     <br />
-                    <Text strong>{L.interests}:</Text> Web Development, Maps,
-                    Reusable UI
+                    <strong className="text-neutral-500">
+                      {L.interests}:
+                    </strong>{" "}
+                    Web Development, Maps, Reusable UI
                   </div>
                 </div>
-                <Sticker
-                  src="/images/small-envelop.png"
-                  className="pointer-events-none absolute -bottom-3 right-6 opacity-60 w-16 h-10"
-                  alt="envelope"
-                />
+                <div
+                  className="pointer-events-none absolute -bottom-3 right-6 opacity-60"
+                  style={{ width: 75, height: 87 }}
+                >
+                  <Image
+                    src="/images/fav_sheep.png"
+                    alt="sheep"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
               </ScrapbookCard>
 
               <ScrapbookCard title={L.skills} tapeVariant="pink">
@@ -200,7 +223,7 @@ export default function AboutMePage() {
                     <div key={idx} className="relative pl-6">
                       <TimelineBar />
                       <div className="flex justify-between items-start mb-1">
-                        <Title level={4} className="mb-0 text-lg font-semibold">
+                        <h3 className="mb-0 text-lg font-semibold">
                           {typeof exp.company === "string"
                             ? exp.company
                             : exp.company[lang]}
@@ -208,16 +231,16 @@ export default function AboutMePage() {
                           {typeof exp.role === "string"
                             ? exp.role
                             : exp.role[lang]}
-                        </Title>
-                        <Text type="secondary" className="text-sm">
+                        </h3>
+                        <span className="text-sm text-neutral-500">
                           {exp.period}
-                        </Text>
+                        </span>
                       </div>
-                      <Paragraph className="text-neutral-700 mb-0">
+                      <p className="text-neutral-700 mb-0">
                         {typeof exp.description === "string"
                           ? exp.description
                           : exp.description[lang]}
-                      </Paragraph>
+                      </p>
                       {Array.isArray((exp as any).projects) &&
                         (exp as any).projects.length > 0 && (
                           <div className="mt-3 space-y-4">
@@ -227,13 +250,13 @@ export default function AboutMePage() {
                                 className="pl-3 border-l border-slate-200"
                               >
                                 <div className="flex justify-between items-start">
-                                  <Text strong className="text-neutral-800">
+                                  <strong className="text-neutral-500">
                                     {"✎ "}
                                     {p.name[lang]}
-                                  </Text>
-                                  <Text type="secondary" className="text-xs">
+                                  </strong>
+                                  <span className="text-xs text-neutral-500">
                                     {p.period}
-                                  </Text>
+                                  </span>
                                 </div>
                                 <div className="flex flex-wrap gap-2 my-2">
                                   {p.tech.map(
@@ -266,11 +289,14 @@ export default function AboutMePage() {
                     </div>
                   ))}
                 </div>
-                <Sticker
-                  src="/images/phone-white.png"
-                  className="pointer-events-none absolute -bottom-4 right-5 opacity-60 w-12 h-12"
-                  alt="phone"
-                />
+                <div className="pointer-events-none absolute -bottom-4 right-5 opacity-60 w-12 h-12">
+                  <Image
+                    src="/images/phone-white.png"
+                    alt="phone"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
               </ScrapbookCard>
 
               <ScrapbookCard title={L.edu} tape tapeVariant="pink">
@@ -279,25 +305,25 @@ export default function AboutMePage() {
                     <div key={idx} className="relative pl-6">
                       <TimelineBar />
                       <div className="flex justify-between items-start mb-2">
-                        <Title level={4} className="mb-1 text-lg font-semibold">
+                        <h3 className="mb-1 text-lg font-semibold">
                           {typeof edu.degree === "string"
                             ? edu.degree
                             : edu.degree[lang]}
-                        </Title>
-                        <Text type="secondary" className="text-sm">
+                        </h3>
+                        <span className="text-sm text-neutral-500">
                           {edu.period}
-                        </Text>
+                        </span>
                       </div>
-                      <Text className="mb-2 block bg-gradient-to-r from-rose-500 to-rose-700 bg-clip-text text-transparent font-semibold">
+                      <span className="mb-2 block bg-gradient-to-r from-rose-500 to-rose-700 bg-clip-text text-transparent font-semibold">
                         {typeof edu.school === "string"
                           ? edu.school
                           : edu.school[lang]}
-                      </Text>
-                      <Paragraph className="text-neutral-700 mb-0">
+                      </span>
+                      <p className="text-neutral-700 mb-0">
                         {typeof edu.description === "string"
                           ? edu.description
                           : edu.description[lang]}
-                      </Paragraph>
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -314,16 +340,22 @@ export default function AboutMePage() {
             </section>
           </div>
         </div>
-        <FloatButton
-          icon={<PrinterOutlined />}
-          tooltip="导出 PDF"
-          type="primary"
-          className="print:hidden"
-          shape="circle"
-          style={{ right: 24, bottom: 24 }}
+        <button
+          aria-label="导出 PDF"
+          title="导出 PDF"
+          className="fixed print:hidden right-6 bottom-6 h-12 w-12 rounded-full bg-rose-600 text-white shadow-lg hover:bg-rose-700 focus:outline-none focus-visible:ring-2"
           onClick={() => typeof window !== "undefined" && window.print()}
-        />
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="h-6 w-6 mx-auto"
+          >
+            <path d="M6 9V2h12v7h2a2 2 0 012 2v6h-4v4H8v-4H4v-6a2 2 0 012-2h0zm2-5v5h8V4H8zm8 14H8v2h8v-2zM6 13h12v2H6v-2z" />
+          </svg>
+        </button>
       </main>
-    </AntDShell>
+    </>
   );
 }

@@ -1,3 +1,4 @@
+import NotebookPaper from "@/components/NotebookPaper";
 import AntDShell from "@/provider/AntDShell";
 import { SWRShell } from "@/provider/SWRShell";
 import React from "react";
@@ -18,11 +19,11 @@ export default function BlogLayout({
   return (
     <AntDShell>
       <SWRShell>
-        <div className="flex h-full pt-8">
-          <div className="min-w-[300px] flex-shrink-0 rounded-2xl bg-neutral-50 border-r p-6  overflow-y-auto h-full">
+        <div className="flex h-full pt-8 justify-center">
+          <NotebookPaper className="min-w-[300px] flex:1 md:flex-shrink-0 rounded-2xl  border-r p-6  overflow-y-auto h-full">
             <Sidebar activePost={activePost} />
-          </div>
-          <div className="hidden  md:block flex-1 py-4 px-6 min-w-0 md:py-8 bg-white rounded-2xl shadow-lg h-full">
+          </NotebookPaper>
+          <div className="hidden  md:block flex-1 py-4 px-6 ml-2 min-w-0 md:py-8 bg-[#fefdfc] backdrop-blur-[1px]  rounded-2xl shadow-lg h-full">
             <div className="overflow-hidden w-full h-full">{children}</div>
           </div>
         </div>
