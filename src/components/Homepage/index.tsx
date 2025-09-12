@@ -1,15 +1,16 @@
 import { BriefIntroduction } from "@/components/BriefIntro";
 import Image from "next/image";
 import Link from "next/link";
-
-type NavItem = { href: string; title: string; desc: string; emoji: string };
-
-const NAV: NavItem[] = [
-  { href: "/blog", title: "Blog", desc: "碎碎念", emoji: "📘" },
-  { href: "/lab", title: "Lab", desc: "小想法", emoji: "🧪" },
-  { href: "/about", title: "About", desc: "About Me", emoji: "👋" },
-  { href: "/forum", title: "Forum", desc: "讨论区", emoji: "💭" },
-];
+import { PageRoute, routes } from "../PageHeader/router";
+interface NavItem {
+  href: string;
+  title: string;
+  desc: string;
+  emoji: string;
+}
+const NAV: NavItem[] = (Object.entries(routes) as [PageRoute, string][]).map(
+  ([key, emoji]) => ({ href: key, title: key, desc: "", emoji }),
+);
 
 export const PaperBackdrop = () => {
   return (

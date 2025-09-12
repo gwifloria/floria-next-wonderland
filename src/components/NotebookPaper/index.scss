@@ -11,12 +11,12 @@
   content: "";
   position: absolute;
   top: 1px;
-  bottom: 12px;
+  bottom: 0px;
   left: 0px; /* 装订条伸出一点更像活页 */
   width: 24px; /* 装订条宽度 */
-  background: #e9efe9; /* 装订条颜色：浅灰绿，更温柔 */
+  background: #b9c2b9; /* 装订条颜色：浅灰绿，更温柔 */
   border-radius: 10px;
-  box-shadow: inset -2px 0 0 rgba(0, 0, 0, 0.05); /* 右侧内阴影，增加层次 */
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.04);
 }
 
 /* 打孔（更大、更稀疏，并带轻微立体感） */
@@ -49,4 +49,22 @@
     0 0,
     0 0;
   pointer-events: none;
+}
+/* 默认（移动） */
+.notebook-paper::after {
+  background-size: 16px 46px; /* 直径≈12px，间距46px */
+}
+
+/* >=768px */
+@media (min-width: 768px) {
+  .notebook-paper::after {
+    background-size: 16px 52px;
+  }
+}
+
+/* >=1024px */
+@media (min-width: 1024px) {
+  .notebook-paper::after {
+    background-size: 16px 58px;
+  }
 }

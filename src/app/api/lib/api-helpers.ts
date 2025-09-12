@@ -10,7 +10,7 @@ export function handleError(error: any): NextResponse<ApiResponse> {
     const errors = Object.values(error.errors).map((err: any) => err.message);
     return NextResponse.json(
       { error: "数据验证失败", details: errors },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -24,7 +24,7 @@ export function handleError(error: any): NextResponse<ApiResponse> {
 
   return NextResponse.json(
     { error: "Failed to process request" },
-    { status: 500 }
+    { status: 500 },
   );
 }
 

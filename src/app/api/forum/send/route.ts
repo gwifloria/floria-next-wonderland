@@ -1,6 +1,6 @@
 // app/api/forum/send/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import dbConnect from "../../lab/lib/mongoose";
+import dbConnect from "../../lib/mongoose";
 import Message from "../models/Message";
 import { extractPlainText, getRateLimit, sanitizeHtml } from "../util";
 

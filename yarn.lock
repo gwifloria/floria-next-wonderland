@@ -6263,6 +6263,7 @@ __metadata:
     gray-matter: "npm:^4.0.3"
     highlight.js: "npm:^11.9.0"
     husky: "npm:^9.1.7"
+    isomorphic-dompurify: "npm:^2.26.0"
     jest: "npm:^30.0.5"
     jest-environment-jsdom: "npm:^30.0.5"
     lint-staged: "npm:^15.2.2"
@@ -6272,6 +6273,7 @@ __metadata:
     mapbox-gl: "npm:^3.5.2"
     mockjs: "npm:^1.1.0"
     mongoose: "npm:^8.18.0"
+    mongoose-lean-virtuals: "npm:^2.0.0"
     next: "npm:^15.4.3"
     postcss: "npm:^8.4.35"
     prettier: "npm:^3"
@@ -7614,6 +7616,16 @@ __metadata:
   version: 3.1.1
   resolution: "isexe@npm:3.1.1"
   checksum: 10c0/9ec257654093443eb0a528a9c8cbba9c0ca7616ccb40abd6dde7202734d96bb86e4ac0d764f0f8cd965856aacbff2f4ce23e730dc19dfb41e3b0d865ca6fdcc7
+  languageName: node
+  linkType: hard
+
+"isomorphic-dompurify@npm:^2.26.0":
+  version: 2.26.0
+  resolution: "isomorphic-dompurify@npm:2.26.0"
+  dependencies:
+    dompurify: "npm:^3.2.6"
+    jsdom: "npm:^26.1.0"
+  checksum: 10c0/d6d4f7850180a77d9c8966feb27df46bd8f719c656320936d134ee25f939f15d90c901561251853047d7df240625318656f0f8ba7ac9a75b32a844b103a2178e
   languageName: node
   linkType: hard
 
@@ -9504,6 +9516,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mongoose-lean-virtuals@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "mongoose-lean-virtuals@npm:2.0.0"
+  dependencies:
+    mpath: "npm:^0.8.4"
+  peerDependencies:
+    mongoose: ">=8.0.0"
+  checksum: 10c0/d80092a41b786eb49c68fdf8f5b50a7961dc56786606708c3d5954ffa02231c928913da914106d374ee32a56309ae5abce04c309f20e799ebbbc5f18b84e59fc
+  languageName: node
+  linkType: hard
+
 "mongoose@npm:^8.18.0":
   version: 8.18.0
   resolution: "mongoose@npm:8.18.0"
@@ -9539,6 +9562,13 @@ __metadata:
   version: 0.9.0
   resolution: "mpath@npm:0.9.0"
   checksum: 10c0/ac1a77ebbd44567f122fb3026c9647836215d5bb75b54064d1f3d998125644fe7a775b89441b94d4d60f43ad9638a12d830a9e29f36116e93b8cdfd111816e8f
+  languageName: node
+  linkType: hard
+
+"mpath@npm:^0.8.4":
+  version: 0.8.4
+  resolution: "mpath@npm:0.8.4"
+  checksum: 10c0/ebec4657d01c3b51e63dac31a0d21c14067b000f5f8a9240619f67f0dea1d64da972209da11ceff13f7ecb0b76be61ea87313ba3c5bf5cd3f6c506b0f977793f
   languageName: node
   linkType: hard
 

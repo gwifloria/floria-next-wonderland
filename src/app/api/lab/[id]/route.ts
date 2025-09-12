@@ -1,14 +1,14 @@
 //@ts-nocheck
 import { NextRequest, NextResponse } from "next/server";
-import { handleError, validateObjectId } from "../lib/api-helpers";
-import dbConnect from "../lib/mongoose";
+import { handleError, validateObjectId } from "../../lib/api-helpers";
+import dbConnect from "../../lib/mongoose";
 import Lab, { ILab } from "../models/Lab";
 import { ApiResponse, LabUpdateInput } from "../type";
 
 // GET /api/labs/[id] - 获取单个 lab
 export async function GET(
   request: NextRequest,
-  { params }: RouteParams
+  { params }: RouteParams,
 ): Promise<NextResponse<ApiResponse<ILab>>> {
   try {
     await dbConnect();
@@ -37,7 +37,7 @@ export async function GET(
 // PUT /api/labs/[id] - 更新 lab
 export async function PUT(
   request: NextRequest,
-  { params }: RouteParams
+  { params }: RouteParams,
 ): Promise<NextResponse<ApiResponse<ILab>>> {
   try {
     await dbConnect();
@@ -52,7 +52,7 @@ export async function PUT(
     if (body.type && !["bug", "issue", "idea"].includes(body.type)) {
       return NextResponse.json(
         { error: "Type must be 'bug', 'issue', or 'idea'" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -62,7 +62,7 @@ export async function PUT(
     ) {
       return NextResponse.json(
         { error: "Status must be 'open', 'inProgress', or 'resolved'" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -95,7 +95,7 @@ export async function PUT(
 // DELETE /api/labs/[id] - 删除 lab
 export async function DELETE(
   request: NextRequest,
-  { params }: RouteParams
+  { params }: RouteParams,
 ): Promise<NextResponse<ApiResponse<ILab>>> {
   try {
     await dbConnect();

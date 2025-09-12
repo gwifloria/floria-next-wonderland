@@ -1,6 +1,6 @@
 // app/api/forum/list/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import dbConnect from "../../lab/lib/mongoose";
+import dbConnect from "../../lib/mongoose";
 import Message, { IMessage } from "../models/Message"; // 调整路径根据你的项目结构
 
 export async function GET(request: NextRequest) {
