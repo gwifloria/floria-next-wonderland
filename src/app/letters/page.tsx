@@ -7,16 +7,15 @@ export const metadata = {
   robots: { index: false, follow: true },
 };
 
-export default function LettersPage({
+export default async function LettersPage({
   searchParams,
 }: {
-  searchParams: { q?: string; page?: string };
+  searchParams: Promise<{ q?: string; page?: string }>;
 }) {
-  const q = (searchParams.q || "").trim();
-  const page = parseInt(searchParams.page || "1", 10) || 1;
+  const { page, q } = await searchParams;
   return (
     <SWRShell>
-      <LettersListClient initialQ={q} initialPage={page} />
+      <LettersListClient initialQ={q} initialPage={parseInt(page ?? "1")} />
     </SWRShell>
   );
 }

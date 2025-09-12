@@ -7,14 +7,15 @@ export const metadata = {
   robots: { index: false, follow: true },
 };
 
-export default function ThreadPage({
+export default async function ThreadPage({
   params,
 }: {
-  params: { threadId: string };
+  params: Promise<{ threadId: string }>;
 }) {
+  const { threadId } = await params;
   return (
     <SWRShell>
-      <ThreadDetailClient threadId={params.threadId} />
+      <ThreadDetailClient threadId={threadId} />
     </SWRShell>
   );
 }

@@ -16,21 +16,12 @@ import Thread from "../../models/Thread";
 // GET /api/letters/[threadId]
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { threadId: string } },
-): Promise<
-  NextResponse<
-    | {
-        thread: ThreadApi;
-        messages: MailMessageApi[];
-        comments: CommentApi[];
-      }
-    | { error: string }
-  >
-> {
+  ctx: { params: Promise<{ threadId: string }> },
+) {
   try {
     await dbConnect();
 
-    const { threadId } = params;
+    const { threadId } = await ctx.params;
     if (!threadId) {
       return NextResponse.json({ error: "threadId required" }, { status: 400 });
     }
