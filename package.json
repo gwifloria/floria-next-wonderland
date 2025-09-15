@@ -57,6 +57,7 @@
     "mongoose": "^8.18.0",
     "mongoose-lean-virtuals": "^2.0.0",
     "next": "^15.4.3",
+    "next-auth": "^4.24.11",
     "prismjs": "^1.30.0",
     "react": "^19.0.0",
     "react-confetti": "^6.4.0",

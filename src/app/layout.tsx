@@ -28,6 +28,7 @@ export default function RootLayout({
         {/* 柔化遮罩 */}
         <div className="main-background overflow-hidden mx-auto h-dvh p-16 pt-[56px]">
           <PageHeader />
+
           <div className="h-full overflow-auto">
             {children}
             <SpeedInsights></SpeedInsights>

@@ -1,4 +1,6 @@
 "use client";
+import AuthLayout from "@/components/AuthProvider";
+import UIProviders from "@/provider/UIProviders";
 import { CommentApi, MailMessageApi, ThreadApi } from "@/types/letter";
 import { fmtDateTime } from "@/util/date";
 import DOMPurify from "isomorphic-dompurify";
@@ -6,68 +8,76 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import useSWR from "swr";
-import { STICKER_IMGS, STICKER_POS } from "../constants";
+import { STICKER_IMGS } from "../constants";
+import { MailComment } from "./MailComment";
 
 /** 单条邮件：统一“信件/手帐”气质 */
 function MessageCard({ m, index }: { m: MailMessageApi; index: number }) {
+  // palette of paper textures
+  const PAPER_BG_LIST = [
+    "/images/env-note-with-flower.png",
+    "/images/env-paper.png",
+    "/images/env-paper4.png",
+  ];
+
+  // determine sender key and choose background: g* -> first, m* -> second, fallback -> hashed
+  const addr = (m.from?.address || "anonymous").toLowerCase();
+  let PAPER_BG = PAPER_BG_LIST[0];
+  if (addr.startsWith("g")) {
+    PAPER_BG = PAPER_BG_LIST[0];
+  } else if (addr.startsWith("m")) {
+    PAPER_BG = PAPER_BG_LIST[1] || PAPER_BG_LIST[0];
+  } else {
+    PAPER_BG = PAPER_BG_LIST[2];
+  }
+
+  // keep centered single-column layout; allow max width so paper shows
   return (
     <article
       id={`msg-${m.id}`}
-      className="group relative overflow-visible rounded-2xl bg-transparent p-0"
+      className={`group relative overflow-visible bg-transparent p-0 z-[2] mx-auto `}
     >
-      {/* 和纸胶带（左上角，低饱和） */}
-      <span
-        aria-hidden
-        className="absolute left-3 top-2 z-[2] h-1.5 w-8 -rotate-6 rounded-[2px] bg-neutral-300/30"
-      />
-      <div className="relative overflow-hidden z-[1] rounded-2xl px-6 md:px-8 py-5 md:py-6 ring-1 ring-neutral-200/40 bg-stone-50/90 backdrop-blur-[0.5px] shadow-[inset_0_1px_0_rgba(255,255,255,.6)] transition-transform duration-200">
-        <Image
-          src="/images/env-beige.png"
-          alt=""
-          width={220}
-          height={160}
-          className="absolute -left-12 bottom-2 -rotate-3 opacity-40 drop-shadow-md pointer-events-none z-1"
-        />
+      <div
+        className={`relative overflow-hidden z-[1] rounded-2xl px-10 py-6 ring-1 ring-neutral-200/40 backdrop-blur-[0.5px] transition-transform duration-200`}
+      >
+        {/* unified background paper */}
         <Image
           fill
           alt=""
-          className="pointer-events-none absolute inset-0 rounded-2xl opacity-45 mix-blend-multiply object-cover"
-          src="/images/bg-white-paper.png"
+          src={PAPER_BG}
+          className="pointer-events-none absolute scale-[2] inset-0 opacity-40 contrast-70 object-cover"
+          style={{ objectPosition: "center top" }}
         />
 
-        <header className="relative mb-3 flex items-start justify-between gap-3 pr-2">
-          {/* 中：地址与主题 */}
-          <div className="min-w-0 flex-1 truncate font-medium text-neutral-800 flex min-w-0 items-center gap-2 text-[13px] leading-5">
-            {m.from?.address}
-          </div>
+        <div className="relative z-[1]">
+          <header className="relative mb-3 flex items-start justify-between gap-3 pr-2">
+            <div className="min-w-0 flex-1 truncate font-medium text-neutral-800 flex items-center gap-2 text-[13px] leading-5">
+              {m.from?.address}
+            </div>
+            <time className="ml-2 shrink-0 pt-0.5 text-[12px] leading-5 text-neutral-500">
+              {fmtDateTime(m.sentAt)}
+            </time>
+          </header>
 
-          {/* 右：时间 */}
-          <time className="ml-2 shrink-0 pt-0.5 text-[12px] leading-5 text-neutral-500">
-            {fmtDateTime(m.sentAt)}
-          </time>
-        </header>
+          <hr className="relative my-2 border-0 border-t border-dashed border-neutral-300/80" />
 
-        {/* 撕纸感分隔（轻虚线） */}
-        <hr className="relative my-2 border-0 border-t border-dashed border-neutral-300/80" />
-
-        <div
-          className="relative prose prose-neutral prose-sm max-w-none leading-relaxed text-neutral-800"
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(m.html),
-          }}
-        />
+          <div
+            className="relative prose prose-neutral prose-sm max-w-none leading-relaxed text-neutral-800"
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(m.html) }}
+          />
+        </div>
       </div>
-      {/* 随机贴纸 */}
+
+      {/* small sticker fixed at bottom-left for subtle decoration */}
       {(() => {
         const img = STICKER_IMGS[index % STICKER_IMGS.length];
-        const pos = STICKER_POS[index % STICKER_POS.length];
         return (
           <Image
-            width={32}
+            width={36}
             height={48}
             src={img}
             alt=""
-            className={`pointer-events-none absolute z-[2] opacity-60 ${pos}`}
+            className={`pointer-events-none absolute z-[2] opacity-60 left-3 bottom-3`}
           />
         );
       })()}
@@ -82,7 +92,7 @@ function HistorySection({ historyMsgs }: { historyMsgs: MailMessageApi[] }) {
   if (!historyMsgs.length) return null;
 
   return (
-    <section className="mb-4">
+    <section className="my-8">
       {!open ? (
         <button
           className="w-full rounded-xl bg-neutral-50/80 px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-100 shadow-sm transition"
@@ -92,7 +102,7 @@ function HistorySection({ historyMsgs }: { historyMsgs: MailMessageApi[] }) {
         </button>
       ) : (
         <div className="space-y-3">
-          <div className="flex items-center justify-between text-[13px] text-neutral-500">
+          <div className="flex items-center justify-between text-[12px] text-neutral-500">
             <span>历史</span>
             <button
               className="rounded px-2 py-1 hover:bg-neutral-100"
@@ -117,6 +127,7 @@ export default function ThreadDetailClient({ threadId }: { threadId: string }) {
     messages: MailMessageApi[];
     comments: CommentApi[];
   }>(`/api/letters/${threadId}`);
+
   if (isLoading)
     return <div className="p-8 text-center text-neutral-500">加载中…</div>;
   if (error)
@@ -159,29 +170,14 @@ export default function ThreadDetailClient({ threadId }: { threadId: string }) {
 
       {/* 评论 */}
       <section className="mt-8">
-        <h2 className="mb-3 text-[15px] font-medium tracking-wide">评论</h2>
-        {comments?.length ? (
-          <ul className="space-y-3">
-            {comments.map((c) => (
-              <li key={c.id} className="rounded-2xl bg-white/60 shadow-sm p-4">
-                <div className="mb-1 text-[12px] text-neutral-500">
-                  {c.author?.name || c.author?.id || "匿名"} ·{" "}
-                  {fmtDateTime(c.createdAt)}
-                </div>
-                <div
-                  className="prose prose-neutral prose-sm max-w-none"
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(c.content),
-                  }}
-                />
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="rounded-xl bg-neutral-50/60 p-6 text-center text-neutral-500 shadow-inner">
-            暂无评论
-          </p>
-        )}
+        <div className="mb-3 text-[12px] text-neutral-500 tracking-wide">
+          评论
+        </div>
+        <UIProviders>
+          <AuthLayout>
+            <MailComment threadId={threadId}></MailComment>
+          </AuthLayout>
+        </UIProviders>
       </section>
     </main>
   );

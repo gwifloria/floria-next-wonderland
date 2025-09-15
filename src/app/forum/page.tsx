@@ -1,9 +1,11 @@
 "use client";
 import AntDShell from "@/provider/AntDShell";
 import { SWRShell } from "@/provider/SWRShell";
+import { postFetcher } from "@/util/fetch";
 import { Spin } from "antd";
 import useSWR from "swr";
-import ForumEditor from "./ForumEditor";
+import useSWRMutation from "swr/mutation";
+import ForumEditor from "../../components/TipTapEditor";
 import ForumList from "./ForumList";
 import { MessageItem } from "./type";
 
@@ -23,6 +25,15 @@ function ForumPage() {
     isValidating,
     mutate,
   } = useSWR<MessageItem[]>("/api/forum/list");
+  const { trigger } = useSWRMutation("/api/forum/send", postFetcher);
+
+  const forumUpdateSuccess = async (content: string) => {
+    try {
+      await trigger({ content: content });
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <>
       {!isLoading ||
@@ -33,7 +44,7 @@ function ForumPage() {
         ))}
       <div className="container mx-auto max-w-4xl px-4 py-8">
         <h1 className="mb-4 text-neutral-800">留言板 Message Board</h1>
-        <ForumEditor onSendSuccess={mutate} />
+        <ForumEditor onSendSuccess={forumUpdateSuccess} />
 
         <ForumList messages={messages} refresh={mutate} />
       </div>

@@ -18,7 +18,7 @@ export type MailMessageCore = {
 
 export type CommentCore = {
   threadId: string;
-  author?: { id?: string; name?: string };
+  author: { name: string; address: string };
   content: string;
   createdAt: string;
 };

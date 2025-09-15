@@ -1,4 +1,4 @@
-function fetcherFactory(method: "GET" | "POST" | "PUT" | "DELETE") {
+export function fetcherFactory(method: "GET" | "POST" | "PUT" | "DELETE") {
   return async <T>(url: string, { arg }: { arg?: any }): Promise<T> => {
     const res = await fetch(url, {
       method,
@@ -16,3 +16,4 @@ function fetcherFactory(method: "GET" | "POST" | "PUT" | "DELETE") {
 
 // 用法
 export const postFetcher = fetcherFactory("POST");
+export const deleteFetcher = fetcherFactory("DELETE");

@@ -57,7 +57,6 @@ export default function ForumItem({
             </div>
           );
         }
-        // Bow top-left
         return (
           <div
             className="pointer-events-none absolute -top-3 right-5 w-8 h-8 rotate-6 opacity-55"

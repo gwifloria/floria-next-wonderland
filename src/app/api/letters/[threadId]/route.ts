@@ -1,6 +1,4 @@
 import {
-  CommentApi,
-  CommentCore,
   MailMessageApi,
   MailMessageCore,
   ThreadApi,
@@ -9,7 +7,6 @@ import {
 } from "@/types/letter";
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "../../lib/mongoose";
-import Comment from "../../models/Comment";
 import MailMessage from "../../models/MailMessage";
 import Thread from "../../models/Thread";
 
@@ -41,14 +38,9 @@ export async function GET(
       return NextResponse.json({ error: "Thread not found" }, { status: 404 });
     }
 
-    const [msgDocs, cmtDocs] = await Promise.all([
-      MailMessage.find({ threadId })
-        .sort({ sentAt: 1 })
-        .lean<WithDbId<MailMessageCore>[]>(),
-      Comment.find({ threadId, status: "published" })
-        .sort({ createdAt: 1 })
-        .lean<WithDbId<CommentCore>[]>(),
-    ]);
+    const msgDocs = await MailMessage.find({ threadId })
+      .sort({ sentAt: 1 })
+      .lean<WithDbId<MailMessageCore>[]>();
 
     const thread: ThreadApi = {
       id: String(threadDoc._id),
@@ -85,15 +77,7 @@ export async function GET(
       attachments: m.attachments || [],
     }));
 
-    const comments: CommentApi[] = (cmtDocs || []).map((c) => ({
-      id: String(c._id),
-      threadId: c.threadId,
-      author: c.author,
-      content: c.content || "",
-      createdAt: new Date(c.createdAt).toISOString(),
-    }));
-
-    return NextResponse.json({ thread, messages, comments });
+    return NextResponse.json({ thread, messages });
   } catch (error) {
     console.error("[letters/:threadId] fetch failed:", error);
     return NextResponse.json(

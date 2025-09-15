@@ -1,23 +1,21 @@
 "use client";
 import { useConfetti } from "@/hooks/useConfetti";
 import { useMessage } from "@/provider/UIProviders";
-import { postFetcher } from "@/util/fetch";
 import { Button } from "antd";
 import { useCallback, useState } from "react";
-import useSWRMutation from "swr/mutation";
-import { useTipTapEditor } from "../../components/TipTapEditor/useTipTapEditor";
-import { useThrottle } from "../tools/useThrottle";
+import { useThrottle } from "../../app/tools/useThrottle";
+import { useTipTapEditor } from "./useTipTapEditor";
 const MAX_CHARS = 200;
-export default function ForumEditor({
+
+export default function TipTapEditor({
   onSendSuccess,
 }: {
-  onSendSuccess: () => void;
+  onSendSuccess: (content: string) => void;
 }) {
   const { element, editor } = useTipTapEditor();
   const message = useMessage();
 
   const { show, confettiContext } = useConfetti();
-  const { trigger } = useSWRMutation("/api/forum/send", postFetcher);
 
   const [loading, setLoading] = useState(false);
 
@@ -39,10 +37,9 @@ export default function ForumEditor({
 
     try {
       setLoading(true);
-      await trigger({ content: content });
+      await onSendSuccess(content);
       message.success("留言已发送");
       show({ numberOfPieces: 300, duration: 5000 });
-      onSendSuccess();
       editor.commands.clearContent();
       setLoading(false);
     } catch (err) {
@@ -50,7 +47,7 @@ export default function ForumEditor({
       message.error("发送失败");
       setLoading(false);
     }
-  }, [editor, message, onSendSuccess, show, trigger]);
+  }, [editor, message, onSendSuccess, show]);
 
   const throttledPost = useThrottle(handleUpload, 3000);
 
