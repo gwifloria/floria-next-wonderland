@@ -9,8 +9,10 @@ const MAX_CHARS = 200;
 
 export default function TipTapEditor({
   onSendSuccess,
+  showAuthStatus, // 是否在发布按钮左侧显示登录状态
 }: {
   onSendSuccess: (content: string) => void;
+  showAuthStatus?: React.ReactNode;
 }) {
   const { element, editor } = useTipTapEditor();
   const message = useMessage();
@@ -57,7 +59,12 @@ export default function TipTapEditor({
       {editor && (
         <>
           {element}
-          <div className="flex justify-end mt-2">
+          <div
+            className={`flex mt-2 ${showAuthStatus ? "justify-between" : "justify-end"} items-center`}
+          >
+            {showAuthStatus && (
+              <div className="flex-shrink-0">{showAuthStatus}</div>
+            )}
             <Button
               disabled={loading}
               aria-label="发布留言"

@@ -1,6 +1,6 @@
 // app/letters/[threadId]/page.tsx
 import { SWRShell } from "@/provider/SWRShell";
-import ThreadDetailClient from "./ThreadDetailClient";
+import LetterDetailClient from "./LetterDetailClient";
 
 export const metadata = {
   title: "Letter",
@@ -15,7 +15,7 @@ export default async function ThreadPage({
   const { threadId } = await params;
   return (
     <SWRShell>
-      <ThreadDetailClient threadId={threadId} />
+      <LetterDetailClient threadId={threadId} />
     </SWRShell>
   );
 }

@@ -20,7 +20,7 @@ export default function BlogLayout({
     <AntDShell>
       <SWRShell>
         <div className="flex h-full pt-8 justify-center">
-          <NotebookPaper className="min-w-[300px] flex:1 md:flex-shrink-0 rounded-2xl  border-r p-6  overflow-y-auto h-full">
+          <NotebookPaper className="w-[300px] flex:1 md:flex-shrink-0 rounded-2xl  border-r p-6  overflow-y-auto h-full">
             <Sidebar activePost={activePost} />
           </NotebookPaper>
           <div className="hidden  md:block flex-1 py-4 px-6 ml-2 min-w-0 md:py-8 bg-[#fefdfc] backdrop-blur-[1px]  rounded-2xl shadow-lg h-full">

@@ -121,7 +121,7 @@ function HistorySection({ historyMsgs }: { historyMsgs: MailMessageApi[] }) {
 }
 
 /* ---------- Page ---------- */
-export default function ThreadDetailClient({ threadId }: { threadId: string }) {
+export default function LetterDetailClient({ threadId }: { threadId: string }) {
   const { data, error, isLoading } = useSWR<{
     thread: ThreadApi;
     messages: MailMessageApi[];
