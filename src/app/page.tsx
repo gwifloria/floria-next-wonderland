@@ -1,5 +1,4 @@
 import { HeroSection, NavCards, PaperBackdrop } from "@/components/Homepage";
-import SayHiButton from "@/components/Sayhi/SayHiButton";
 import Image from "next/image";
 export default function HomeContainer() {
   return (
@@ -22,16 +21,6 @@ export default function HomeContainer() {
           <HeroSection />
           <NavCards />
         </section>
-
-        {/* Safe-area aware CTA fixed at the bottom so it won't overlap hero text */}
-        <div
-          className="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex justify-center"
-          style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 12px)" }}
-        >
-          <div className="pointer-events-auto">
-            <SayHiButton />
-          </div>
-        </div>
       </main>
     </>
   );

@@ -85,7 +85,6 @@ export function MailComment({ threadId }: { threadId: string }) {
         </div>
       ) : (
         <div className="relative bg-[#FFFDF9] border border-dashed border-rose-200 rounded-2xl p-8 text-center shadow-[0_1px_0_rgba(0,0,0,0.04)]">
-          {/* Decorative element for empty state */}
           <div
             className="pointer-events-none absolute -top-2 left-1/2 transform -translate-x-1/2 w-[48px] h-[16px] -rotate-1 opacity-60"
             aria-hidden="true"
@@ -109,16 +108,14 @@ export function MailComment({ threadId }: { threadId: string }) {
       )}
 
       {/* Authentication and Editor Section */}
-      <div className="space-y-4">
-        {session ? (
-          <TipTapEditor
-            onSendSuccess={handleUpload}
-            showAuthStatus={<AuthStatus compact />}
-          />
-        ) : (
-          <AuthStatus />
-        )}
-      </div>
+      {session ? (
+        <TipTapEditor
+          onSendSuccess={handleUpload}
+          showAuthStatus={<AuthStatus compact />}
+        />
+      ) : (
+        <AuthStatus />
+      )}
     </div>
   );
 }

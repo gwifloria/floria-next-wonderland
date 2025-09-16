@@ -1,8 +1,9 @@
 // src/app/api/letters/[threadId]/comments/route.ts
-import { extractPlainText, sanitizeHtml } from "@/app/api/forum/util";
+import { extractPlainText, sanitizeHtml } from "@/app/api/lib/htmlUtils";
 import dbConnect from "@/app/api/lib/mongoose";
 import Comment from "@/app/api/models/Comment";
 import { CommentApi, CommentCore, WithDbId } from "@/types/letter";
+
 import { NextRequest, NextResponse } from "next/server";
 export async function GET(
   req: NextRequest,

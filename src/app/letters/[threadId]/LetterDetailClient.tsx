@@ -9,46 +9,39 @@ import Link from "next/link";
 import { useState } from "react";
 import useSWR from "swr";
 import { STICKER_IMGS } from "../constants";
+import {
+  MAX_VISIBLE_MESSAGES,
+  PAPER_BACKGROUNDS,
+  STICKER_SIZE,
+} from "./constants";
 import { MailComment } from "./MailComment";
 
-/** 单条邮件：统一“信件/手帐”气质 */
+/** 单条邮件：统一"信件/手帐"气质 */
 function MessageCard({ m, index }: { m: MailMessageApi; index: number }) {
-  // palette of paper textures
-  const PAPER_BG_LIST = [
-    "/images/env-note-with-flower.png",
-    "/images/env-paper.png",
-    "/images/env-paper4.png",
-  ];
-
-  // determine sender key and choose background: g* -> first, m* -> second, fallback -> hashed
+  // determine sender key and choose background
   const addr = (m.from?.address || "anonymous").toLowerCase();
-  let PAPER_BG = PAPER_BG_LIST[0];
+  let paperBg: string = PAPER_BACKGROUNDS[0];
   if (addr.startsWith("g")) {
-    PAPER_BG = PAPER_BG_LIST[0];
+    paperBg = PAPER_BACKGROUNDS[0];
   } else if (addr.startsWith("m")) {
-    PAPER_BG = PAPER_BG_LIST[1] || PAPER_BG_LIST[0];
+    paperBg = PAPER_BACKGROUNDS[1] || PAPER_BACKGROUNDS[0];
   } else {
-    PAPER_BG = PAPER_BG_LIST[2];
+    paperBg = PAPER_BACKGROUNDS[2];
   }
 
-  // keep centered single-column layout; allow max width so paper shows
   return (
     <article
       id={`msg-${m.id}`}
-      className={`group relative overflow-visible bg-transparent p-0 z-[2] mx-auto `}
+      className="group relative overflow-visible bg-transparent p-0 z-[2] mx-auto"
     >
-      <div
-        className={`relative overflow-hidden z-[1] rounded-2xl px-10 py-6 ring-1 ring-neutral-200/40 backdrop-blur-[0.5px] transition-transform duration-200`}
-      >
-        {/* unified background paper */}
+      <div className="relative overflow-hidden z-[1] rounded-2xl px-10 py-6 ring-1 ring-neutral-200/40 backdrop-blur-[0.5px] transition-transform duration-200">
         <Image
           fill
           alt=""
-          src={PAPER_BG}
+          src={paperBg}
           className="pointer-events-none absolute scale-[2] inset-0 opacity-40 contrast-70 object-cover"
           style={{ objectPosition: "center top" }}
         />
-
         <div className="relative z-[1]">
           <header className="relative mb-3 flex items-start justify-between gap-3 pr-2">
             <div className="min-w-0 flex-1 truncate font-medium text-neutral-800 flex items-center gap-2 text-[13px] leading-5">
@@ -58,29 +51,20 @@ function MessageCard({ m, index }: { m: MailMessageApi; index: number }) {
               {fmtDateTime(m.sentAt)}
             </time>
           </header>
-
           <hr className="relative my-2 border-0 border-t border-dashed border-neutral-300/80" />
-
           <div
             className="relative prose prose-neutral prose-sm max-w-none leading-relaxed text-neutral-800"
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(m.html) }}
           />
         </div>
       </div>
-
-      {/* small sticker fixed at bottom-left for subtle decoration */}
-      {(() => {
-        const img = STICKER_IMGS[index % STICKER_IMGS.length];
-        return (
-          <Image
-            width={36}
-            height={48}
-            src={img}
-            alt=""
-            className={`pointer-events-none absolute z-[2] opacity-60 left-3 bottom-3`}
-          />
-        );
-      })()}
+      <Image
+        width={STICKER_SIZE.width}
+        height={STICKER_SIZE.height}
+        src={STICKER_IMGS[index % STICKER_IMGS.length]}
+        alt=""
+        className="pointer-events-none absolute z-[2] opacity-60 left-3 bottom-3"
+      />
     </article>
   );
 }
@@ -136,9 +120,8 @@ export default function LetterDetailClient({ threadId }: { threadId: string }) {
     return <div className="p-8 text-center text-neutral-500">未找到</div>;
 
   const { thread, messages, comments } = data;
-  const MAX_VISIBLE = 5; // 默认展示最早的 5 封
-  const visibleMsgs = (messages || []).slice(0, MAX_VISIBLE);
-  const restMsgs = (messages || []).slice(MAX_VISIBLE);
+  const visibleMsgs = (messages || []).slice(0, MAX_VISIBLE_MESSAGES);
+  const restMsgs = (messages || []).slice(MAX_VISIBLE_MESSAGES);
 
   return (
     <main className="mx-auto w-full max-w-2xl px-3 md:px-4 py-6">

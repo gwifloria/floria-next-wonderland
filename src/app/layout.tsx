@@ -4,17 +4,13 @@ import "@ant-design/v5-patch-for-react-19";
 
 import PageHeader from "@/components/PageHeader";
 
+import { defaultMetadata } from "@/constants/metadata";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Delius } from "next/font/google";
-import { Metadata } from "next/types";
 import "./globals.css";
 
 const delius = Delius({ subsets: ["latin"], weight: "400", display: "swap" });
-export const metadata: Metadata = {
-  title: "floria-wonderland",
-  description:
-    "floria's personal portfolio showcasing React, Next.js, and front-end projects.",
-};
+export const metadata = defaultMetadata;
 
 export default function RootLayout({
   children,
