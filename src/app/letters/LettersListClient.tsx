@@ -1,10 +1,12 @@
 "use client";
+import PageIntro from "@/components/PageIntro";
 import { ThreadApi } from "@/types/letter";
 import { fmtDateTime } from "@/util/date";
 import Image from "next/image";
 import Link from "next/link";
 import useSWR from "swr";
 import { ApiResp, COVERS, STICKER_IMGS, STICKER_POS } from "./constants";
+import LettersTechDetails from "./LettersTechDetails";
 import { initials } from "./util";
 
 function highlight(text: string, q?: string) {
@@ -57,11 +59,12 @@ export default function LettersListClient({
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-8">
       <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">Letters</h1>
-          <p className="mt-1 text-sm text-neutral-500">
-            Archive Mail With yiceng
-          </p>
+        <div className="flex align-center">
+          <h1 className="text-2xl mr-8 font-semibold">Letters</h1>
+
+          <PageIntro title="Letters" emoji="📬">
+            <LettersTechDetails />
+          </PageIntro>
         </div>
         <form className="w-full sm:w-auto" action="/letters" method="get">
           <input

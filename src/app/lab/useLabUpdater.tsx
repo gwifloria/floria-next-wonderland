@@ -12,7 +12,7 @@ export function useLabUpdater({ entry }: UseLabUpdaterProps) {
   const { message } = App.useApp();
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { updateLab, fetchLabs } = useLabs();
+  const { updateLab } = useLabs();
 
   const open = () => setVisible(true);
   const close = () => setVisible(false);
@@ -21,12 +21,11 @@ export function useLabUpdater({ entry }: UseLabUpdaterProps) {
     if (!entry) return;
     setLoading(true);
     try {
-      await updateLab(entry.id, {
+      await updateLab({
+        id: entry.id,
         ...values,
       });
       close();
-      fetchLabs();
-      console.log(message);
       message.success("更新成功");
     } catch (err) {
       message.error("更新失败");

@@ -34,7 +34,7 @@ export function PageIntro({ title, emoji, children }: PageIntroProps) {
         trigger="hover"
         placement="bottomLeft"
       >
-        <button className="flex items-center justify-center w-5 h-5 rounded-full text-mint-600 hover:text-mint-700 hover:bg-mint-50 transition-all duration-200 group">
+        <button className="flex items-center justify-center w-5 h-5 rounded-full text-gray-400/60 hover:text-gray-500 hover:bg-gray-50/50 transition-all duration-200 group">
           <InfoCircleOutlined className="text-sm group-hover:scale-110 transition-transform" />
         </button>
       </Popover>
@@ -76,7 +76,7 @@ export default function PageIntroFull({
           onOpenChange={setOpen}
         >
           <button
-            className="flex items-center justify-center w-5 h-5 rounded-full text-mint-600 hover:text-mint-700 hover:bg-mint-50 transition-all duration-200 group"
+            className="flex items-center justify-center w-5 h-5 rounded-full text-gray-400/60 hover:text-gray-500 hover:bg-gray-50/50 transition-all duration-200 group"
             aria-label="查看技术实现详情"
             onClick={() => setOpen(!open)}
           >

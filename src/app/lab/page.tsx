@@ -25,7 +25,7 @@ const LabPageContainer = () => {
   const {
     labs: entries,
     loading: isLoading,
-    fetchLabs,
+    error,
     updateLab,
     deleteLab,
   } = useLabs();
@@ -46,8 +46,7 @@ const LabPageContainer = () => {
 
   const handleDelete = async (id: any) => {
     try {
-      await deleteLab(id);
-      await fetchLabs();
+      await deleteLab({ id });
     } catch (error) {
       console.error("Failed to delete entry:", error);
     }
@@ -55,8 +54,7 @@ const LabPageContainer = () => {
 
   const handleStatusChange = async (id: string, newStatus: LabStatus) => {
     try {
-      await updateLab(id, { status: newStatus });
-      await fetchLabs();
+      await updateLab({ id, status: newStatus });
     } catch (error) {
       console.error("Failed to update entry:", error);
     }
@@ -165,12 +163,26 @@ const LabPageContainer = () => {
           initial="hidden"
           animate="visible"
         >
-          {isLoading && (
+          {isLoading && !entries.length && (
             <div className="inset-0 z-10 flex items-center bg-white bg-opacity-70 align-center z-50 absolute justify-center py-12">
               <Spin size="large" />
             </div>
           )}
-          {filteredEntries.length > 0 ? (
+          {error && (
+            <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+              加载失败：{error}
+            </div>
+          )}
+          {!isLoading && !error && filteredEntries.length === 0 && (
+            <motion.div
+              className="text-center py-12 text-gray-500"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              暂无符合条件的记录 🤔
+            </motion.div>
+          )}
+          {filteredEntries.length > 0 &&
             filteredEntries.map((entry) => (
               <LabCard
                 {...entry}
@@ -182,16 +194,7 @@ const LabPageContainer = () => {
                   handleStatusChange(entry.id, status)
                 }
               />
-            ))
-          ) : (
-            <motion.div
-              className="text-center py-12 text-gray-500"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              暂无符合条件的记录 🤔
-            </motion.div>
-          )}
+            ))}
         </motion.div>
 
         {/* 新建弹窗 */}

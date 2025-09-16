@@ -8,8 +8,10 @@ import {
   LabType,
   LabUpdateInput,
 } from "@/types/lab";
+import { deleteFetcher, postFetcher, putFetcher } from "@/util/fetch";
 import { useCallback, useMemo, useState } from "react";
 import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 
 interface UseLabsFilters {
   type?: LabType;
@@ -24,10 +26,10 @@ interface UseLabsReturn {
   loading: boolean;
   error: string | null;
   pagination: LabListResponse["pagination"] | null;
-  fetchLabs: (filters?: UseLabsFilters) => Promise<void>;
-  addLab: (labData: LabCreateInput) => Promise<Lab>;
-  updateLab: (id: string, labData: LabUpdateInput) => Promise<Lab>;
-  deleteLab: (id: string) => Promise<void>;
+  fetchLabs: (filters?: UseLabsFilters) => void;
+  addLab: (labData: LabCreateInput) => Promise<any>;
+  updateLab: (data: { id: string } & LabUpdateInput) => Promise<any>;
+  deleteLab: (data: { id: string }) => Promise<any>;
   clearAllLabs: () => Promise<void>;
 }
 
@@ -43,68 +45,45 @@ export function useLabs(): UseLabsReturn {
     return `/api/lab/list${qs ? `?${qs}` : ""}`;
   }, [filters]);
 
-  const { data, error, isLoading, mutate } = useSWR<LabListResponse>(listKey);
+  const { data, error, isLoading, mutate } = useSWR<LabListResponse>(listKey, {
+    keepPreviousData: true,
+  });
 
-  const fetchLabs = useCallback(
-    async (next?: UseLabsFilters) => {
-      setFilters((prev) => ({ ...prev, ...(next || {}) }));
-      // 让 SWR 使用新 key 重新请求
-      await mutate();
-    },
-    [mutate],
-  );
+  const fetchLabs = useCallback((next?: UseLabsFilters) => {
+    // 直接更新筛选条件，SWR 会自动重新获取数据
+    setFilters((prev) => ({ ...prev, ...(next || {}) }));
+  }, []);
 
-  const addLab = useCallback(
-    async (labData: LabCreateInput): Promise<Lab> => {
-      const response = await fetch("/api/lab/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(labData),
-      });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result?.error || "创建失败");
-      await mutate();
-      return result.data as Lab;
-    },
-    [mutate],
-  );
+  // 直接使用 trigger 作为最终接口，消除冗余包装
+  const { trigger: addLab } = useSWRMutation("/api/lab/add", postFetcher, {
+    onSuccess: () => mutate(), // 成功后刷新列表
+  });
 
-  const updateLab = useCallback(
-    async (id: string, labData: LabUpdateInput): Promise<Lab> => {
-      const response = await fetch(`/api/lab/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(labData),
-      });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result?.error || "更新失败");
-      await mutate();
-      return result.data as Lab;
-    },
-    [mutate],
-  );
+  const { trigger: updateLab } = useSWRMutation("/api/lab/update", putFetcher, {
+    onSuccess: () => mutate(), // 成功后刷新列表
+  });
 
-  const deleteLab = useCallback(
-    async (id: string): Promise<void> => {
-      const response = await fetch(`/api/lab/${id}`, { method: "DELETE" });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result?.error || "删除失败");
-      await mutate();
+  const { trigger: deleteLab } = useSWRMutation(
+    "/api/lab/delete",
+    postFetcher,
+    {
+      onSuccess: () => mutate(), // 成功后刷新列表
     },
-    [mutate],
   );
 
   const clearAllLabs = useCallback(async (): Promise<void> => {
     const response = await fetch("/api/lab", { method: "DELETE" });
     const result = await response.json();
     if (!response.ok) throw new Error(result?.error || "清空失败");
+
+    // 使用 mutate 自动更新缓存
     await mutate();
   }, [mutate]);
 
   return {
     labs: data?.data ?? [],
     loading: isLoading,
-    error: error ? (error as Error).message : null,
+    error: error ? String(error) : null,
     pagination: data?.pagination ?? null,
     fetchLabs,
     addLab,

@@ -33,8 +33,8 @@ export const routeLabels: PartialRouteMap<string> = {
 
 export const routeDescriptions: PartialRouteMap<string> = {
   blog: "技术笔记与生活感悟，从 Obsidian 同步",
-  letters: "与家人的邮件往来，记录温馨时光",
-  contact: "了解我的经历与联系方式",
+  letters: "记录和小庄的邮件往来",
+  contact: "简历&个人状态",
   lab: "实验室 - 记录想法与项目进展",
   tools: "实用工具集合",
   space: "3D 交互体验空间",

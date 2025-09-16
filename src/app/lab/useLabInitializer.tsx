@@ -13,7 +13,7 @@ export function useLabInitializer({
 }: UseLabInitializerProps = {}) {
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { addLab, fetchLabs } = useLabs();
+  const { addLab } = useLabs();
 
   const { message } = App.useApp();
 
@@ -31,7 +31,6 @@ export function useLabInitializer({
         type: values.type ?? "idea",
       });
       close();
-      fetchLabs();
       message.success("🎉 创建成功！");
     } catch (err) {
       message.error("😢 创建失败，请重试！");
