@@ -1,4 +1,5 @@
 "use client";
+import { RouteIcon } from "@/components/SmartIcon";
 import { toAbsPath } from "@/util/path";
 import Link from "next/link";
 import { useState } from "react";
@@ -31,11 +32,10 @@ const PageHeader = () => {
             <Link
               href={toAbsPath(route)}
               key={route}
-              className="px-3 py-1 rounded-full text-mint-800 text-sm md:text-lg font-mono font-semibold hover:bg-mint-100 hover:text-rose-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-mint-200"
+              className="flex items-center gap-2 px-3 py-1 rounded-full text-mint-800 text-sm md:text-lg font-mono font-semibold hover:bg-mint-100 hover:text-rose-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-mint-200"
             >
-              {routes[route as keyof typeof routes] || "🌟"}
-              &nbsp;
-              {route.charAt(0).toUpperCase() + route.slice(1)}
+              <RouteIcon route={route} size={18} />
+              <span>{route.charAt(0).toUpperCase() + route.slice(1)}</span>
             </Link>
           ))}
         </div>
@@ -91,12 +91,12 @@ const PageHeader = () => {
                   <Link
                     href={toAbsPath(route)}
                     onClick={() => setOpen(false)}
-                    className="block rounded-lg px-3 py-2 hover:bg-neutral-50 text-mint-900"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-neutral-50 text-mint-900 transition-colors"
                   >
-                    <span className="mr-2 align-middle">
-                      {routes[route as keyof typeof routes] || "🌟"}
+                    <span className="flex-shrink-0">
+                      <RouteIcon route={route} size={18} />
                     </span>
-                    <span className="align-middle">
+                    <span className="flex-1">
                       {route.charAt(0).toUpperCase() + route.slice(1)}
                     </span>
                   </Link>

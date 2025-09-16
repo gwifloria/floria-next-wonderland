@@ -7,8 +7,8 @@ export default function HomeContainer() {
         <Image
           src="/images/niupizhi-bg-cropped.png"
           alt="Background"
-          layout="fill"
-          objectFit="cover"
+          fill
+          style={{ objectFit: "cover" }}
         />
       </div>
       <main className="mx-auto max-w-[720px] h-full w-full overflow-hidden px-4 py-8 sm:py-16 flex flex-col">

@@ -1,16 +1,19 @@
 import { BriefIntroduction } from "@/components/BriefIntro";
+import { RouteIcon } from "@/components/SmartIcon";
+import { routeDescriptions } from "@/constants/routes";
 import Image from "next/image";
 import Link from "next/link";
 import { PageRoute, routes } from "../PageHeader/router";
-interface NavItem {
-  href: string;
-  title: string;
-  desc: string;
-  emoji: string;
-}
-const NAV: NavItem[] = (Object.entries(routes) as [PageRoute, string][]).map(
-  ([key, emoji]) => ({ href: key, title: key, desc: "", emoji }),
-);
+
+const NAV = (
+  Object.entries(routes) as [PageRoute, { emoji: string; icon?: string }][]
+).map(([key, iconConfig]) => ({
+  href: key,
+  title: key,
+  desc: routeDescriptions[key] || "",
+  emoji: iconConfig.emoji,
+  icon: iconConfig.icon,
+}));
 
 export const PaperBackdrop = () => {
   return (
@@ -110,29 +113,30 @@ export const HeroSection = () => {
   );
 };
 
-export const CardLink = ({ item }: { item: NavItem }) => {
+export const CardLink = ({ item }: { item: (typeof NAV)[number] }) => {
   return (
     <Link
       href={item.href}
       aria-label={item.title}
-      className="group flex justify-center sm:items-start gap-3 px-2 py-2 rounded-xl "
+      className="group flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-white/50 transition-colors"
     >
-      <div
-        aria-hidden
-        className="inline-flex h-8 w-8 items-center justify-center rounded-full  text-base"
-      >
-        {item.emoji}
+      <div className="flex-shrink-0 flex items-center justify-center">
+        <RouteIcon route={item.href} size={22} />
       </div>
-      <div className="min-w-0">
-        <div className="text-neutral-800 font-semibold text-[15px] tracking-tight">
-          {item.title}
-          <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-1">
+          <span className="text-neutral-800 font-semibold text-[15px] tracking-tight">
+            {item.title}
+          </span>
+          <span className="opacity-0 group-hover:opacity-100 transition-opacity text-neutral-600">
             →
           </span>
         </div>
-        <div className="text-xs text-neutral-600/90 mt-0.5 line-clamp-2">
-          {item.desc}
-        </div>
+        {item.desc && (
+          <div className="text-xs text-neutral-600/80 mt-1 leading-relaxed line-clamp-2">
+            {item.desc}
+          </div>
+        )}
       </div>
     </Link>
   );
