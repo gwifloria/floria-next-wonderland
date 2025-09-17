@@ -4,7 +4,6 @@ import StarterKit from "@tiptap/starter-kit";
 import { useId } from "react";
 import "./index.scss";
 import Toolbar from "./Toolbar";
-const MAX_CHARS = 200;
 
 const extensions = [TextStyleKit, StarterKit];
 

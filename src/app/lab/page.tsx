@@ -1,4 +1,5 @@
 "use client";
+import PageIntro from "@/components/PageIntro";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Spin } from "antd";
 import { motion } from "framer-motion";
@@ -10,6 +11,7 @@ import {
   tabVariants,
 } from "./constant";
 import LabCard from "./LabCard";
+import LabTechDetails from "./LabTechDetails";
 import { useLabInitializer } from "./useLabInitializer";
 import { useLabUpdater } from "./useLabUpdater";
 
@@ -25,7 +27,7 @@ const LabPageContainer = () => {
   const {
     labs: entries,
     loading: isLoading,
-    fetchLabs,
+    error,
     updateLab,
     deleteLab,
   } = useLabs();
@@ -46,8 +48,7 @@ const LabPageContainer = () => {
 
   const handleDelete = async (id: any) => {
     try {
-      await deleteLab(id);
-      await fetchLabs();
+      await deleteLab({ id });
     } catch (error) {
       console.error("Failed to delete entry:", error);
     }
@@ -55,8 +56,7 @@ const LabPageContainer = () => {
 
   const handleStatusChange = async (id: string, newStatus: LabStatus) => {
     try {
-      await updateLab(id, { status: newStatus });
-      await fetchLabs();
+      await updateLab({ id, status: newStatus });
     } catch (error) {
       console.error("Failed to update entry:", error);
     }
@@ -104,14 +104,19 @@ const LabPageContainer = () => {
             而非结果
           </p>
         </motion.div>
-        <motion.h1
-          className="text-xl font-bold mb-8 bg-gradient-to-r from-mint-600 to-mint-400 bg-clip-text text-transparent"
+        <motion.div
+          className="flex items-center gap-3 mb-8"
           variants={tabVariants}
           initial="hidden"
           animate="visible"
         >
-          🧪实验室
-        </motion.h1>
+          <h1 className="text-xl font-bold bg-gradient-to-r from-mint-600 to-mint-400 bg-clip-text text-transparent">
+            🧪实验室
+          </h1>
+          <PageIntro title="Lab" emoji="🧪">
+            <LabTechDetails />
+          </PageIntro>
+        </motion.div>
 
         <motion.div
           className="flex flex-wrap justify-between items-center gap-4 mb-8"
@@ -165,12 +170,26 @@ const LabPageContainer = () => {
           initial="hidden"
           animate="visible"
         >
-          {isLoading && (
+          {isLoading && !entries.length && (
             <div className="inset-0 z-10 flex items-center bg-white bg-opacity-70 align-center z-50 absolute justify-center py-12">
               <Spin size="large" />
             </div>
           )}
-          {filteredEntries.length > 0 ? (
+          {error && (
+            <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+              加载失败：{error}
+            </div>
+          )}
+          {!isLoading && !error && filteredEntries.length === 0 && (
+            <motion.div
+              className="text-center py-12 text-gray-500"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              暂无符合条件的记录 🤔
+            </motion.div>
+          )}
+          {filteredEntries.length > 0 &&
             filteredEntries.map((entry) => (
               <LabCard
                 {...entry}
@@ -182,16 +201,7 @@ const LabPageContainer = () => {
                   handleStatusChange(entry.id, status)
                 }
               />
-            ))
-          ) : (
-            <motion.div
-              className="text-center py-12 text-gray-500"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              暂无符合条件的记录 🤔
-            </motion.div>
-          )}
+            ))}
         </motion.div>
 
         {/* 新建弹窗 */}

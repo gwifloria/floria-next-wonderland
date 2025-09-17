@@ -8,8 +8,25 @@ const nextConfig = {
   reactStrictMode: false,
   basePath: "",
   assetPrefix: undefined,
+  env: {
+    NEXT_PUBLIC_BUILD_TIME: new Date().toLocaleString("zh-CN", {
+      timeZone: "Asia/Shanghai",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+    NEXT_PUBLIC_COMMIT_ID: process.env.NEXT_PUBLIC_COMMIT_ID,
+  },
   images: {
     formats: ["image/avif", "image/webp"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+      },
+    ],
   },
   async headers() {
     return [

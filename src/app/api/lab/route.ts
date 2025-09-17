@@ -1,10 +1,9 @@
-// 5. Labs 列表和创建 app/api/labs/route.ts
+// DELETE /api/lab - 清空所有 labs
 import { ApiResponse } from "@/types/lab";
 import { NextResponse } from "next/server";
-import dbConnect from "./lib/mongoose";
+import dbConnect from "../lib/mongoose";
 import Lab from "./models/Lab";
 
-// DELETE /api/labs - 清空所有 labs
 export async function DELETE(): Promise<
   NextResponse<ApiResponse<{ deletedCount: number }>>
 > {
@@ -21,7 +20,7 @@ export async function DELETE(): Promise<
     console.error("Lab clear failed:", error);
     return NextResponse.json(
       { error: "Failed to clear labs" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

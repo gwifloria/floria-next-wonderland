@@ -1,19 +1,30 @@
+import PageIntro from "@/components/PageIntro";
 import { Skeleton, Space } from "antd";
 import Image from "next/image";
+import BlogTechDetails from "./BlogTechDetails";
 
 export function EmptyState() {
   return (
-    <div className="flex items-center flex-col justify-center bg-gray-50/30 rounded-xl">
-      <div>
+    <>
+      <div className=" relative flex items-center flex-col justify-center bg-gray-50/30 rounded-xl">
         <Image
           className="opacity-80 mx-auto mb-6"
           alt="note"
           height={100}
           width={100}
-          src="/images/note.png"
+          src="/images/note-rose.png"
         ></Image>
-        <div className="max-w-5xl text-center mx-auto bg-white p-6">
-          <h2 className="text-xl font-semibold mb-4">欢迎来到我的 blog 区</h2>
+        <div className="max-w-5xl text-left mx-auto p-6">
+          <div className="flex align-center">
+            <h2 className="text-xl mr-8 font-semibold mb-4">
+              欢迎来到我的 blog 区
+            </h2>
+
+            <PageIntro title="Blog" emoji="✏️">
+              <BlogTechDetails />
+            </PageIntro>
+          </div>
+
           <p className="text-neutral-600 mb-2">在这里你可以浏览两类文章：</p>
           <ul className="list-disc list-inside text-neutral-700">
             <li>
@@ -28,7 +39,10 @@ export function EmptyState() {
           </p>
         </div>
       </div>
-    </div>
+      <div className="h-[260px] w-[200px] right-0 bottom-0 absolute opacity-20">
+        <Image alt="corner" fill src="/images/girl-with-book-brown.png"></Image>
+      </div>
+    </>
   );
 }
 

@@ -1,11 +1,11 @@
 import { ApiResponse, LabListResponse, LabStatus, LabType } from "@/types/lab";
 import { NextRequest, NextResponse } from "next/server";
-import dbConnect from "../lib/mongoose";
+import dbConnect from "../../lib/mongoose";
 import Lab, { ILab } from "../models/Lab";
 
 // GET /api/labs - 获取 labs 列表
 export async function GET(
-  request: NextRequest
+  request: NextRequest,
 ): Promise<NextResponse<LabListResponse | ApiResponse>> {
   try {
     await dbConnect();
@@ -69,7 +69,7 @@ export async function GET(
     console.error("Lab list fetch failed:", error);
     return NextResponse.json(
       { error: "Failed to fetch labs" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

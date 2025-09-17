@@ -1,11 +1,11 @@
 import { ApiResponse, LabCreateInput } from "@/types/lab";
 import { NextRequest, NextResponse } from "next/server";
-import { handleError } from "../lib/api-helpers";
-import dbConnect from "../lib/mongoose";
+import { handleError } from "../../lib/api-helpers";
+import dbConnect from "../../lib/mongoose";
 import Lab, { ILab } from "../models/Lab";
 
 export async function POST(
-  request: NextRequest
+  request: NextRequest,
 ): Promise<NextResponse<ApiResponse<ILab>>> {
   try {
     await dbConnect();
@@ -16,7 +16,7 @@ export async function POST(
     if (!title || !type || !category) {
       return NextResponse.json(
         { error: "Missing required fields: title, type, or category" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -24,14 +24,14 @@ export async function POST(
     if (!["bug", "issue", "idea"].includes(type)) {
       return NextResponse.json(
         { error: "Type must be 'bug', 'issue', or 'idea'" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!["open", "inProgress", "resolved"].includes(status)) {
       return NextResponse.json(
         { error: "Status must be 'open', 'inProgress', or 'resolved'" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -50,7 +50,7 @@ export async function POST(
         message: "Lab created successfully",
         data: lab,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.error("Lab creation failed:", error);

@@ -22,7 +22,7 @@ export default function BlogSlugPage({
         aria-label="返回文章列表"
       >
         <Button
-          style={{ background: "#fff" }}
+          className="inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[13px] bg-white/70 hover:bg-white"
           type="default"
           size="small"
           icon={<LeftOutlined />}
