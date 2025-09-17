@@ -22,6 +22,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "threadId required" }, { status: 400 });
     }
 
+    console.log("[letters/detail] Looking for threadId:", threadId);
+
     const threadDoc = await Thread.findById(threadId)
       .select({
         _id: 1,

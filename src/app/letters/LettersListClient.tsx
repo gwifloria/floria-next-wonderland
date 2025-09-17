@@ -184,7 +184,7 @@ function ThreadCard({
 
   return (
     <Link
-      href={`/letters/${encodeURIComponent(t.id)}`}
+      href={`/letters/${t.id}`}
       className="group relative block overflow-hidden rounded-2xl border border-stone-300/80 bg-[#fdfdfc] p-4 shadow-[inset_0_1px_0_#fff,0_1px_2px_rgba(0,0,0,.04)] transition-all duration-200 hover:-translate-y-[2px] hover:shadow-lg/30 sm:p-5 h-56 flex flex-col justify-between"
     >
       {" "}
