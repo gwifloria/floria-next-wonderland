@@ -53,4 +53,7 @@ jobs:
           NEXT_PUBLIC_DEPLOYMENT_URL: ${{ secrets.NEXT_PUBLIC_DEPLOYMENT_URL }}
           MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          GITHUB_ID: ${{ secrets.GITHUB_ID }}
+          GITHUB_SECRET: ${{ secrets.GITHUB_SECRET }}
+
         run: yarn build
