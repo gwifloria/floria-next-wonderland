@@ -4,7 +4,7 @@ export default function CommitInfo() {
 
   return (
     <div className="fixed opacity-20 bottom-2 right-2 bg-neutral-50/70 backdrop-blur-sm px-2 py-1 rounded text-[11px] leading-4 text-neutral-400 print:hidden">
-      <span className="mr-3">
+      <span className="mr-3 hidden">
         App: <code>{app}</code>
       </span>
       <span>

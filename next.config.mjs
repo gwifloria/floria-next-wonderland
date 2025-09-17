@@ -17,6 +17,7 @@ const nextConfig = {
       hour: "2-digit",
       minute: "2-digit",
     }),
+    NEXT_PUBLIC_COMMIT_ID: process.env.NEXT_PUBLIC_COMMIT_ID,
   },
   images: {
     formats: ["image/avif", "image/webp"],
