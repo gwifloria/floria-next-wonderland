@@ -1,6 +1,6 @@
 "use client";
 
-import { ThreadApi, MailMessageApi } from "@/types/letter";
+import { MailMessageApi, ThreadApi } from "@/types/letter";
 import useSWR from "swr";
 
 interface LetterDetailResponse {
@@ -8,19 +8,9 @@ interface LetterDetailResponse {
   messages: MailMessageApi[];
 }
 
-export function useLetterDetail(threadId: string | null) {
+export function useLetterDetail(threadId: string) {
   const { data, error, mutate } = useSWR<LetterDetailResponse>(
-    threadId ? ["/api/letters/detail", { threadId }] : null,
-    ([url, body]) =>
-      fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      }).then((res) => res.json()),
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    },
+    `/api/letters/detail?threadId=${threadId}`,
   );
 
   return {

@@ -3,6 +3,7 @@ import "antd/dist/reset.css"; // ✅ 必须放在最靠前
 import "@ant-design/v5-patch-for-react-19";
 
 import PageHeader from "@/components/PageHeader";
+import CommitInfo from "@/components/CommitInfo";
 
 import { defaultMetadata } from "@/constants/metadata";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -30,6 +31,7 @@ export default function RootLayout({
             <SpeedInsights></SpeedInsights>
           </div>
         </div>
+        <CommitInfo />
       </body>
     </html>
   );

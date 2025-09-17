@@ -1,4 +1,5 @@
 import { HeroSection, NavCards, PaperBackdrop } from "@/components/Homepage";
+import CopyrightInfo from "@/components/CopyrightInfo";
 import Image from "next/image";
 export default function HomeContainer() {
   return (
@@ -21,6 +22,9 @@ export default function HomeContainer() {
           <HeroSection />
           <NavCards />
         </section>
+
+        {/* Copyright info - only on homepage */}
+        <CopyrightInfo />
       </main>
     </>
   );

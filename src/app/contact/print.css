@@ -8,6 +8,14 @@
     margin: 12mm; /* safe printable area */
   }
 
+  /* Hide navigation header completely when printing */
+  nav[role="navigation"] {
+    display: none !important;
+  }
+  .fixed.top-0 {
+    display: none !important;
+  }
+
   /* Remove noisy backgrounds & shadows for clean PDF */
   html,
   body {

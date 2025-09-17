@@ -11,20 +11,18 @@ import MailMessage from "../../models/MailMessage";
 import Thread from "../../models/Thread";
 
 // POST /api/letters/detail
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const threadId = searchParams.get("threadId");
+  if (!threadId) {
+    return NextResponse.json({ error: "threadId required" }, { status: 400 });
+  }
+  const id = decodeURIComponent(threadId);
+  console.log("[letters/detail] Looking for threadId:", id);
   try {
     await dbConnect();
 
-    const body: { threadId: string } = await req.json();
-    const { threadId } = body;
-
-    if (!threadId) {
-      return NextResponse.json({ error: "threadId required" }, { status: 400 });
-    }
-
-    console.log("[letters/detail] Looking for threadId:", threadId);
-
-    const threadDoc = await Thread.findById(threadId)
+    const threadDoc = await Thread.findById(id)
       .select({
         _id: 1,
         subject: 1,
