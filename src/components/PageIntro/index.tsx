@@ -3,6 +3,7 @@
 import AntDShell from "@/provider/AntDShell";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { Popover } from "antd";
+import Image from "next/image";
 import { useState } from "react";
 
 interface PageIntroProps {
@@ -11,49 +12,26 @@ interface PageIntroProps {
   children?: React.ReactNode;
 }
 
-// 内嵌版本 - 只显示图标和 Popover
-export function PageIntro({ title, emoji, children }: PageIntroProps) {
-  const content = (
-    <div className="max-w-sm">
-      <div className="prose prose-sm max-w-none text-neutral-700">
-        {children}
-      </div>
-    </div>
-  );
-
-  return (
-    <AntDShell>
-      <Popover
-        content={content}
-        title={
-          <div className="flex items-center gap-2">
-            <span>{emoji}</span>
-            <span className="font-semibold">{title} - 技术实现</span>
-          </div>
-        }
-        trigger="hover"
-        placement="bottomLeft"
-      >
-        <button className="flex items-center justify-center w-5 h-5 rounded-full text-gray-400/60 hover:text-gray-500 hover:bg-gray-50/50 transition-all duration-200 group">
-          <InfoCircleOutlined className="text-sm group-hover:scale-110 transition-transform" />
-        </button>
-      </Popover>
-    </AntDShell>
-  );
-}
-
 // 完整版本 - 包含展开的内容区域
-export default function PageIntroFull({
-  title,
-  emoji,
-  children,
-}: PageIntroProps) {
+export default function PageIntro({ title, emoji, children }: PageIntroProps) {
   const [open, setOpen] = useState(false);
 
   const content = (
-    <div className="max-w-sm">
-      <div className="prose prose-sm max-w-none text-neutral-700">
-        {children}
+    <div className="max-w-sm relative overflow-hidden rounded-xl">
+      <div className="absolute inset-0 opacity-70">
+        <Image
+          src="/images/intro-bg.png"
+          alt="Background"
+          fill
+          className="object-cover rounded-xl"
+          sizes="(max-width: 384px) 100vw, 384px"
+          priority
+        />
+      </div>
+      <div className="relative z-10 p-4 bg-white/30 rounded-xl">
+        <div className="prose prose-sm max-w-none text-neutral-700">
+          {children}
+        </div>
       </div>
     </div>
   );
@@ -64,12 +42,8 @@ export default function PageIntroFull({
         {/* 信息图标 - 悬浮显示详细信息 */}
         <Popover
           content={content}
-          title={
-            <div className="flex items-center gap-2">
-              <span>{emoji}</span>
-              <span className="font-semibold">{title} - 技术实现</span>
-            </div>
-          }
+          title={null}
+          className="p-0"
           trigger="hover"
           placement="bottomLeft"
           open={open}

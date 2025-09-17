@@ -1,10 +1,7 @@
 "use client";
-import PageIntro from "@/components/PageIntro";
-import AntDShell from "@/provider/AntDShell";
 import Image from "next/image";
 import { useState } from "react";
 import { skills } from "../../components/PersonalIntro/constant";
-import ContactTechDetails from "./ContactTechDetails";
 import { education, experiences, labels } from "./constant";
 import { GapMarkdown } from "./Gap";
 import "./print.css";
@@ -131,14 +128,8 @@ export default function AboutMePage() {
                   fill
                   className="object-contain"
                 />
-                <AntDShell>
-                  <div className="container relative mx-auto max-w-6xl px-4 py-8">
-                    <PageIntro title="Contact" emoji="👋">
-                      <ContactTechDetails />
-                    </PageIntro>
-                  </div>
-                </AntDShell>
               </div>
+
               <Image
                 priority
                 width={140}

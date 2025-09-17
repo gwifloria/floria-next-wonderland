@@ -1,4 +1,5 @@
 "use client";
+import PageIntro from "@/components/PageIntro";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Spin } from "antd";
 import { motion } from "framer-motion";
@@ -10,6 +11,7 @@ import {
   tabVariants,
 } from "./constant";
 import LabCard from "./LabCard";
+import LabTechDetails from "./LabTechDetails";
 import { useLabInitializer } from "./useLabInitializer";
 import { useLabUpdater } from "./useLabUpdater";
 
@@ -102,14 +104,19 @@ const LabPageContainer = () => {
             而非结果
           </p>
         </motion.div>
-        <motion.h1
-          className="text-xl font-bold mb-8 bg-gradient-to-r from-mint-600 to-mint-400 bg-clip-text text-transparent"
+        <motion.div
+          className="flex items-center gap-3 mb-8"
           variants={tabVariants}
           initial="hidden"
           animate="visible"
         >
-          🧪实验室
-        </motion.h1>
+          <h1 className="text-xl font-bold bg-gradient-to-r from-mint-600 to-mint-400 bg-clip-text text-transparent">
+            🧪实验室
+          </h1>
+          <PageIntro title="Lab" emoji="🧪">
+            <LabTechDetails />
+          </PageIntro>
+        </motion.div>
 
         <motion.div
           className="flex flex-wrap justify-between items-center gap-4 mb-8"

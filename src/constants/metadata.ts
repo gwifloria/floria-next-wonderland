@@ -8,7 +8,8 @@ export const SITE_CONFIG = {
     "floria's personal portfolio showcasing React, Next.js, and front-end projects.",
   author: "Floria",
   url:
-    process.env.NEXT_PUBLIC_SITE_URL || "https://floria-wonderland.vercel.app",
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    "https://floria-next-wonderland.vercel.app",
 } as const;
 
 // 默认元数据
