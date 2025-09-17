@@ -16,6 +16,17 @@
     display: none !important;
   }
 
+  /* Remove height and overflow constraints for full content printing */
+  .main-background {
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+  .h-full.overflow-auto {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
   /* Remove noisy backgrounds & shadows for clean PDF */
   html,
   body {
