@@ -9,6 +9,7 @@ const authOptions = {
       clientSecret: process.env.GITHUB_SECRET!,
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET!,
   debug: true, // 开启调试
 };
 

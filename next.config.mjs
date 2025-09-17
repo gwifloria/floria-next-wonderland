@@ -1,6 +1,37 @@
 const ip = process.env.NEXT_PUBLIC_DEPLOYMENT_URL ?? "http://localhost:8080";
 import bundleAnalyzer from "@next/bundle-analyzer";
 
+// Validate required environment variables for authentication
+function validateRequiredEnvVars() {
+  const requiredVars = ['GITHUB_ID', 'GITHUB_SECRET', 'NEXTAUTH_SECRET'];
+  const missingVars = requiredVars.filter(varName => !process.env[varName]);
+
+  if (missingVars.length > 0) {
+    console.error('❌ Missing required environment variables for authentication:');
+    missingVars.forEach(varName => {
+      console.error(`   - ${varName}`);
+    });
+    console.error('\n💡 Please set these environment variables in:');
+    console.error('   - Local development: .env.local file');
+    console.error('   - Vercel deployment: Project settings > Environment Variables');
+    console.error('   - GitHub Actions: Repository secrets');
+
+    if (missingVars.includes('NEXTAUTH_SECRET')) {
+      console.error('\n🔐 For NEXTAUTH_SECRET, generate a random string:');
+      console.error('   openssl rand -base64 32');
+    }
+
+    console.error('\n🚫 Build failed to prevent deployment with missing auth credentials.\n');
+
+    throw new Error(`Missing required environment variables: ${missingVars.join(', ')}`);
+  }
+
+  console.log('✅ Authentication environment variables validated successfully');
+}
+
+// Run validation during build
+validateRequiredEnvVars();
+
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 });
