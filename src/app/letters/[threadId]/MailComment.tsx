@@ -2,37 +2,23 @@ import AuthStatus from "@/components/AuthStatus";
 import CommentCard from "@/components/CommentCard";
 import TipTapEditor from "@/components/TipTapEditor";
 import { useMessage } from "@/provider/UIProviders";
-import { CommentApi } from "@/types/letter";
 import { fmtDateTime } from "@/util/date";
-import { fetcherFactory } from "@/util/fetch";
 import DOMPurify from "isomorphic-dompurify";
 import { useSession } from "next-auth/react";
 import { useCallback } from "react";
-import useSWR from "swr";
-import useSWRMutation from "swr/mutation";
+import { useLetterComments } from "../useLetterComments";
 
 export function MailComment({ threadId }: { threadId: string }) {
   const { data: session } = useSession();
 
   const message = useMessage();
-  const { trigger } = useSWRMutation(
-    `/api/letters/${threadId}/comments`,
-    fetcherFactory("POST"),
-  );
-
-  const { data: comments } = useSWR<CommentApi[]>(
-    `/api/letters/${threadId}/comments`,
-  );
-
-  const { trigger: deleteComment } = useSWRMutation(
-    `/api/letters/${threadId}/comments`,
-    fetcherFactory("DELETE"),
-  );
+  const { comments, addComment, deleteComment } = useLetterComments(threadId);
 
   const handleUpload = useCallback(
     async (content: string) => {
       try {
-        await trigger({
+        await addComment({
+          threadId,
           content: content,
           author: { name: session!.user!.name, address: session!.user!.email },
         });
@@ -40,13 +26,14 @@ export function MailComment({ threadId }: { threadId: string }) {
         console.log(err);
       }
     },
-    [session, trigger],
+    [session, addComment, threadId],
   );
 
   const handleDelete = useCallback(
     async (commentId: string) => {
+      if (!session?.user?.email) return;
       try {
-        await deleteComment({ commentId, address: session?.user?.email });
+        await deleteComment({ commentId, address: session.user.email });
         message.success("评论已删除");
       } catch (err) {
         console.error(err);

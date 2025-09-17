@@ -10,15 +10,14 @@ import dbConnect from "../../lib/mongoose";
 import MailMessage from "../../models/MailMessage";
 import Thread from "../../models/Thread";
 
-// GET /api/letters/[threadId]
-export async function GET(
-  _req: NextRequest,
-  ctx: { params: Promise<{ threadId: string }> },
-) {
+// POST /api/letters/detail
+export async function POST(req: NextRequest) {
   try {
     await dbConnect();
 
-    const { threadId } = await ctx.params;
+    const body: { threadId: string } = await req.json();
+    const { threadId } = body;
+
     if (!threadId) {
       return NextResponse.json({ error: "threadId required" }, { status: 400 });
     }
@@ -79,7 +78,7 @@ export async function GET(
 
     return NextResponse.json({ thread, messages });
   } catch (error) {
-    console.error("[letters/:threadId] fetch failed:", error);
+    console.error("[letters/detail] fetch failed:", error);
     return NextResponse.json(
       { error: "Failed to fetch thread detail" },
       { status: 500 },

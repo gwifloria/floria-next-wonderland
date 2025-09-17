@@ -1,13 +1,13 @@
 "use client";
 import AuthLayout from "@/components/AuthProvider";
 import UIProviders from "@/provider/UIProviders";
-import { CommentApi, MailMessageApi, ThreadApi } from "@/types/letter";
+import { MailMessageApi } from "@/types/letter";
 import { fmtDateTime } from "@/util/date";
 import DOMPurify from "isomorphic-dompurify";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import useSWR from "swr";
+import { useLetterDetail } from "../useLetterDetail";
 import { STICKER_IMGS } from "../constants";
 import {
   MAX_VISIBLE_MESSAGES,
@@ -106,20 +106,14 @@ function HistorySection({ historyMsgs }: { historyMsgs: MailMessageApi[] }) {
 
 /* ---------- Page ---------- */
 export default function LetterDetailClient({ threadId }: { threadId: string }) {
-  const { data, error, isLoading } = useSWR<{
-    thread: ThreadApi;
-    messages: MailMessageApi[];
-    comments: CommentApi[];
-  }>(`/api/letters/${threadId}`);
+  const { thread, messages, loading, error } = useLetterDetail(threadId);
 
-  if (isLoading)
+  if (loading)
     return <div className="p-8 text-center text-neutral-500">加载中…</div>;
   if (error)
     return <div className="p-8 text-center text-red-500">加载失败</div>;
-  if (!data)
+  if (!thread || !messages)
     return <div className="p-8 text-center text-neutral-500">未找到</div>;
-
-  const { thread, messages, comments } = data;
   const visibleMsgs = (messages || []).slice(0, MAX_VISIBLE_MESSAGES);
   const restMsgs = (messages || []).slice(MAX_VISIBLE_MESSAGES);
 

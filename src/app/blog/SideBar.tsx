@@ -76,7 +76,9 @@ function SidebarSection({
       </header>
       <ul className=" space-y-1">
         {group?.map((file) => {
-          const isActive = file.path === activePost;
+          // URL decode activePost for comparison
+          const decodedActivePost = decodeURIComponent(activePost);
+          const isActive = file.path === decodedActivePost;
           const display = file.name.replace(/\.(md|mdx)$/i, "");
           const href = `/blog/${toSlugPath(file.path)}`;
           return (
@@ -90,7 +92,8 @@ function SidebarSection({
                 className={cx(
                   "relative block rounded-md px-3 py-2 text-sm transition-colors text-neutral-700",
                   "hover:text-neutral-900 hover:bg-neutral-100 ",
-                  isActive && "bg-macaronblue-100 text-macaronblue-900",
+                  isActive &&
+                    "bg-mint-50/50 text-mint-700 border-l-2 border-mint-300",
                 )}
               >
                 {display}
