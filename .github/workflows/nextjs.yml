@@ -55,5 +55,6 @@ jobs:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           GITHUB_ID: ${{ secrets.GITHUB_ID }}
           GITHUB_SECRET: ${{ secrets.GITHUB_SECRET }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
 
         run: yarn build
