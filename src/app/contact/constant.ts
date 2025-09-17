@@ -232,6 +232,60 @@ export const education = [
     },
   },
 ];
+
+// Style Constants
+export const HAND_FONT_STYLE = {
+  fontFamily:
+    "'Caveat', 'Patrick Hand', 'Segoe UI', system-ui, -apple-system, sans-serif",
+} as const;
+
+export const HERO_TITLE_STYLE = {
+  ...HAND_FONT_STYLE,
+  textShadow: "0.5px 0.5px 0.6px rgba(0,0,0,0.08)",
+} as const;
+
+export const PAPER_TEXTURE_STYLE = {
+  backgroundImage: "url('/images/paper.png')",
+  backgroundRepeat: "repeat",
+  backgroundSize: "400px 400px",
+  opacity: 0.15,
+} as const;
+
+export const TAPE_VARIANTS = {
+  pink: "/images/tape-pink.png",
+  beige: "/images/tape-beige.png",
+  blue: "/images/tape-blue.png",
+} as const;
+
+export const DECORATION_IMAGES = {
+  whiteBow: "/images/white-bow.png",
+  favSheep: "/images/fav_sheep.png",
+  phoneWhite: "/images/phone-white.png",
+} as const;
+
+export const SPACING = {
+  container: "p-12 my-12 md:my-16 lg:my-20",
+  cardMargin: "mb-10",
+  sectionGap: "space-y-10 md:space-y-0",
+  contentGap: "space-y-6",
+} as const;
+
+export const DECORATION_SIZES = {
+  tape: { width: 60, height: 40 },
+  bow: { width: 40, height: 40 },
+  sheep: { width: 75, height: 87 },
+  phone: { width: 48, height: 48 },
+} as const;
+
+export const THEME_COLORS = {
+  primary: "text-rose-700",
+  secondary: "text-neutral-500",
+  accent: "text-neutral-700",
+  border: "border-milktea-200",
+  background: "bg-milktea-100/90",
+  cardBg: "bg-milktea-50/85",
+} as const;
+
 export const personalStory = {
   gapReason: {
     zh: `这段时间我在技术上基本是停滞的。一开始面试的时候还挺自信，可能是因为“无知者无畏”，觉得自己学得快，就敢去试。但接触得越多，就越发现自己不懂的东西太多了，学习清单无限延长，慢慢就有了恐惧感——怕能力不够，怕永远学不完。我还总给自己定一些不切实际的目标，比如“一天看懂 React 源码”，结果当然做不到，反而变得不太敢尝试。完美主义让我在焦虑的时候更容易去刷短视频消磨时间，虽然偶尔也能学到点东西，但很快被冲淡。

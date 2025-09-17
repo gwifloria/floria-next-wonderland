@@ -1,0 +1,23 @@
+import { ReactNode } from "react";
+import { PAPER_TEXTURE_STYLE, SPACING, THEME_COLORS } from "../constant";
+
+interface PaperContainerProps {
+  children: ReactNode;
+}
+
+export function PaperContainer({ children }: PaperContainerProps) {
+  return (
+    <div
+      className={`container ${THEME_COLORS.background} ${THEME_COLORS.border} border shadow-sm rounded-3xl mx-auto ${SPACING.container} relative overflow-hidden`}
+    >
+      {/* Paper texture overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={PAPER_TEXTURE_STYLE}
+      />
+
+      {/* Content */}
+      <div className="relative z-10">{children}</div>
+    </div>
+  );
+}
