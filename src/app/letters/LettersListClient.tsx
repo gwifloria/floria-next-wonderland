@@ -59,10 +59,10 @@ export default function LettersListClient({
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-8">
       <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div className="flex align-center">
-          <h1 className="text-2xl mr-8 font-semibold">Letters</h1>
+        <div className="flex items-center gap-2 sm:gap-4">
+          <h1 className="text-xl sm:text-2xl font-semibold">Letters</h1>
 
-          <PageIntro title="Letters" emoji="📬">
+          <PageIntro>
             <LettersTechDetails />
           </PageIntro>
         </div>
@@ -191,12 +191,12 @@ function ThreadCard({
       <ThreadHeader t={t} index={index}></ThreadHeader>
       <div className="flex-1 relative z-[1]">
         {/* 抬头（居中，信件题头味道） */}
-        <header className="flex flex-col justify-between pr-14 min-h-[104px] h-28 pt-3 pb-2">
+        <header className="flex flex-col justify-between pr-14 min-h-[104px] h-auto max-h-32 pt-3 pb-2">
           {/* 留出邮票空间 */}
-          <h2 className="font-serif text-[17px] sm:text-[18px] leading-snug text-stone-900 line-clamp-2 [-webkit-text-stroke:0.25px_white] [text-shadow:0_1px_0_#fff,0_0_2px_rgba(0,0,0,.06)]">
+          <h2 className="font-serif text-[15px] sm:text-[17px] leading-tight text-stone-900 line-clamp-3 [-webkit-text-stroke:0.25px_white] [text-shadow:0_1px_0_#fff,0_0_2px_rgba(0,0,0,.06)] overflow-hidden">
             {highlight(title, q)}
           </h2>
-          <p className="mt-2 text-xs text-stone-700/90 [text-shadow:0_1px_0_#fff]">
+          <p className="mt-auto text-xs text-stone-700/90 [text-shadow:0_1px_0_#fff] flex-shrink-0">
             更新于 {fmtDateTime(t.updatedAt)} · {t.messageCount ?? 0} 封
           </p>
         </header>

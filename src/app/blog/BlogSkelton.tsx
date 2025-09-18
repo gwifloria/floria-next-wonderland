@@ -20,7 +20,7 @@ export function EmptyState() {
               欢迎来到我的 blog 区
             </h2>
 
-            <PageIntro title="Blog" emoji="✏️">
+            <PageIntro>
               <BlogTechDetails />
             </PageIntro>
           </div>
