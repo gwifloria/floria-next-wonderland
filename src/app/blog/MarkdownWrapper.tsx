@@ -13,6 +13,7 @@ import ReactMarkdown from "react-markdown";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrism from "rehype-prism-plus";
 import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
 import useSWR from "swr";
 import { BlogSkeleton, EmptyState } from "./BlogSkelton";
 import { CommitMeta, dtf, PROSE_CLASS } from "./constants";
@@ -61,6 +62,7 @@ export function MarkdownWrapper({ path }: { path?: string | null }) {
               </div>
             )}
             <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeSlug, rehypeAutolinkHeadings, rehypePrism]}
               components={mdxComponents}
             >
