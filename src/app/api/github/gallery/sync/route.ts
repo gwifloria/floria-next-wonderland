@@ -81,7 +81,7 @@ export async function POST(req: Request) {
                 filename: item.name,
                 sha: item.sha,
                 size: item.size,
-                imageUrl: `/api/github/gallery/image/${item.path}`,
+                imageUrl: `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${item.path}`,
                 updatedAt: new Date(),
               },
             );
@@ -98,7 +98,7 @@ export async function POST(req: Request) {
             size: item.size,
             repo: `${owner}/${repo}`,
             branch,
-            imageUrl: `/api/github/gallery/image/${item.path}`,
+            imageUrl: `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${item.path}`,
           });
           newCount++;
         }
