@@ -2,17 +2,16 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import { GALLERY_CONFIG, GALLERY_STYLES } from "../constants";
 
 export function BackToTop() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.pageYOffset > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      setIsVisible(
+        window.pageYOffset > GALLERY_CONFIG.BACK_TO_TOP.SHOW_THRESHOLD,
+      );
     };
 
     window.addEventListener("scroll", toggleVisibility);
@@ -40,9 +39,7 @@ export function BackToTop() {
           whileTap={{ scale: 0.9 }}
           onClick={scrollToTop}
           className="fixed bottom-6 right-6 z-50 p-3 bg-rose-200/90 hover:bg-rose-300/90 text-rose-700 rounded-full shadow-lg backdrop-blur-sm transition-colors duration-200"
-          style={{
-            fontFamily: "'Caveat', cursive",
-          }}
+          style={{ fontFamily: GALLERY_STYLES.FONT_FAMILY }}
           aria-label="Back to top"
         >
           <svg

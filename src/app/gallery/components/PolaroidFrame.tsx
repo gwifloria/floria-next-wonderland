@@ -4,6 +4,7 @@ import { GalleryImage } from "@/types/gallery";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { TAPE_VARIANTS } from "../../contact/constant";
+import { GALLERY_CONFIG, GALLERY_STYLES } from "../constants";
 import { LazyImage } from "./LazyImage";
 
 interface PolaroidFrameProps {
@@ -18,41 +19,35 @@ export function PolaroidFrame({
   tapeColor = "beige",
 }: PolaroidFrameProps) {
   const aspectRatio = image.height / image.width;
-  const frameHeight = Math.min(aspectRatio * 200, 350); // 进一步减小基准尺寸和最大高度
-  console.log(image);
-  const getTapePosition = () => {
-    const positions = [
-      { top: "-8px", left: "-12px", rotate: "12deg" },
-      { top: "-10px", right: "-15px", rotate: "-8deg" },
-      { bottom: "-8px", left: "-10px", rotate: "-15deg" },
-      { bottom: "-6px", right: "-12px", rotate: "10deg" },
+  const frameHeight = Math.min(
+    aspectRatio * GALLERY_CONFIG.IMAGE.BASE_SIZE,
+    GALLERY_CONFIG.IMAGE.MAX_HEIGHT,
+  );
+
+  const tapePosition =
+    GALLERY_CONFIG.TAPE_POSITIONS[
+      Math.floor(Math.random() * GALLERY_CONFIG.TAPE_POSITIONS.length)
     ];
-    return positions[Math.floor(Math.random() * positions.length)];
-  };
 
-  const tapePosition = getTapePosition();
-
-  const getRandomRotation = () => {
-    return Math.random() * 4 - 2; // -2 到 2 度的随机旋转
-  };
+  const randomRotation =
+    Math.random() * GALLERY_CONFIG.ANIMATION.SLIGHT_ROTATION_RANGE -
+    GALLERY_CONFIG.ANIMATION.SLIGHT_ROTATION_RANGE / 2;
 
   return (
     <motion.div
       className="relative group polaroid-hover"
       whileHover={{
         scale: 1.02,
-        transition: { duration: 0.3 },
+        transition: { duration: GALLERY_CONFIG.ANIMATION.DURATION },
       }}
     >
-      {/* Polaroid 相框 */}
       <div
-        className="relative bg-white p-2 sm:p-3 pb-8 sm:pb-12 shadow-lg transform polaroid-texture polaroid-frame"
+        className={GALLERY_STYLES.POLAROID_FRAME}
         style={{
-          transform: `rotate(${getRandomRotation()}deg)`,
+          transform: `rotate(${randomRotation}deg)`,
           filter: "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))",
         }}
       >
-        {/* 图片容器 */}
         <div
           className="relative overflow-hidden bg-gray-100"
           style={{ height: `${frameHeight}px` }}
@@ -66,7 +61,6 @@ export function PolaroidFrame({
           />
         </div>
 
-        {/* 底部标题区域 */}
         <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3 right-2 sm:right-3 h-6 sm:h-8 flex items-center justify-center">
           {image.caption && (
             <div
@@ -83,7 +77,6 @@ export function PolaroidFrame({
           )}
         </div>
 
-        {/* 胶带装饰 */}
         {variant === "tape" && (
           <motion.div
             className="absolute pointer-events-none opacity-90 w-[40px] sm:w-[50px] h-[28px] sm:h-[35px] z-10 tape-shadow"
@@ -109,7 +102,6 @@ export function PolaroidFrame({
           </motion.div>
         )}
 
-        {/* 翘角效果 */}
         {variant === "corner" && (
           <div
             className="absolute bottom-0 right-0 w-0 h-0 pointer-events-none"
@@ -121,7 +113,6 @@ export function PolaroidFrame({
           />
         )}
 
-        {/* 悬停时显示的信息卡片 */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileHover={{ opacity: 1, y: 0 }}
@@ -145,7 +136,6 @@ export function PolaroidFrame({
               </div>
             )}
           </div>
-          {/* 小箭头 */}
           <div
             className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-0 h-0"
             style={{

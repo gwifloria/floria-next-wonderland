@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { GALLERY_CONFIG, GALLERY_STYLES } from "../constants";
 
 interface LazyImageProps {
   src: string;
@@ -37,8 +38,8 @@ export function LazyImage({
         }
       },
       {
-        rootMargin: "50px", // 提前50px开始加载
-        threshold: 0.1,
+        rootMargin: GALLERY_CONFIG.OBSERVER.LAZY_LOAD_MARGIN,
+        threshold: GALLERY_CONFIG.OBSERVER.THRESHOLD,
       },
     );
 
@@ -49,32 +50,30 @@ export function LazyImage({
     return () => observer.disconnect();
   }, []);
 
-  const handleLoad = () => {
+  const handleLoad = useCallback(() => {
     setIsLoaded(true);
     onLoad?.();
-  };
+  }, [onLoad]);
 
-  const handleError = () => {
+  const handleError = useCallback(() => {
     setHasError(true);
     onError?.();
-  };
+  }, [onError]);
 
   return (
     <div ref={imgRef} className={`relative overflow-hidden ${className}`}>
-      {/* 占位符 */}
       {!isInView && (
         <div
-          className="absolute inset-0 bg-gradient-to-br from-milktea-100 to-rose-100 animate-pulse"
+          className={`absolute inset-0 ${GALLERY_STYLES.LOADING_GRADIENT} animate-pulse`}
           style={{ aspectRatio: `${width} / ${height}` }}
         />
       )}
 
-      {/* 图片 */}
       {isInView && !hasError && (
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: isLoaded ? 1 : 0.7, scale: isLoaded ? 1 : 0.95 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: GALLERY_CONFIG.ANIMATION.DURATION }}
           className="relative"
         >
           <Image
@@ -89,19 +88,19 @@ export function LazyImage({
             loading="lazy"
           />
 
-          {/* 加载中覆盖层 */}
           {!isLoaded && (
-            <div className="absolute inset-0 bg-gradient-to-br from-milktea-100/80 to-rose-100/80 flex items-center justify-center">
+            <div
+              className={`absolute inset-0 ${GALLERY_STYLES.LOADING_GRADIENT}/80 flex items-center justify-center`}
+            >
               <div className="w-6 h-6 border-2 border-rose-300 border-t-transparent rounded-full animate-spin" />
             </div>
           )}
         </motion.div>
       )}
 
-      {/* 错误状态 */}
       {hasError && (
         <div
-          className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center"
+          className={`absolute inset-0 ${GALLERY_STYLES.ERROR_GRADIENT} flex items-center justify-center`}
           style={{ aspectRatio: `${width} / ${height}` }}
         >
           <div className="text-gray-400 text-center">

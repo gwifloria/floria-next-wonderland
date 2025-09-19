@@ -2,7 +2,9 @@
 
 import { GalleryImage } from "@/types/gallery";
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useMemo } from "react";
+import { GALLERY_CONFIG } from "../constants";
+import { useInfiniteScroll, useResponsiveColumns } from "../hooks";
 import { PolaroidFrame } from "./PolaroidFrame";
 
 interface MasonryGalleryProps {
@@ -16,93 +18,33 @@ export function MasonryGallery({
   onImageClick,
   onLoadMore,
 }: MasonryGalleryProps) {
-  const [columns, setColumns] = useState(3);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const { columns, containerRef } = useResponsiveColumns();
+  const { loadMoreRef } = useInfiniteScroll(onLoadMore);
 
-  // 响应式列数计算
-  useEffect(() => {
-    const updateColumns = () => {
-      if (!containerRef.current) return;
-
-      const width = containerRef.current.offsetWidth;
-      if (width < 640) {
-        setColumns(1); // 手机端
-      } else if (width < 1024) {
-        setColumns(2); // 平板端
-      } else if (width < 1536) {
-        setColumns(3); // 桌面端
-      } else {
-        setColumns(4); // 大屏幕
-      }
-    };
-
-    updateColumns();
-    window.addEventListener("resize", updateColumns);
-    return () => window.removeEventListener("resize", updateColumns);
-  }, []);
-
-  // Intersection Observer for infinite scroll with throttling
-  useEffect(() => {
-    if (!loadMoreRef.current || !onLoadMore) return;
-
-    let timeoutId: NodeJS.Timeout;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          // 防抖处理，避免频繁触发
-          clearTimeout(timeoutId);
-          timeoutId = setTimeout(() => {
-            onLoadMore();
-          }, 100);
-        }
-      },
-      {
-        rootMargin: "200px", // 提前200px开始加载
-        threshold: 0.1,
-      },
-    );
-
-    observer.observe(loadMoreRef.current);
-
-    return () => {
-      observer.disconnect();
-      clearTimeout(timeoutId);
-    };
-  }, [onLoadMore]);
-
-  // 计算每列的图片
-  const organizeImages = () => {
-    const columnArrays: GalleryImage[][] = Array.from(
-      { length: columns },
-      () => [],
-    );
-    const columnHeights = new Array(columns).fill(0);
+  const columnArrays = useMemo(() => {
+    const arrays: GalleryImage[][] = Array.from({ length: columns }, () => []);
+    const heights = new Array(columns).fill(0);
 
     images?.forEach((image) => {
-      const shortestIndex = columnHeights.reduce(
-        (minIdx, cur, i) => (cur < columnHeights[minIdx] ? i : minIdx),
+      const shortestIndex = heights.reduce(
+        (minIdx, cur, i) => (cur < heights[minIdx] ? i : minIdx),
         0,
       );
-      // 将图片添加到该列
-      columnArrays[shortestIndex].push(image);
-
-      // 更新该列的高度（按比例计算）
+      arrays[shortestIndex].push(image);
       const aspectRatio = image.height / image.width;
-      columnHeights[shortestIndex] += aspectRatio * 200; // 进一步调整基准宽度为200px
+      heights[shortestIndex] += aspectRatio * GALLERY_CONFIG.IMAGE.BASE_SIZE;
     });
 
-    return columnArrays;
-  };
-
-  const columnArrays = organizeImages();
+    return arrays;
+  }, [images, columns]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        duration: GALLERY_CONFIG.ANIMATION.LOAD_DURATION,
+        staggerChildren: GALLERY_CONFIG.ANIMATION.STAGGER_DELAY,
       },
     },
   };
@@ -113,8 +55,8 @@ export function MasonryGallery({
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6,
-        staggerChildren: 0.1,
+        duration: GALLERY_CONFIG.ANIMATION.LOAD_DURATION,
+        staggerChildren: GALLERY_CONFIG.ANIMATION.STAGGER_DELAY,
       },
     },
   };
@@ -151,39 +93,31 @@ export function MasonryGallery({
                 animate={{
                   opacity: 1,
                   scale: 1,
-                  rotate: Math.random() * 6 - 3, // 随机轻微旋转
+                  rotate:
+                    Math.random() * GALLERY_CONFIG.ANIMATION.ROTATION_RANGE -
+                    GALLERY_CONFIG.ANIMATION.ROTATION_RANGE / 2,
                 }}
                 transition={{
-                  delay: columnIndex * 0.1 + imageIndex * 0.2,
-                  duration: 0.6,
-                  type: "spring",
-                  stiffness: 100,
+                  delay:
+                    columnIndex * GALLERY_CONFIG.ANIMATION.STAGGER_DELAY +
+                    imageIndex * GALLERY_CONFIG.ANIMATION.IMAGE_DELAY,
+                  duration: GALLERY_CONFIG.ANIMATION.LOAD_DURATION,
                 }}
                 whileHover={{
                   scale: 1.02,
-                  rotate: 0, // 悬停时回正
-                  transition: { duration: 0.3 },
+                  rotate: 0,
+                  transition: { duration: GALLERY_CONFIG.ANIMATION.DURATION },
                 }}
-                className="cursor-pointer"
                 onClick={() => onImageClick(image)}
+                className="cursor-pointer"
               >
-                <PolaroidFrame
-                  image={image}
-                  variant={imageIndex % 2 === 0 ? "tape" : "corner"}
-                  tapeColor={
-                    ["pink", "beige", "blue"][imageIndex % 3] as
-                      | "pink"
-                      | "beige"
-                      | "blue"
-                  }
-                />
+                <PolaroidFrame image={image} />
               </motion.div>
             ))}
           </motion.div>
         ))}
       </div>
 
-      {/* Invisible element for intersection observer */}
       <div ref={loadMoreRef} className="h-1" />
     </motion.div>
   );
