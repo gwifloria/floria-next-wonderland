@@ -8,11 +8,17 @@ import { PolaroidFrame } from "./PolaroidFrame";
 interface MasonryGalleryProps {
   images: GalleryImage[];
   onImageClick: (image: GalleryImage) => void;
+  onLoadMore?: () => void;
 }
 
-export function MasonryGallery({ images, onImageClick }: MasonryGalleryProps) {
+export function MasonryGallery({
+  images,
+  onImageClick,
+  onLoadMore,
+}: MasonryGalleryProps) {
   const [columns, setColumns] = useState(3);
   const containerRef = useRef<HTMLDivElement>(null);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   // 响应式列数计算
   useEffect(() => {
@@ -36,6 +42,26 @@ export function MasonryGallery({ images, onImageClick }: MasonryGalleryProps) {
     return () => window.removeEventListener("resize", updateColumns);
   }, []);
 
+  // Intersection Observer for infinite scroll
+  useEffect(() => {
+    if (!loadMoreRef.current || !onLoadMore) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          onLoadMore();
+        }
+      },
+      {
+        rootMargin: "100px", // Trigger 100px before element comes into view
+      },
+    );
+
+    observer.observe(loadMoreRef.current);
+
+    return () => observer.disconnect();
+  }, [onLoadMore]);
+
   // 计算每列的图片
   const organizeImages = () => {
     const columnArrays: GalleryImage[][] = Array.from(
@@ -54,7 +80,7 @@ export function MasonryGallery({ images, onImageClick }: MasonryGalleryProps) {
 
       // 更新该列的高度（按比例计算）
       const aspectRatio = image.height / image.width;
-      columnHeights[shortestIndex] += aspectRatio * 300; // 假设宽度为300px
+      columnHeights[shortestIndex] += aspectRatio * 200; // 进一步调整基准宽度为200px
     });
 
     return columnArrays;
@@ -147,6 +173,9 @@ export function MasonryGallery({ images, onImageClick }: MasonryGalleryProps) {
           </motion.div>
         ))}
       </div>
+
+      {/* Invisible element for intersection observer */}
+      <div ref={loadMoreRef} className="h-1" />
     </motion.div>
   );
 }

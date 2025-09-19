@@ -2,75 +2,107 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-/**
- * 图片代理 API
- * GET /api/github/gallery/image/[...path]
- * 代理 GitHub 私有仓库中的图片，解决 token 过期和 CORS 问题
- */
 export async function GET(
-  request: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ path: string[] }> },
 ) {
   try {
-    const { path } = await params;
-    const imagePath = path.join("/");
-
-    if (!imagePath) {
-      return NextResponse.json({ error: "图片路径不能为空" }, { status: 400 });
+    const { path: pathSegments } = await params;
+    if (!pathSegments || pathSegments.length === 0) {
+      return NextResponse.json({ error: "Path is required" }, { status: 400 });
     }
 
-    const owner = process.env.GITHUB_OWNER || "gwifloria";
+    const filePath = pathSegments.join("/");
     const repo = "eriko-gallery";
+    const owner = process.env.GITHUB_OWNER || "gwifloria";
     const branch = process.env.GITHUB_BRANCH || "main";
     const token = process.env.GITHUB_TOKEN;
 
     if (!token) {
       return NextResponse.json(
-        { error: "GitHub token 未配置" },
-        { status: 500 },
+        { error: "GITHUB_TOKEN required for private repo access" },
+        { status: 401 },
       );
     }
 
-    // 构造 GitHub Raw API URL（不是 Contents API）
-    const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${imagePath}`;
+    // Construct GitHub raw content URL for private repository
+    const githubUrl = `https://api.github.com/repos/${encodeURIComponent(
+      owner,
+    )}/${encodeURIComponent(repo)}/contents/${encodeURIComponent(
+      filePath,
+    )}?ref=${encodeURIComponent(branch)}`;
 
-    console.log(`Proxying image: ${imagePath}`);
-
-    // 使用 GitHub token 获取图片
-    const imageResponse = await fetch(rawUrl, {
+    const response = await fetch(githubUrl, {
       headers: {
+        Accept: "application/vnd.github+json",
         Authorization: `Bearer ${token}`,
-        "User-Agent": "eriko-gallery-proxy",
+        "User-Agent": "floria-gallery",
       },
-      // 不使用 Next.js 缓存，因为图片可能超过 2MB 限制
     });
 
-    if (!imageResponse.ok) {
+    if (!response.ok) {
       console.error(
-        `Failed to fetch image: ${imageResponse.status} ${imageResponse.statusText}`,
+        `GitHub API error: ${response.status} ${response.statusText}`,
       );
       return NextResponse.json(
-        { error: `图片获取失败: ${imageResponse.status}` },
-        { status: imageResponse.status },
+        { error: `Failed to fetch image: ${response.status}` },
+        { status: response.status },
       );
     }
 
-    // 获取图片数据
-    const imageBuffer = await imageResponse.arrayBuffer();
-    const contentType =
-      imageResponse.headers.get("content-type") || "image/jpeg";
+    const fileData = await response.json();
 
-    // 返回图片数据，设置适当的缓存头
+    // GitHub API returns file content as base64 encoded
+    if (!fileData.content || fileData.type !== "file") {
+      return NextResponse.json(
+        { error: "Invalid file data from GitHub" },
+        { status: 404 },
+      );
+    }
+
+    // Decode base64 content
+    const imageBuffer = Buffer.from(fileData.content, "base64");
+
+    // Determine content type based on file extension
+    const extension = filePath.toLowerCase().split(".").pop();
+    let contentType = "image/jpeg"; // default
+
+    switch (extension) {
+      case "avif":
+        contentType = "image/avif";
+        break;
+      case "webp":
+        contentType = "image/webp";
+        break;
+      case "png":
+        contentType = "image/png";
+        break;
+      case "jpg":
+      case "jpeg":
+        contentType = "image/jpeg";
+        break;
+      case "gif":
+        contentType = "image/gif";
+        break;
+      case "svg":
+        contentType = "image/svg+xml";
+        break;
+    }
+
+    // Return image with appropriate headers
     return new NextResponse(imageBuffer, {
       status: 200,
       headers: {
         "Content-Type": contentType,
-        "Cache-Control": "public, max-age=3600, s-maxage=3600", // 1小时缓存
-        "Content-Length": imageBuffer.byteLength.toString(),
+        "Cache-Control": "public, max-age=31536000, immutable", // Cache for 1 year
+        "Content-Length": imageBuffer.length.toString(),
       },
     });
   } catch (error) {
     console.error("Image proxy error:", error);
-    return NextResponse.json({ error: "图片代理服务错误" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch image" },
+      { status: 500 },
+    );
   }
 }

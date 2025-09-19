@@ -3,7 +3,8 @@
     "allow": [
       "Bash(yarn typecheck)",
       "Bash(grep:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(yarn lint)"
     ],
     "deny": [],
     "ask": []

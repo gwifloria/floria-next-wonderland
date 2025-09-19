@@ -22,6 +22,15 @@ export interface GalleryApiResponse {
   currentPath: string;
   repo: string;
   branch: string;
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    hasMore: boolean;
+    totalPages: number;
+  };
+  cached?: boolean;
+  lastSync?: Date;
 }
 
 // 组件使用的图片数据

@@ -1,9 +1,10 @@
 "use client";
 
 import { GalleryImage } from "@/types/gallery";
-import { Image as AntImage } from "antd";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { TAPE_VARIANTS } from "../../contact/constant";
+import { OptimizedImage } from "./OptimizedImage";
 
 interface PolaroidFrameProps {
   image: GalleryImage;
@@ -17,8 +18,8 @@ export function PolaroidFrame({
   tapeColor = "beige",
 }: PolaroidFrameProps) {
   const aspectRatio = image.height / image.width;
-  const frameHeight = Math.min(aspectRatio * 300, 500); // 限制最大高度
-
+  const frameHeight = Math.min(aspectRatio * 200, 350); // 进一步减小基准尺寸和最大高度
+  console.log(image);
   const getTapePosition = () => {
     const positions = [
       { top: "-8px", left: "-12px", rotate: "12deg" },
@@ -56,21 +57,17 @@ export function PolaroidFrame({
           className="relative overflow-hidden bg-gray-100"
           style={{ height: `${frameHeight}px` }}
         >
-          <AntImage
+          <OptimizedImage
             src={image.src}
             alt={image.alt}
-            width="100%"
+            width={image.width}
             height={frameHeight}
             style={{
               objectFit: "cover",
               width: "100%",
               height: "100%",
             }}
-            placeholder="Loading..."
-            fallback="data:image/svg+xml,%3csvg%20width='100'%20height='100'%20xmlns='http://www.w3.org/2000/svg'%3e%3crect%20width='100'%20height='100'%20fill='%23f0f0f0'/%3e%3ctext%20x='50'%20y='50'%20font-size='12'%20text-anchor='middle'%20dy='.3em'%3e📷%3c/text%3e%3c/svg%3e"
-            preview={{
-              mask: <div className="text-white text-lg">🔍 点击预览</div>,
-            }}
+            className="rounded-sm"
           />
         </div>
 
@@ -104,7 +101,7 @@ export function PolaroidFrame({
               transition: { duration: 0.2 },
             }}
           >
-            <img
+            <Image
               src={TAPE_VARIANTS[tapeColor]}
               alt="tape"
               width={50}
