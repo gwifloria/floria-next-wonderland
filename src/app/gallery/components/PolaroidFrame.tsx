@@ -4,7 +4,7 @@ import { GalleryImage } from "@/types/gallery";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { TAPE_VARIANTS } from "../../contact/constant";
-import { OptimizedImage } from "./OptimizedImage";
+import { LazyImage } from "./LazyImage";
 
 interface PolaroidFrameProps {
   image: GalleryImage;
@@ -57,16 +57,11 @@ export function PolaroidFrame({
           className="relative overflow-hidden bg-gray-100"
           style={{ height: `${frameHeight}px` }}
         >
-          <OptimizedImage
+          <LazyImage
             src={image.src}
             alt={image.alt}
             width={image.width}
             height={frameHeight}
-            style={{
-              objectFit: "cover",
-              width: "100%",
-              height: "100%",
-            }}
             className="rounded-sm"
           />
         </div>

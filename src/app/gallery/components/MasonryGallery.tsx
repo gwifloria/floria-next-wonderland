@@ -42,24 +42,33 @@ export function MasonryGallery({
     return () => window.removeEventListener("resize", updateColumns);
   }, []);
 
-  // Intersection Observer for infinite scroll
+  // Intersection Observer for infinite scroll with throttling
   useEffect(() => {
     if (!loadMoreRef.current || !onLoadMore) return;
 
+    let timeoutId: NodeJS.Timeout;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          onLoadMore();
+          // 防抖处理，避免频繁触发
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => {
+            onLoadMore();
+          }, 100);
         }
       },
       {
-        rootMargin: "100px", // Trigger 100px before element comes into view
+        rootMargin: "200px", // 提前200px开始加载
+        threshold: 0.1,
       },
     );
 
     observer.observe(loadMoreRef.current);
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
   }, [onLoadMore]);
 
   // 计算每列的图片

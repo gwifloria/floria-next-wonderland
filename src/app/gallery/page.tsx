@@ -13,6 +13,7 @@ import { HandwrittenTitle } from "../contact/components/ScrapbookCard";
 import { GalleryAdminPanel } from "./components/AdminSyncButton";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 import { MasonryGallery } from "./components/MasonryGallery";
+import { BackToTop } from "./components/BackToTop";
 import "./styles.css";
 
 export default function GalleryPage() {
@@ -76,7 +77,8 @@ function Gallery() {
     // 使用 Ant Design 的 Image 预览，不需要手动管理状态
   };
 
-  if (isLoading) {
+  // 只在首次加载时显示全屏loading
+  if (isLoading && images.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-milktea-50 via-rose-50 to-milktea-100 flex items-center justify-center">
         <LoadingSpinner />
@@ -155,6 +157,9 @@ function Gallery() {
 
       {/* Admin panel */}
       <GalleryAdminPanel />
+
+      {/* Back to top button */}
+      <BackToTop />
     </div>
   );
 }

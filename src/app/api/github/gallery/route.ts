@@ -10,7 +10,7 @@ export async function GET(req: Request) {
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "16");
     const sort = searchParams.get("sort") || "createdAt";
-    const order = searchParams.get("order") === "asc" ? 1 : -1;
+    const order = searchParams.get("order") === "desc" ? -1 : 1; // 默认按添加顺序（升序）
 
     await connectDB();
 
