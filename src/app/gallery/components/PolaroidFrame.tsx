@@ -1,10 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Image from "next/image";
-import { useState } from "react";
-import { TAPE_VARIANTS } from "../../contact/constant";
 import { GalleryImage } from "@/types/gallery";
+import { Image as AntImage } from "antd";
+import { motion } from "framer-motion";
+import { TAPE_VARIANTS } from "../../contact/constant";
 
 interface PolaroidFrameProps {
   image: GalleryImage;
@@ -17,9 +16,6 @@ export function PolaroidFrame({
   variant = "tape",
   tapeColor = "beige",
 }: PolaroidFrameProps) {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
-
   const aspectRatio = image.height / image.width;
   const frameHeight = Math.min(aspectRatio * 300, 500); // 限制最大高度
 
@@ -60,35 +56,22 @@ export function PolaroidFrame({
           className="relative overflow-hidden bg-gray-100"
           style={{ height: `${frameHeight}px` }}
         >
-          {!imageLoaded && !imageError && (
-            <div className="absolute inset-0 bg-gradient-to-br from-milktea-100 to-milktea-200 animate-pulse flex items-center justify-center">
-              <div className="text-milktea-400 text-sm">Loading...</div>
-            </div>
-          )}
-
-          {!imageError && (
-            <Image
-              src={image.src}
-              alt="p"
-              fill
-              className={`object-cover transition-opacity duration-500 ${
-                imageLoaded ? "opacity-100" : "opacity-0"
-              }`}
-              onLoad={() => setImageLoaded(true)}
-              onError={() => {
-                setImageError(true);
-                setImageLoaded(false);
-              }}
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            />
-          )}
-
-          {imageError && (
-            <div className="absolute inset-0 bg-milktea-100 flex flex-col items-center justify-center text-milktea-500">
-              <div className="text-2xl mb-2">📷</div>
-              <div className="text-sm">图片加载失败</div>
-            </div>
-          )}
+          <AntImage
+            src={image.src}
+            alt={image.alt}
+            width="100%"
+            height={frameHeight}
+            style={{
+              objectFit: "cover",
+              width: "100%",
+              height: "100%",
+            }}
+            placeholder="Loading..."
+            fallback="data:image/svg+xml,%3csvg%20width='100'%20height='100'%20xmlns='http://www.w3.org/2000/svg'%3e%3crect%20width='100'%20height='100'%20fill='%23f0f0f0'/%3e%3ctext%20x='50'%20y='50'%20font-size='12'%20text-anchor='middle'%20dy='.3em'%3e📷%3c/text%3e%3c/svg%3e"
+            preview={{
+              mask: <div className="text-white text-lg">🔍 点击预览</div>,
+            }}
+          />
         </div>
 
         {/* 底部标题区域 */}
@@ -121,7 +104,7 @@ export function PolaroidFrame({
               transition: { duration: 0.2 },
             }}
           >
-            <Image
+            <img
               src={TAPE_VARIANTS[tapeColor]}
               alt="tape"
               width={50}

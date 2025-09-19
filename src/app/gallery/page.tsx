@@ -6,9 +6,8 @@ import {
   GalleryImage,
   GitHubImageItem,
 } from "@/types/gallery";
-import { Modal } from "antd";
+import { Image as AntImage } from "antd";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { useMemo, useState } from "react";
 import useSWR from "swr";
 import { HandwrittenTitle } from "../contact/components/ScrapbookCard";
@@ -24,8 +23,6 @@ export default function GalleryPage() {
   );
 }
 function Gallery() {
-  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
-  const [previewVisible, setPreviewVisible] = useState(false);
   const { data, isLoading: loading } = useSWR<GalleryApiResponse>(
     "/api/github/gallery",
   );
@@ -50,12 +47,7 @@ function Gallery() {
   }, [data?.images]);
 
   const handleImageClick = (image: GalleryImage) => {
-    setSelectedImage(image);
-    setPreviewVisible(true);
-  };
-  const handlePreviewClose = () => {
-    setPreviewVisible(false);
-    setSelectedImage(null);
+    // 使用 Ant Design 的 Image 预览，不需要手动管理状态
   };
 
   if (loading) {
@@ -94,50 +86,14 @@ function Gallery() {
 
       {/* 瀑布流图片展示 */}
       <div className="px-3 sm:px-6 pb-16 sm:pb-20 masonry-container">
-        <MasonryGallery images={images} onImageClick={handleImageClick} />
+        <AntImage.PreviewGroup
+          preview={{
+            movable: false,
+          }}
+        >
+          <MasonryGallery images={images} onImageClick={handleImageClick} />
+        </AntImage.PreviewGroup>
       </div>
-
-      {/* 图片预览弹窗 */}
-      <Modal
-        open={previewVisible}
-        onCancel={handlePreviewClose}
-        footer={null}
-        width="90vw"
-        style={{ maxWidth: "1200px" }}
-        centered
-        className="gallery-preview-modal"
-      >
-        {selectedImage && (
-          <div className="text-center">
-            <div className="relative max-w-full max-h-[70vh] sm:max-h-[80vh] mx-auto">
-              <Image
-                src={selectedImage.src}
-                alt={selectedImage.alt}
-                width={selectedImage.width}
-                height={selectedImage.height}
-                className="max-w-full max-h-[70vh] sm:max-h-[80vh] object-contain mx-auto rounded-lg shadow-lg"
-                priority
-              />
-            </div>
-            {selectedImage.caption && (
-              <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-milktea-50 rounded-lg mx-auto max-w-md">
-                <h3
-                  className="text-rose-700 text-lg sm:text-xl font-semibold mb-2"
-                  style={{ fontFamily: "'Caveat', cursive" }}
-                >
-                  {selectedImage.caption}
-                </h3>
-                <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4 text-sm sm:text-base text-milktea-600">
-                  {selectedImage.location && (
-                    <span>📍 {selectedImage.location}</span>
-                  )}
-                  {selectedImage.date && <span>📅 {selectedImage.date}</span>}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-      </Modal>
     </div>
   );
 }
