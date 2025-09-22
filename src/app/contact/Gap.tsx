@@ -1,3 +1,4 @@
+"use client";
 import matter from "gray-matter";
 import { useRef } from "react";
 import type { Components } from "react-markdown";

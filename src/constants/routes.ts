@@ -15,8 +15,8 @@ type PartialRouteMap<T> = Partial<Record<PageRoute, T>>;
 export const routes: PartialRouteMap<{ emoji: string; icon?: string }> = {
   blog: { emoji: "🪶", icon: "blog-icon" },
   letters: { emoji: "✉️", icon: "letters-icon" },
-  contact: { emoji: "👋", icon: "contact-icon" },
   gallery: { emoji: "📸", icon: "gallery-icon" },
+  contact: { emoji: "👋", icon: "contact-icon" },
 };
 
 export const hiddenRoutes = ["tools", "space", "travel", "dance", "lab"];

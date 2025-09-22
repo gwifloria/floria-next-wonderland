@@ -13,6 +13,12 @@ export interface GitHubItem {
   path: string;
   type: string;
 }
+
+export interface BlogPostItem extends GitHubItem {
+  isPinned: boolean;
+  pinOrder: number;
+  title?: string;
+}
 // -----------------------------
 // UI constants
 // -----------------------------

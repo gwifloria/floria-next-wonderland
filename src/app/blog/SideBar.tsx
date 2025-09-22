@@ -2,8 +2,9 @@
 import { Skeleton } from "antd";
 import Link from "next/link";
 import useSWR from "swr";
-import { categories, CatKey, GitHubItem } from "./constants";
+import { categories, CatKey, GitHubItem, BlogPostItem } from "./constants";
 import { catStyles, cx } from "./util";
+import PinControl from "./components/PinControl";
 // components/ui/SectionTape.tsx
 export function SectionTape({ label }: { label: string }) {
   return (
@@ -31,8 +32,12 @@ function SidebarSection({
 }) {
   const isByteNotes = category === "ByteNotes";
   const { dot } = catStyles(category);
-  const { data: group } = useSWR<GitHubItem[]>(
-    `/api/github/list?dir=${category}`,
+  const { data: group } = useSWR<BlogPostItem[]>(
+    `/api/blog/list?category=${category}`,
+    (url: string) =>
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => data.data || []),
   );
   if (!group) {
     return (
@@ -74,12 +79,12 @@ function SidebarSection({
           <span className="ml-1 text-[13px]">💭</span>
         )}
       </header>
-      <ul className=" space-y-1">
+      <ul className="space-y-1">
         {group?.map((file) => {
           // URL decode activePost for comparison
           const decodedActivePost = decodeURIComponent(activePost);
           const isActive = file.path === decodedActivePost;
-          const display = file.name.replace(/\.(md|mdx)$/i, "");
+          const display = (file.title || file.name).replace(/\.(md|mdx)$/i, "");
           const href = `/blog/${toSlugPath(file.path)}`;
           return (
             <li
@@ -89,14 +94,21 @@ function SidebarSection({
               <Link
                 href={href}
                 aria-label="page"
+                title={display} // Show full title on hover
                 className={cx(
-                  "relative block rounded-md px-3 py-2 text-sm transition-colors text-neutral-700",
+                  "group relative block rounded-md px-3 py-2 text-sm transition-colors text-neutral-700",
                   "hover:text-neutral-900 hover:bg-neutral-100 ",
                   isActive &&
                     "bg-mint-50/50 text-mint-700 border-l-2 border-mint-300",
                 )}
               >
-                {display}
+                <span className="flex items-center gap-2">
+                  {file.isPinned && (
+                    <span className="text-amber-500 flex-shrink-0">📌</span>
+                  )}
+                  <span className="truncate">{display}</span>
+                </span>
+                <PinControl post={file} category={category} />
               </Link>
             </li>
           );
