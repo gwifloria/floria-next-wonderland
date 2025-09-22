@@ -6,7 +6,8 @@ export type PageRoute =
   | "space"
   | "lab"
   | "travel"
-  | "dance";
+  | "dance"
+  | "gallery";
 
 type PartialRouteMap<T> = Partial<Record<PageRoute, T>>;
 
@@ -14,11 +15,11 @@ type PartialRouteMap<T> = Partial<Record<PageRoute, T>>;
 export const routes: PartialRouteMap<{ emoji: string; icon?: string }> = {
   blog: { emoji: "🪶", icon: "blog-icon" },
   letters: { emoji: "✉️", icon: "letters-icon" },
-  lab: { emoji: "🪴", icon: "lab-icon" },
   contact: { emoji: "👋", icon: "contact-icon" },
+  gallery: { emoji: "📸", icon: "gallery-icon" },
 };
 
-export const hiddenRoutes = ["tools", "space", "travel", "dance"];
+export const hiddenRoutes = ["tools", "space", "travel", "dance", "lab"];
 
 export const routeLabels: PartialRouteMap<string> = {
   blog: "Blog",
@@ -29,6 +30,7 @@ export const routeLabels: PartialRouteMap<string> = {
   space: "Space",
   travel: "Travel",
   dance: "Dance",
+  gallery: "Gallery",
 };
 
 export const routeDescriptions: PartialRouteMap<string> = {
@@ -40,4 +42,5 @@ export const routeDescriptions: PartialRouteMap<string> = {
   space: "3D 交互体验空间",
   travel: "足迹记录与旅行故事",
   dance: "舞蹈相关内容",
+  gallery: "手帐风格的旅行相册与记忆收藏",
 };

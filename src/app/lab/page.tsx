@@ -113,7 +113,7 @@ const LabPageContainer = () => {
           <h1 className="text-xl font-bold bg-gradient-to-r from-mint-600 to-mint-400 bg-clip-text text-transparent">
             🧪实验室
           </h1>
-          <PageIntro title="Lab" emoji="🧪">
+          <PageIntro>
             <LabTechDetails />
           </PageIntro>
         </motion.div>

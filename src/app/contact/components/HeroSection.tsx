@@ -25,27 +25,27 @@ export function HeroSection({ lang, onLanguageChange }: HeroSectionProps) {
       <LanguageToggle lang={lang} onChange={onLanguageChange} />
 
       <div className="relative inline-block mb-6">
-        <div
-          className="pointer-events-none absolute -top-6 left-2 rotate-24 opacity-90"
-          style={DECORATION_SIZES.bow}
-        >
+        <div className="pointer-events-none absolute -top-6 left-2 rotate-24 opacity-90 w-10 h-10">
           <Image
             priority
             src={DECORATION_IMAGES.whiteBow}
             alt="bow"
-            fill
+            width={40}
+            height={40}
             className="object-contain"
           />
         </div>
 
-        <Image
-          priority
-          width={140}
-          height={120}
-          alt="avatar"
-          src="/images/me.png"
-          className="border-4 rounded-full object-cover border-white shadow-lg"
-        />
+        <div className="w-[140px] h-[120px] relative">
+          <Image
+            priority
+            fill
+            alt="avatar"
+            src="/images/me.png"
+            className="border-4 rounded-full object-cover border-white shadow-lg"
+            sizes="140px"
+          />
+        </div>
       </div>
 
       <h1

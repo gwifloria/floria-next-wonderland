@@ -1,4 +1,4 @@
-// 1. 类型定义 types/lab.ts
+ww; // 1. 类型定义 types/lab.ts
 export type LabCategory = "tech" | "life";
 export type LabType = "bug" | "idea" | "issue";
 export type LabStatus = "open" | "inProgress" | "resolved";

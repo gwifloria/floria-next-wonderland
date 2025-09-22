@@ -27,7 +27,7 @@ const PageHeader = () => {
         </Link>
 
         {/* Desktop links */}
-        <div className="navigation-bar hidden md:flex whitespace-nowrap gap-2 sm:gap-4 md:gap-8">
+        <div className="navigation-bar hidden md:flex whitespace-nowrap gap-2 sm:gap-4 md:gap-8 items-center">
           {routesKeys.map((route) => (
             <Link
               href={toAbsPath(route)}

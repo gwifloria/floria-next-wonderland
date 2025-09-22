@@ -57,11 +57,14 @@ export function ScrapbookCard({
       className={`relative p-6 rounded-3xl border border-milktea-200 shadow-sm bg-milktea-50/85 ${SPACING.cardMargin} ${className}`}
     >
       {tape && (
-        <div
-          className="pointer-events-none absolute -top-3 -left-4 rotate-9 opacity-90"
-          style={DECORATION_SIZES.tape}
-        >
-          <Image src={tapeSrc} alt="tape" fill className="object-contain" />
+        <div className="pointer-events-none absolute -top-3 -left-4 rotate-9 opacity-90 w-[60px] h-[40px]">
+          <Image
+            src={tapeSrc}
+            alt="tape"
+            width={60}
+            height={40}
+            className="object-contain"
+          />
         </div>
       )}
 
