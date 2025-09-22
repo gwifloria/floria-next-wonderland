@@ -194,7 +194,7 @@ class PerformanceMonitor {
   private processNavigationEntry(
     entry: PerformanceNavigationTiming,
   ): PerformanceMetric | null {
-    const loadTime = entry.loadEventEnd - entry.navigationStart;
+    const loadTime = entry.loadEventEnd - entry.startTime;
 
     return {
       name: "page-load-time",
@@ -209,13 +209,12 @@ class PerformanceMonitor {
       url: window.location.href,
       sessionId: this.sessionId,
       metadata: {
-        domContentLoaded:
-          entry.domContentLoadedEventEnd - entry.navigationStart,
-        firstByte: entry.responseStart - entry.navigationStart,
+        domContentLoaded: entry.domContentLoadedEventEnd - entry.startTime,
+        firstByte: entry.responseStart - entry.startTime,
         dnsLookup: entry.domainLookupEnd - entry.domainLookupStart,
         tcpConnect: entry.connectEnd - entry.connectStart,
         serverResponse: entry.responseEnd - entry.responseStart,
-        domProcessing: entry.domComplete - entry.domLoading,
+        domProcessing: entry.domComplete - entry.domInteractive,
       },
     };
   }

@@ -18,9 +18,6 @@ Sentry.init({
   // Release tracking
   release: process.env.NEXT_PUBLIC_COMMIT_ID || "unknown",
 
-  // Session tracking
-  autoSessionTracking: true,
-
   // Replay for error investigation
   replaysSessionSampleRate: process.env.NODE_ENV === "production" ? 0.1 : 1.0,
   replaysOnErrorSampleRate: 1.0,

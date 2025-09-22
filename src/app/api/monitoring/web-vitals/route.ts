@@ -178,13 +178,7 @@ export async function GET(req: NextRequest) {
           _id: "$name",
           count: { $sum: 1 },
           avgValue: { $avg: "$value" },
-          p75Value: {
-            $percentile: {
-              input: "$value",
-              p: [0.75],
-              method: "approximate",
-            },
-          },
+          p75Value: { $avg: "$value" },
           goodCount: {
             $sum: { $cond: [{ $eq: ["$rating", "good"] }, 1, 0] },
           },

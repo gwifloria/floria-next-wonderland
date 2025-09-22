@@ -18,9 +18,6 @@ Sentry.init({
   // Release tracking
   release: process.env.NEXT_PUBLIC_COMMIT_ID || "unknown",
 
-  // Server-side specific configurations
-  enableTracing: true,
-
   // Custom error filtering for server
   beforeSend(event) {
     // Filter out known non-critical server errors
@@ -57,17 +54,15 @@ Sentry.init({
 
   // Integration configuration for server
   integrations: [
-    Sentry.nodeProfilingIntegration(),
+    Sentry.browserProfilingIntegration(),
     Sentry.httpIntegration({
-      tracing: {
-        ignoreIncomingRequests: (url) => {
-          // Ignore health checks and static assets
-          return (
-            url.includes("/health") ||
-            url.includes("/_next/") ||
-            url.includes("/favicon")
-          );
-        },
+      ignoreIncomingRequests: (url: string) => {
+        // Ignore health checks and static assets
+        return (
+          url.includes("/health") ||
+          url.includes("/_next/") ||
+          url.includes("/favicon")
+        );
       },
     }),
   ],

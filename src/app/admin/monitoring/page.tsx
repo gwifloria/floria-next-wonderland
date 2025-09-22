@@ -1,21 +1,20 @@
 "use client";
 
+import { logger } from "@/monitoring/logger";
+import { Column, Line } from "@ant-design/plots";
 import {
+  Alert,
   Card,
   Col,
   Row,
+  Select,
+  Spin,
   Statistic,
   Table,
   Tabs,
-  TimePicker,
   Typography,
-  Select,
-  Spin,
-  Alert,
 } from "antd";
-import { useEffect, useState } from "react";
-import { Area, Column, Line } from "@ant-design/plots";
-import { logger } from "@/monitoring/logger";
+import { useCallback, useEffect, useState } from "react";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -51,41 +50,43 @@ export default function MonitoringDashboard() {
   const [webVitals, setWebVitals] = useState<any>(null);
   const [performanceMetrics, setPerformanceMetrics] = useState<any>(null);
   const [logs, setLogs] = useState<any>(null);
+  const [legacyWebVitals, setLegacyWebVitals] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchMonitoringData();
-  }, [timeframe]);
-
-  const fetchMonitoringData = async () => {
+  const fetchMonitoringData = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const [webVitalsRes, performanceRes, logsRes] = await Promise.all([
-        fetch(`/api/monitoring/web-vitals?timeframe=${timeframe}`),
-        fetch(`/api/monitoring/performance?timeframe=${timeframe}`),
-        fetch(`/api/monitoring/logs?level=error&limit=50`),
-      ]);
+      const [webVitalsRes, performanceRes, logsRes, legacyWebVitalsRes] =
+        await Promise.all([
+          fetch(`/api/monitoring/web-vitals?timeframe=${timeframe}`),
+          fetch(`/api/monitoring/performance?timeframe=${timeframe}`),
+          fetch(`/api/monitoring/logs?level=error&limit=50`),
+          fetch(`/api/web-vital/metrics?timeframe=${timeframe}&format=json`),
+        ]);
 
       if (!webVitalsRes.ok || !performanceRes.ok || !logsRes.ok) {
         throw new Error("Failed to fetch monitoring data");
       }
 
-      const [webVitalsData, performanceData, logsData] = await Promise.all([
-        webVitalsRes.json(),
-        performanceRes.json(),
-        logsRes.json(),
-      ]);
+      const [webVitalsData, performanceData, logsData, legacyWebVitalsData] =
+        await Promise.all([
+          webVitalsRes.json(),
+          performanceRes.json(),
+          logsRes.json(),
+          legacyWebVitalsRes.ok ? legacyWebVitalsRes.json() : { metrics: [] },
+        ]);
 
       setWebVitals(webVitalsData);
       setPerformanceMetrics(performanceData);
       setLogs(logsData);
+      setLegacyWebVitals(legacyWebVitalsData);
 
       logger.info("Monitoring dashboard data loaded", {
         webVitalsCount: webVitalsData.webVitals?.length || 0,
         performanceCount: performanceData.metrics?.length || 0,
         logsCount: logsData.logs?.length || 0,
+        legacyWebVitalsCount: legacyWebVitalsData.metrics?.length || 0,
       });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Unknown error";
@@ -94,7 +95,11 @@ export default function MonitoringDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [timeframe]);
+
+  useEffect(() => {
+    fetchMonitoringData();
+  }, [timeframe, fetchMonitoringData]);
 
   const renderWebVitalsOverview = () => {
     if (!webVitals?.summary) return null;
@@ -176,10 +181,10 @@ export default function MonitoringDashboard() {
       yField: "avgValue",
       colorField: "name",
       label: {
-        position: "middle" as const,
+        position: "top" as const,
         style: {
-          fill: "#FFFFFF",
-          opacity: 0.6,
+          fill: "#000000",
+          opacity: 0.8,
         },
       },
     };
@@ -288,6 +293,84 @@ export default function MonitoringDashboard() {
     );
   };
 
+  const renderLegacyWebVitals = () => {
+    if (!legacyWebVitals?.metrics || legacyWebVitals.metrics.length === 0) {
+      return (
+        <Card title="Legacy Web Vitals">
+          <p className="text-gray-500">
+            No legacy web vital metrics found for the selected timeframe.
+          </p>
+        </Card>
+      );
+    }
+
+    return (
+      <div className="space-y-6">
+        <Card title="Legacy Web Vitals Summary">
+          <Row gutter={[16, 16]}>
+            {legacyWebVitals.metrics.map((metric: any) => (
+              <Col span={8} key={metric.name}>
+                <Card size="small">
+                  <Statistic
+                    title={metric.name}
+                    value={metric.count}
+                    suffix="records"
+                    valueStyle={{ color: "#1890ff" }}
+                  />
+                  <div className="mt-2 text-sm text-gray-600">
+                    <div>Help: {metric.help}</div>
+                    {metric.stats && (
+                      <>
+                        <div>Avg: {metric.stats.avg.toFixed(2)}</div>
+                        <div>
+                          Range: {metric.stats.min} - {metric.stats.max}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </Card>
+
+        <Card title="Legacy Web Vitals Details">
+          <Table
+            columns={[
+              { title: "Metric Name", dataIndex: "name", key: "name" },
+              { title: "Count", dataIndex: "count", key: "count" },
+              {
+                title: "Labels",
+                dataIndex: "labels",
+                key: "labels",
+                render: (labels: string[]) => labels.join(", "),
+              },
+              {
+                title: "Statistics",
+                key: "stats",
+                render: (_, record: any) =>
+                  record.stats ? (
+                    <div>
+                      <div>Avg: {record.stats.avg.toFixed(2)}</div>
+                      <div>Median: {record.stats.median.toFixed(2)}</div>
+                      <div>
+                        Range: {record.stats.min} - {record.stats.max}
+                      </div>
+                    </div>
+                  ) : (
+                    "N/A"
+                  ),
+              },
+            ]}
+            dataSource={legacyWebVitals.metrics}
+            rowKey="name"
+            pagination={false}
+          />
+        </Card>
+      </div>
+    );
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -334,66 +417,89 @@ export default function MonitoringDashboard() {
           </Select>
         </div>
 
-        <Tabs defaultActiveKey="1" size="large">
-          <Tabs.TabPane tab="Web Vitals" key="1">
-            <div className="space-y-6">
-              <Card title="Core Web Vitals Overview">
-                {renderWebVitalsOverview()}
-              </Card>
+        <Tabs
+          defaultActiveKey="1"
+          size="large"
+          items={[
+            {
+              key: "1",
+              label: "Web Vitals",
+              children: (
+                <div className="space-y-6">
+                  <Card title="Core Web Vitals Overview">
+                    {renderWebVitalsOverview()}
+                  </Card>
 
-              <Card title="Web Vitals Trends">{renderWebVitalsChart()}</Card>
+                  <Card title="Web Vitals Trends">
+                    {renderWebVitalsChart()}
+                  </Card>
 
-              {renderDeviceBreakdown()}
-            </div>
-          </Tabs.TabPane>
+                  {renderDeviceBreakdown()}
+                </div>
+              ),
+            },
+            {
+              key: "2",
+              label: "Performance Metrics",
+              children: (
+                <>
+                  <Card title="Performance Metrics Summary">
+                    {renderPerformanceChart()}
+                  </Card>
 
-          <Tabs.TabPane tab="Performance Metrics" key="2">
-            <Card title="Performance Metrics Summary">
-              {renderPerformanceChart()}
-            </Card>
-
-            {performanceMetrics?.stats && (
-              <Card title="Detailed Performance Stats" className="mt-6">
-                <Table
-                  columns={[
-                    { title: "Metric", dataIndex: "_id", key: "metric" },
-                    { title: "Count", dataIndex: "count", key: "count" },
-                    {
-                      title: "Avg Value",
-                      dataIndex: "avgValue",
-                      key: "avg",
-                      render: (val: number) => `${val.toFixed(2)}ms`,
-                    },
-                    {
-                      title: "Min Value",
-                      dataIndex: "minValue",
-                      key: "min",
-                      render: (val: number) => `${val.toFixed(2)}ms`,
-                    },
-                    {
-                      title: "Max Value",
-                      dataIndex: "maxValue",
-                      key: "max",
-                      render: (val: number) => `${val.toFixed(2)}ms`,
-                    },
-                    {
-                      title: "Poor Count",
-                      dataIndex: "poorCount",
-                      key: "poor",
-                    },
-                  ]}
-                  dataSource={performanceMetrics.stats}
-                  rowKey="_id"
-                  pagination={false}
-                />
-              </Card>
-            )}
-          </Tabs.TabPane>
-
-          <Tabs.TabPane tab="Error Logs" key="3">
-            <Card title="Recent Error Logs">{renderErrorLogs()}</Card>
-          </Tabs.TabPane>
-        </Tabs>
+                  {performanceMetrics?.stats && (
+                    <Card title="Detailed Performance Stats" className="mt-6">
+                      <Table
+                        columns={[
+                          { title: "Metric", dataIndex: "_id", key: "metric" },
+                          { title: "Count", dataIndex: "count", key: "count" },
+                          {
+                            title: "Avg Value",
+                            dataIndex: "avgValue",
+                            key: "avg",
+                            render: (val: number) => `${val.toFixed(2)}ms`,
+                          },
+                          {
+                            title: "Min Value",
+                            dataIndex: "minValue",
+                            key: "min",
+                            render: (val: number) => `${val.toFixed(2)}ms`,
+                          },
+                          {
+                            title: "Max Value",
+                            dataIndex: "maxValue",
+                            key: "max",
+                            render: (val: number) => `${val.toFixed(2)}ms`,
+                          },
+                          {
+                            title: "Poor Count",
+                            dataIndex: "poorCount",
+                            key: "poor",
+                          },
+                        ]}
+                        dataSource={performanceMetrics.stats}
+                        rowKey="_id"
+                        pagination={false}
+                      />
+                    </Card>
+                  )}
+                </>
+              ),
+            },
+            {
+              key: "3",
+              label: "Legacy Web Vitals",
+              children: renderLegacyWebVitals(),
+            },
+            {
+              key: "4",
+              label: "Error Logs",
+              children: (
+                <Card title="Recent Error Logs">{renderErrorLogs()}</Card>
+              ),
+            },
+          ]}
+        />
       </div>
     </div>
   );
