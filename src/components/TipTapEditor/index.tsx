@@ -45,7 +45,6 @@ export default function TipTapEditor({
       editor.commands.clearContent();
       setLoading(false);
     } catch (err) {
-      console.log(err);
       message.error("发送失败");
       setLoading(false);
     }

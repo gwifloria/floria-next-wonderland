@@ -30,30 +30,11 @@ export const useWebVital = () => {
     }
   }
   useEffect(() => {
-    // Original metrics endpoint
-    fetch("/web-vital/metrics", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).catch((error) => {
-      logger.debug("Failed to fetch web vital metrics", { error });
-    });
-
-    // Mark session start for performance monitoring
-    performanceMonitor.markCustomEvent("session-start", {
+    // Initialize Web Vitals monitoring
+    logger.info("Web Vitals monitoring initialized", {
       userAgent: navigator.userAgent,
       url: window.location.href,
-      timestamp: Date.now(),
     });
-
-    // Cleanup on unmount
-    return () => {
-      performanceMonitor.markCustomEvent("session-end", {
-        url: window.location.href,
-        timestamp: Date.now(),
-      });
-    };
   }, []);
   const onGetWebVitalsData = useCallback((data: Metric) => {
     if (!data?.name) {
@@ -98,13 +79,11 @@ export const useWebVital = () => {
       },
     });
 
-    // Report to original endpoint
+    // Send to integrated Web Vitals API (legacy format)
     report(name, { rating, value });
 
-    // Send to new monitoring API if poor performance
-    if (rating === "poor") {
-      sendToMonitoringAPI(performanceMetric);
-    }
+    // Send to new monitoring API for all metrics
+    sendToMonitoringAPI(performanceMetric);
   }, []);
 
   const sendToMonitoringAPI = async (metric: PerformanceMetric) => {

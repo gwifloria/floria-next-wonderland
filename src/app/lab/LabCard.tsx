@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useConfetti } from "@/hooks/useConfetti";
 import {
   CheckOutlined,
@@ -11,7 +10,7 @@ import {
 import { App } from "antd";
 import { motion } from "framer-motion";
 import { cardVariants, statusColor, typeEmoji, typeStyle } from "./constant";
-import { Lab, LabStatus } from "./type";
+import type { Lab, LabStatus } from "@/types/lab";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -65,16 +64,16 @@ export default function LabCard({
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <span
-            className={`text-xs px-2 py-1 rounded font-medium ${typeStyle[type]}`}
+            className={`text-xs px-2 py-1 rounded font-medium ${typeStyle[type as keyof typeof typeStyle]}`}
           >
-            {typeEmoji[type]}
+            {typeEmoji[type as keyof typeof typeEmoji]}
           </span>
           <span className="text-lg font-semibold text-gray-800 group-hover:text-mint-600 transition-colors">
             {title}
           </span>
         </div>
         <span
-          className={`text-xs px-2 py-1 rounded font-medium ${statusColor[status]}`}
+          className={`text-xs px-2 py-1 rounded font-medium ${statusColor[status as keyof typeof statusColor]}`}
         >
           {status}
         </span>
@@ -84,7 +83,7 @@ export default function LabCard({
       </p>
       <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500 mb-2">
         <span className="bg-gray-50 px-2 py-1 rounded">📅 {createdAt}</span>
-        {tags?.map((tag) => (
+        {tags?.map((tag: string) => (
           <span
             key={tag}
             className="px-2 py-1 bg-gray-50 rounded hover:bg-mint-50 hover:text-mint-600 cursor-pointer transition"

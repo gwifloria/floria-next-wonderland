@@ -19,8 +19,7 @@ export const useMapInstance = () => {
 
     const geocoder = new MapboxGeocoder({
       accessToken: mapKeyData.mapKey,
-      // @ts-ignore
-      mapboxgl: mapboxgl,
+      mapboxgl: mapboxgl as any,
     });
     mapSearchRef.current = geocoder;
   }, [mapKeyData]);
