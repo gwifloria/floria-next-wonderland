@@ -44,8 +44,7 @@ export async function GET(
 
     // 转换数据格式
     const data = labs.map((doc) => ({
-      //@ts-ignore
-      id: doc._id.toString(),
+      id: (doc._id as any).toString(),
       title: doc.title,
       type: doc.type,
       status: doc.status,

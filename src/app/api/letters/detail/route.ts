@@ -18,7 +18,10 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "threadId required" }, { status: 400 });
   }
   const id = decodeURIComponent(threadId);
-  console.log("[letters/detail] Looking for threadId:", id);
+  // Debug log for thread lookup
+  if (process.env.NODE_ENV === "development") {
+    console.log("[letters/detail] Looking for threadId:", id);
+  }
   try {
     await dbConnect();
 

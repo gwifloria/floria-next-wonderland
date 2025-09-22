@@ -35,7 +35,6 @@ export async function GET(req: Request) {
     const api = `https://api.github.com/repos/${owner}/${repo}/contents/${safe}?ref=${encodeURIComponent(
       branch,
     )}`;
-    console.log(api);
 
     const res = await fetch(api, {
       headers: {
