@@ -28,65 +28,80 @@ interface WebVitalData {
   deviceType: string;
 }
 
-interface PerformanceData {
-  name: string;
-  value: number;
-  rating: "good" | "needs-improvement" | "poor";
-  timestamp: string;
-  url: string;
+interface MonitoringData {
+  webVitals?: WebVitalData[];
+  summary?: Array<{
+    _id: string;
+    avgValue: number;
+    goodPercentage: number;
+    needsImprovementPercentage: number;
+    poorPercentage: number;
+  }>;
+  deviceBreakdown?: Array<{
+    _id: string;
+    count: number;
+    avgLCP?: number;
+  }>;
 }
 
-interface LogData {
-  level: string;
-  message: string;
-  timestamp: string;
-  context: any;
-  url: string;
+interface PerformanceMetricsData {
+  stats?: Array<{
+    _id: string;
+    count: number;
+    avgValue: number;
+    minValue: number;
+    maxValue: number;
+    poorCount: number;
+  }>;
+}
+
+interface LogsData {
+  logs?: Array<{
+    _id: string;
+    level: string;
+    message: string;
+    timestamp: string;
+    url: string;
+  }>;
 }
 
 export default function MonitoringDashboard() {
   const [timeframe, setTimeframe] = useState("24h");
   const [loading, setLoading] = useState(true);
-  const [webVitals, setWebVitals] = useState<any>(null);
-  const [performanceMetrics, setPerformanceMetrics] = useState<any>(null);
-  const [logs, setLogs] = useState<any>(null);
-  const [legacyWebVitals, setLegacyWebVitals] = useState<any>(null);
+  const [webVitals, setWebVitals] = useState<MonitoringData | null>(null);
+  const [performanceMetrics, setPerformanceMetrics] =
+    useState<PerformanceMetricsData | null>(null);
+  const [logs, setLogs] = useState<LogsData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const fetchMonitoringData = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const [webVitalsRes, performanceRes, logsRes, legacyWebVitalsRes] =
-        await Promise.all([
-          fetch(`/api/monitoring/web-vitals?timeframe=${timeframe}`),
-          fetch(`/api/monitoring/performance?timeframe=${timeframe}`),
-          fetch(`/api/monitoring/logs?level=error&limit=50`),
-          fetch(`/api/web-vital/metrics?timeframe=${timeframe}&format=json`),
-        ]);
+      const [webVitalsRes, performanceRes, logsRes] = await Promise.all([
+        fetch(`/api/monitoring/web-vitals?timeframe=${timeframe}`),
+        fetch(`/api/monitoring/performance?timeframe=${timeframe}`),
+        fetch(`/api/monitoring/logs?level=error&limit=50`),
+      ]);
 
       if (!webVitalsRes.ok || !performanceRes.ok || !logsRes.ok) {
         throw new Error("Failed to fetch monitoring data");
       }
 
-      const [webVitalsData, performanceData, logsData, legacyWebVitalsData] =
-        await Promise.all([
-          webVitalsRes.json(),
-          performanceRes.json(),
-          logsRes.json(),
-          legacyWebVitalsRes.ok ? legacyWebVitalsRes.json() : { metrics: [] },
-        ]);
+      const [webVitalsData, performanceData, logsData] = await Promise.all([
+        webVitalsRes.json(),
+        performanceRes.json(),
+        logsRes.json(),
+      ]);
 
       setWebVitals(webVitalsData);
       setPerformanceMetrics(performanceData);
       setLogs(logsData);
-      setLegacyWebVitals(legacyWebVitalsData);
 
       logger.info("Monitoring dashboard data loaded", {
         webVitalsCount: webVitalsData.webVitals?.length || 0,
         performanceCount: performanceData.metrics?.length || 0,
         logsCount: logsData.logs?.length || 0,
-        legacyWebVitalsCount: legacyWebVitalsData.metrics?.length || 0,
       });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Unknown error";
@@ -106,7 +121,7 @@ export default function MonitoringDashboard() {
 
     return (
       <Row gutter={[16, 16]}>
-        {webVitals.summary.map((vital: any) => (
+        {webVitals.summary.map((vital) => (
           <Col span={8} key={vital._id}>
             <Card>
               <Statistic
@@ -168,7 +183,7 @@ export default function MonitoringDashboard() {
   const renderPerformanceChart = () => {
     if (!performanceMetrics?.stats) return null;
 
-    const chartData = performanceMetrics.stats.map((stat: any) => ({
+    const chartData = performanceMetrics.stats.map((stat) => ({
       name: stat._id,
       avgValue: stat.avgValue,
       count: stat.count,
@@ -251,7 +266,7 @@ export default function MonitoringDashboard() {
   const renderDeviceBreakdown = () => {
     if (!webVitals?.deviceBreakdown) return null;
 
-    const chartData = webVitals.deviceBreakdown.map((device: any) => ({
+    const chartData = webVitals.deviceBreakdown.map((device) => ({
       device: device._id,
       count: device.count,
       avgLCP: device.avgLCP,
@@ -274,7 +289,7 @@ export default function MonitoringDashboard() {
         <Title level={4}>Device Type Distribution</Title>
         {/* You would use a Pie chart here, but I'll keep it simple */}
         <div className="grid grid-cols-3 gap-4">
-          {chartData.map((item: any) => (
+          {chartData.map((item) => (
             <Card key={item.device} size="small">
               <Statistic
                 title={item.device}
@@ -289,84 +304,6 @@ export default function MonitoringDashboard() {
             </Card>
           ))}
         </div>
-      </div>
-    );
-  };
-
-  const renderLegacyWebVitals = () => {
-    if (!legacyWebVitals?.metrics || legacyWebVitals.metrics.length === 0) {
-      return (
-        <Card title="Legacy Web Vitals">
-          <p className="text-gray-500">
-            No legacy web vital metrics found for the selected timeframe.
-          </p>
-        </Card>
-      );
-    }
-
-    return (
-      <div className="space-y-6">
-        <Card title="Legacy Web Vitals Summary">
-          <Row gutter={[16, 16]}>
-            {legacyWebVitals.metrics.map((metric: any) => (
-              <Col span={8} key={metric.name}>
-                <Card size="small">
-                  <Statistic
-                    title={metric.name}
-                    value={metric.count}
-                    suffix="records"
-                    valueStyle={{ color: "#1890ff" }}
-                  />
-                  <div className="mt-2 text-sm text-gray-600">
-                    <div>Help: {metric.help}</div>
-                    {metric.stats && (
-                      <>
-                        <div>Avg: {metric.stats.avg.toFixed(2)}</div>
-                        <div>
-                          Range: {metric.stats.min} - {metric.stats.max}
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </Card>
-
-        <Card title="Legacy Web Vitals Details">
-          <Table
-            columns={[
-              { title: "Metric Name", dataIndex: "name", key: "name" },
-              { title: "Count", dataIndex: "count", key: "count" },
-              {
-                title: "Labels",
-                dataIndex: "labels",
-                key: "labels",
-                render: (labels: string[]) => labels.join(", "),
-              },
-              {
-                title: "Statistics",
-                key: "stats",
-                render: (_, record: any) =>
-                  record.stats ? (
-                    <div>
-                      <div>Avg: {record.stats.avg.toFixed(2)}</div>
-                      <div>Median: {record.stats.median.toFixed(2)}</div>
-                      <div>
-                        Range: {record.stats.min} - {record.stats.max}
-                      </div>
-                    </div>
-                  ) : (
-                    "N/A"
-                  ),
-              },
-            ]}
-            dataSource={legacyWebVitals.metrics}
-            rowKey="name"
-            pagination={false}
-          />
-        </Card>
       </div>
     );
   };
@@ -488,11 +425,6 @@ export default function MonitoringDashboard() {
             },
             {
               key: "3",
-              label: "Legacy Web Vitals",
-              children: renderLegacyWebVitals(),
-            },
-            {
-              key: "4",
               label: "Error Logs",
               children: (
                 <Card title="Recent Error Logs">{renderErrorLogs()}</Card>

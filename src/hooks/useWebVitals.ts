@@ -9,26 +9,6 @@ import {
 import * as Sentry from "@sentry/nextjs";
 
 export const useWebVital = () => {
-  async function report(name: string, labels: any, help = "default help") {
-    try {
-      await fetch("/web-vital/counter-metric", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          help,
-          labels,
-        }),
-      });
-    } catch (error) {
-      logger.error("Failed to report web vital metric", error as Error, {
-        metricName: name,
-        labels,
-      });
-    }
-  }
   useEffect(() => {
     // Initialize Web Vitals monitoring
     logger.info("Web Vitals monitoring initialized", {
@@ -79,10 +59,7 @@ export const useWebVital = () => {
       },
     });
 
-    // Send to integrated Web Vitals API (legacy format)
-    report(name, { rating, value });
-
-    // Send to new monitoring API for all metrics
+    // Send to monitoring API
     sendToMonitoringAPI(performanceMetric);
   }, []);
 
