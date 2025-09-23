@@ -1,9 +1,8 @@
 "use client";
-import { useSession } from "next-auth/react";
-import { mutate } from "swr";
-import useSWRMutation from "swr/mutation";
-import { postFetcher } from "@/util/fetch";
 import { BlogPostItem } from "@/types/blog";
+import { postFetcher } from "@/util/fetch";
+import { useSession } from "next-auth/react";
+import useSWRMutation from "swr/mutation";
 
 const ADMIN_EMAIL = "ghuijue@gmail.com";
 
@@ -27,14 +26,9 @@ export default function PinControl({ post, category }: PinControlProps) {
     Error,
     string,
     PinRequest
-  >("/api/blog/pin", postFetcher, {
-    onSuccess: () => {
-      // 自动刷新博客列表
-      mutate(`/api/posts/list?category=${category}`);
-    },
+  >("/api/posts/pin", postFetcher, {
     onError: (error) => {
       console.error("Error toggling pin:", error);
-      // 可以添加错误提示
     },
   });
 
@@ -43,40 +37,45 @@ export default function PinControl({ post, category }: PinControlProps) {
     return null;
   }
 
-  const handleTogglePin = async (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent link navigation
-    e.stopPropagation();
-
-    try {
-      await togglePin({
-        path: post.path,
-        category,
-        title: post.title || post.name.replace(/\.(md|mdx)$/i, ""),
-        isPinned: !post.isPinned,
-      });
-    } catch (error) {
-      // Error is already handled in onError callback
-    }
-  };
-
   return (
     <button
-      onClick={handleTogglePin}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (isLoading) return;
+
+        togglePin({
+          path: post.path,
+          category,
+          title: post.title || post.name.replace(/\.(md|mdx)$/i, ""),
+          isPinned: !post.isPinned,
+        });
+      }}
       disabled={isLoading}
       className={`
         absolute right-0 top-1/2 transform -translate-y-1/2
-        opacity-0 group-hover:opacity-100 transition-opacity duration-200
+        opacity-0 group-hover:opacity-100 transition-all duration-200
         p-1 rounded text-xs
         ${
           post.isPinned
             ? "text-amber-600 hover:text-amber-700 hover:bg-amber-50"
             : "text-neutral-400 hover:text-amber-600 hover:bg-amber-50"
         }
-        ${isLoading ? "cursor-not-allowed" : "cursor-pointer"}
+        ${
+          isLoading
+            ? "cursor-not-allowed opacity-50 scale-95"
+            : "cursor-pointer hover:scale-105"
+        }
       `}
-      title={post.isPinned ? "取消置顶" : "置顶文章"}
     >
-      {isLoading ? "⏳" : post.isPinned ? "📌" : "📍"}
+      {isLoading ? (
+        <span className="animate-spin">⏳</span>
+      ) : post.isPinned ? (
+        "📌"
+      ) : (
+        "📍"
+      )}
     </button>
   );
 }

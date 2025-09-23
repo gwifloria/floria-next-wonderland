@@ -100,3 +100,84 @@ test.describe("/blog", () => {
     await expect(page.locator("article")).toBeVisible();
   });
 });
+
+test.describe("/blog - Pin functionality (Admin only)", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/blog");
+    await skipIfNoPosts(page);
+    // Note: This test assumes admin authentication is set up
+    // In a real test environment, you might need to mock the session
+  });
+
+  test("pin control should be visible on hover for admin users", async ({
+    page,
+  }) => {
+    // Find first blog post link
+    const firstPost = page.locator("aside nav a").first();
+
+    // Hover over the post to show pin control
+    await firstPost.hover();
+
+    // Check if pin control button appears (may not be visible if not admin)
+    const pinButton = firstPost.locator("button");
+
+    // This test will only work if authenticated as admin
+    // In a real scenario, you'd mock the authentication
+    if ((await pinButton.count()) > 0) {
+      await expect(pinButton).toBeVisible();
+
+      // Check for correct icon (📍 for unpin, 📌 for pinned)
+      const buttonText = await pinButton.textContent();
+      expect(buttonText).toMatch(/📍|📌|⏳/);
+    }
+  });
+
+  test("pin button should show loading state when clicked", async ({
+    page,
+  }) => {
+    // Find first blog post
+    const firstPost = page.locator("aside nav a").first();
+    await firstPost.hover();
+
+    const pinButton = firstPost.locator("button");
+
+    if ((await pinButton.count()) > 0) {
+      // Click pin button
+      await pinButton.click();
+
+      // Should show loading indicator briefly
+      await expect(pinButton).toHaveText("⏳");
+
+      // Wait for the operation to complete (with timeout)
+      await expect(pinButton).not.toHaveText("⏳", { timeout: 5000 });
+    }
+  });
+
+  test("pin status should toggle correctly", async ({ page }) => {
+    const firstPost = page.locator("aside nav a").first();
+    await firstPost.hover();
+
+    const pinButton = firstPost.locator("button");
+
+    if ((await pinButton.count()) > 0) {
+      // Get initial state
+      const initialIcon = await pinButton.textContent();
+
+      // Click to toggle
+      await pinButton.click();
+
+      // Wait for operation to complete
+      await expect(pinButton).not.toHaveText("⏳", { timeout: 5000 });
+
+      // Hover again to show button
+      await firstPost.hover();
+
+      // Icon should have changed
+      const newIcon = await pinButton.textContent();
+      expect(newIcon).not.toBe(initialIcon);
+
+      // Should be either pinned or unpinned icon
+      expect(newIcon).toMatch(/📍|📌/);
+    }
+  });
+});

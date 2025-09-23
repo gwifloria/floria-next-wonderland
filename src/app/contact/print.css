@@ -55,6 +55,22 @@
     display: none !important;
   }
 
+  /* Hide hero section decorations */
+  .pointer-events-none.absolute.-top-6 {
+    display: none !important;
+  }
+
+  /* Hide tape decorations on cards */
+  .pointer-events-none.absolute.-top-3 {
+    display: none !important;
+  }
+
+  /* Hide all decorative images */
+  img[alt="bow"],
+  img[alt="tape"] {
+    display: none !important;
+  }
+
   /* Improve text contrast for print */
   .prose,
   .about-page {

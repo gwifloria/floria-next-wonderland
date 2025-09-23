@@ -1,5 +1,5 @@
 import { useScroll, useSize } from "ahooks";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import { TocAside } from "./TocAside";
 
 export type UseTocOptions = {
@@ -11,15 +11,13 @@ export type UseTocOptions = {
 
 /**
  * TOC + ScrollSpy relative to a scrollable container (non-window friendly).
- * - Finds the nearest scrollable ancestor of `containerRef`
- * - Computes heading positions relative to that ancestor
+ * - Creates and manages refs internally
+ * - Computes heading positions relative to the scrollable ancestor
  * - Listens directly to the scroller's `scroll` event
  */
-export const useTableOfContents = (
-  containerRef: React.RefObject<HTMLElement | null>,
-  scrollerRef: React.RefObject<HTMLElement | null>,
-  options?: UseTocOptions,
-) => {
+export const useTableOfContents = (options?: UseTocOptions) => {
+  const containerRef = useRef<HTMLElement | null>(null);
+  const scrollerRef = useRef<HTMLElement | null>(null);
   type TocItem = {
     id: string;
     text: string;
@@ -112,5 +110,10 @@ export const useTableOfContents = (
     () => <TocAside items={tocItems} activeId={activeHeadingId} />,
     [tocItems, activeHeadingId],
   );
-  return aside;
+
+  return {
+    containerRef,
+    scrollerRef,
+    tocAside: aside,
+  };
 };

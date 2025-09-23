@@ -21,7 +21,7 @@ export function HeroSection({ lang, onLanguageChange }: HeroSectionProps) {
       className={`text-center mb-16 ${THEME_COLORS.cardBg} ${THEME_COLORS.border} border rounded-2xl p-6`}
     >
       <div className="relative inline-block mb-6">
-        <div className="pointer-events-none absolute -top-6 left-2 rotate-24 opacity-90 w-10 h-10">
+        <div className="pointer-events-none absolute -top-6 left-2 rotate-24 opacity-90 w-10 h-10 print:hidden">
           <Image
             priority
             src={DECORATION_IMAGES.whiteBow}

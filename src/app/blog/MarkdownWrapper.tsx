@@ -8,7 +8,6 @@ import "prismjs/components/prism-jsx";
 import "prismjs/components/prism-tsx";
 import "prismjs/components/prism-typescript";
 import "prismjs/themes/prism-tomorrow.css";
-import { useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrism from "rehype-prism-plus";
@@ -16,52 +15,58 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import useSWR from "swr";
 import { BlogSkeleton, EmptyState } from "./BlogSkelton";
-import { CommitMeta } from "@/types/blog";
 import { dtf, PROSE_CLASS } from "./constants";
 import { mdxComponents } from "./mdxComponents";
-import { useTableOfContents } from "./useToc";
-import { textFetcher } from "./util";
+import TocClient from "./TocClient";
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export function MarkdownWrapper({ path }: { path?: string | null }) {
   const activePath = path ?? null;
-  const encoded = activePath ? encodeURIComponent(activePath) : null;
-
-  // Content & meta via SWR
-  const { data: contentResponse, error } = useSWR(
-    encoded ? `/api/posts/content?path=${encoded}` : null,
-    (url: string) => fetch(url).then((res) => res.json()),
-  );
-  const { data: info } = useSWR<CommitMeta>(
-    encoded ? `/api/posts/metadata?path=${encoded}` : null,
-  );
-
-  const rawContent = contentResponse?.content;
-
-  // Parse front-matter
-  const { content } = matter(rawContent ?? "");
-
-  // TOC collection (optional)
-  const containerRef = useRef<HTMLDivElement>(null);
-  const scrollerRef = useRef<HTMLDivElement>(null);
-
-  const Toc = useTableOfContents(containerRef, scrollerRef);
 
   // Guard: no active file selected
+
+  // Fetch content and metadata using SWR
+  const { data: contentData, error: contentError } = useSWR(
+    activePath
+      ? `/api/posts/content?path=${encodeURIComponent(activePath)}`
+      : null,
+    fetcher,
+  );
+
+  const { data: commitInfo, error: commitError } = useSWR(
+    activePath
+      ? `/api/posts/metadata?path=${encodeURIComponent(activePath)}`
+      : null,
+    fetcher,
+  );
   if (!activePath) return <EmptyState />;
 
-  // Loading & error states
-  if (!rawContent && !error) return <BlogSkeleton />;
-  if (error)
+  // Handle loading state
+  if (!contentData && !contentError) {
+    return <BlogSkeleton />;
+  }
+
+  // Handle error state
+  if (contentError) {
     return <div className="text-sm text-red-600">Error loading content.</div>;
+  }
+
+  if (!contentData) {
+    return <BlogSkeleton />;
+  }
+
+  // Parse front-matter
+  const { content } = matter(contentData.content);
 
   return (
     <>
-      <div ref={containerRef} className={"h-full flex w-full"}>
-        <div ref={scrollerRef} className="overflow-auto min-w-0 mr-16">
+      <div data-markdown-container className="h-full flex w-full">
+        <div data-markdown-scroller className="overflow-auto min-w-0 mr-16">
           <article className={PROSE_CLASS}>
-            {info?.updatedAt && (
+            {commitInfo?.updatedAt && (
               <div className="mb-4 text-xs text-neutral-500">
-                最后更新：{dtf.format(new Date(info.updatedAt))}
+                最后更新：{dtf.format(new Date(commitInfo.updatedAt))}
               </div>
             )}
             <ReactMarkdown
@@ -73,7 +78,7 @@ export function MarkdownWrapper({ path }: { path?: string | null }) {
             </ReactMarkdown>
           </article>
         </div>
-        <div className="hidden lg:block">{Toc}</div>
+        <TocClient />
       </div>
     </>
   );

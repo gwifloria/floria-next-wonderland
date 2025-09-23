@@ -1,12 +1,6 @@
 "use client";
-import matter from "gray-matter";
-import { useRef } from "react";
 import type { Components } from "react-markdown";
-import ReactMarkdown from "react-markdown";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypeSlug from "rehype-slug";
-import useSWR from "swr";
-import { textFetcher } from "../blog/util";
+import MarkdownWrapper from "../blog/MarkdownWrapper";
 
 // Tailwind + Typography: nicer defaults for markdown
 // We also override some elements to match your palette (nepal / neutral) and spacing
@@ -72,25 +66,5 @@ const mdxComponents: Components = {
 };
 
 export const GapMarkdown = () => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-
-  const { data: rawContent } = useSWR(
-    `/api/github/content?path=GAP.md`,
-    textFetcher,
-  );
-  const { content } = matter(rawContent ?? "");
-
-  return (
-    <div
-      ref={containerRef}
-      className="prose prose-neutral max-w-none prose-headings:scroll-mt-20 prose-a:no-underline"
-    >
-      <ReactMarkdown
-        rehypePlugins={[rehypeSlug, rehypeAutolinkHeadings]}
-        components={mdxComponents}
-      >
-        {content}
-      </ReactMarkdown>
-    </div>
-  );
+  return <MarkdownWrapper path="GAP.md"></MarkdownWrapper>;
 };

@@ -1,25 +1,25 @@
-import matter from "gray-matter";
 import {
-  GitHubFile,
   BlogContent,
-  CommitMeta,
-  GitHubServiceConfig,
-  GitHubAPIError,
   BlogMeta,
+  CommitMeta,
+  GitHubAPIError,
+  GitHubFile,
+  GitHubServiceConfig,
 } from "@/types/blog";
+import matter from "gray-matter";
 
 export class GitHubService {
   private config: Required<GitHubServiceConfig>;
 
-  constructor(config?: GitHubServiceConfig) {
+  constructor() {
     this.config = {
-      owner: config?.owner || process.env.GITHUB_OWNER || "gwifloria",
-      repo: config?.repo || process.env.GITHUB_REPO || "eriko-whispers",
-      branch: config?.branch || process.env.GITHUB_BRANCH || "main",
-      token: config?.token || process.env.GITHUB_TOKEN || "",
+      owner: process.env.GITHUB_OWNER || "gwifloria",
+      repo: process.env.GITHUB_REPO || "eriko-whispers",
+      branch: process.env.GITHUB_BRANCH || "main",
+      token: process.env.GITHUB_TOKEN || "",
     };
 
-    if (!this.config.token) {
+    if (!process.env.GITHUB_TOKEN) {
       throw new Error("GitHub token is required");
     }
   }
@@ -31,7 +31,7 @@ export class GitHubService {
     const response = await fetch(url, {
       ...options,
       headers: {
-        Authorization: `token ${this.config.token}`,
+        Authorization: `token ${process.env.GITHUB_TOKEN}`,
         Accept: "application/vnd.github.v3+json",
         ...options.headers,
       },
@@ -74,6 +74,7 @@ export class GitHubService {
     const response = await this.makeRequest(url, {
       headers: {
         Accept: "application/vnd.github.raw",
+        Authorization: `token ${this.config.token}`,
       },
     });
 
