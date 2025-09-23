@@ -19,7 +19,7 @@ export default function AboutMePage() {
 
   return (
     <>
-      <main className="about-page min-h-screen">
+      <main id="about" className="about-page min-h-screen">
         <PaperContainer>
           <HeroSection lang={lang} />
 

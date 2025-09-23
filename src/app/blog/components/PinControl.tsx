@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
 import { postFetcher } from "@/util/fetch";
-import { BlogPostItem } from "../constants";
+import { BlogPostItem } from "@/types/blog";
 
 const ADMIN_EMAIL = "ghuijue@gmail.com";
 
@@ -30,7 +30,7 @@ export default function PinControl({ post, category }: PinControlProps) {
   >("/api/blog/pin", postFetcher, {
     onSuccess: () => {
       // 自动刷新博客列表
-      mutate(`/api/blog/list?category=${category}`);
+      mutate(`/api/posts/list?category=${category}`);
     },
     onError: (error) => {
       console.error("Error toggling pin:", error);

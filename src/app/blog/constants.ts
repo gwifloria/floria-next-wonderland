@@ -13,12 +13,6 @@ export interface GitHubItem {
   path: string;
   type: string;
 }
-
-export interface BlogPostItem extends GitHubItem {
-  isPinned: boolean;
-  pinOrder: number;
-  title?: string;
-}
 // -----------------------------
 // UI constants
 // -----------------------------
@@ -44,6 +38,3 @@ export const dtf = new Intl.DateTimeFormat(undefined, {
   hour: "2-digit",
   minute: "2-digit",
 });
-export interface CommitMeta {
-  updatedAt?: string; // ISO string
-}
