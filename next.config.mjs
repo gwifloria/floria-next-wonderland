@@ -37,8 +37,10 @@ function validateRequiredEnvVars() {
   console.log("✅ Authentication environment variables validated successfully");
 }
 
-// Run validation during build
-validateRequiredEnvVars();
+// Run validation during build (skip for test environment)
+if (process.env.NODE_ENV !== "test") {
+  validateRequiredEnvVars();
+}
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",

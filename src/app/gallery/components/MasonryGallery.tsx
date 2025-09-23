@@ -11,15 +11,17 @@ interface MasonryGalleryProps {
   images: GalleryImage[];
   onImageClick: (image: GalleryImage) => void;
   onLoadMore?: () => void;
+  hasMore?: boolean;
 }
 
 export function MasonryGallery({
   images,
   onImageClick,
   onLoadMore,
+  hasMore,
 }: MasonryGalleryProps) {
   const { columns, containerRef } = useResponsiveColumns();
-  const { loadMoreRef } = useInfiniteScroll(onLoadMore);
+  const { loadMoreRef } = useInfiniteScroll(onLoadMore, hasMore);
 
   const columnArrays = useMemo(() => {
     const arrays: GalleryImage[][] = Array.from({ length: columns }, () => []);

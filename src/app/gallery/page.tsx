@@ -25,15 +25,26 @@ function Gallery() {
   const [page, setPage] = useState(1);
   const [images, setAllImages] = useState<GalleryImage[]>([]);
   const [hasMore, setHasMore] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const handleDataSuccess = useCallback(
     (newData: GalleryApiResponse) => {
       const formattedImages = formatGalleryImages(newData.images);
 
       if (page === 1) {
+        // 初始加载或重置
         setAllImages(formattedImages);
+        setIsInitialized(true);
       } else {
-        setAllImages((prev) => [...prev, ...formattedImages]);
+        // 分页加载 - 只有当新数据不为空时才拼接
+        if (formattedImages.length > 0) {
+          setAllImages((prev) => [...prev, ...formattedImages]);
+        } else {
+          // 如果新数据为空，但不影响现有数据，只更新 hasMore 状态
+          console.log(
+            `Page ${page} returned no images, maintaining existing data`,
+          );
+        }
       }
 
       setHasMore(newData.pagination.hasMore);
@@ -94,6 +105,7 @@ function Gallery() {
           images={images}
           onImageClick={handleImageClick}
           onLoadMore={loadMore}
+          hasMore={hasMore}
         />
 
         {hasMore && (

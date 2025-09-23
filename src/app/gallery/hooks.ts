@@ -31,35 +31,76 @@ export const useResponsiveColumns = () => {
   return { columns, containerRef };
 };
 
-export const useInfiniteScroll = (onLoadMore?: () => void) => {
+export const useInfiniteScroll = (
+  onLoadMore?: () => void,
+  hasMore?: boolean,
+) => {
   const loadMoreRef = useRef<HTMLDivElement>(null);
+  const isInitialMount = useRef(true);
+  const lastTriggerTime = useRef(0);
 
   useEffect(() => {
-    if (!loadMoreRef.current || !onLoadMore) return;
+    if (!loadMoreRef.current || !onLoadMore || !hasMore) return;
 
-    let timeoutId: NodeJS.Timeout;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          clearTimeout(timeoutId);
-          timeoutId = setTimeout(() => {
-            onLoadMore();
-          }, GALLERY_CONFIG.OBSERVER.DEBOUNCE_DELAY);
-        }
-      },
-      {
-        rootMargin: GALLERY_CONFIG.OBSERVER.INFINITE_SCROLL_MARGIN,
-        threshold: GALLERY_CONFIG.OBSERVER.THRESHOLD,
-      },
-    );
+    // 防止初始挂载时立即触发
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      const initDelay = setTimeout(() => {
+        // 初始化延迟后再设置 observer
+        setupObserver();
+      }, 1000); // 1秒延迟避免初始触发
 
-    observer.observe(loadMoreRef.current);
+      return () => clearTimeout(initDelay);
+    }
 
+    setupObserver();
+
+    function setupObserver() {
+      if (!loadMoreRef.current || !onLoadMore) return;
+
+      let timeoutId: NodeJS.Timeout;
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            // 防止频繁触发
+            const now = Date.now();
+            if (now - lastTriggerTime.current < 2000) {
+              return; // 2秒内不重复触发
+            }
+
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+              // 再次检查页面可见性和条件
+              if (document.visibilityState === "visible" && hasMore) {
+                lastTriggerTime.current = Date.now();
+                onLoadMore();
+              }
+            }, GALLERY_CONFIG.OBSERVER.DEBOUNCE_DELAY);
+          }
+        },
+        {
+          rootMargin: GALLERY_CONFIG.OBSERVER.INFINITE_SCROLL_MARGIN,
+          threshold: GALLERY_CONFIG.OBSERVER.THRESHOLD,
+        },
+      );
+
+      if (loadMoreRef.current) {
+        observer.observe(loadMoreRef.current);
+      }
+
+      return () => {
+        observer.disconnect();
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [onLoadMore, hasMore]);
+
+  // 重置初始挂载状态当组件卸载时
+  useEffect(() => {
     return () => {
-      observer.disconnect();
-      clearTimeout(timeoutId);
+      isInitialMount.current = true;
     };
-  }, [onLoadMore]);
+  }, []);
 
   return { loadMoreRef };
 };
