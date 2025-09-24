@@ -72,6 +72,11 @@ class Logger {
   private async sendToAPI(logEntry: LogEntry) {
     if (!this.isClient) return; // Only send from client side
 
+    // In development, only send ERROR level logs to API to reduce noise
+    if (this.isDevelopment && logEntry.level !== LogLevel.ERROR) {
+      return;
+    }
+
     try {
       await fetch("/api/monitoring/logs", {
         method: "POST",

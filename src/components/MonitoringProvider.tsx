@@ -24,13 +24,19 @@ interface MonitoringProviderProps {
 }
 
 export function MonitoringProvider({ children }: MonitoringProviderProps) {
+  const isProduction = process.env.NODE_ENV === "production";
   const { data: session } = useSession();
   const sessionId = performanceMonitor.getSessionId();
 
-  // Initialize Web Vitals monitoring
-  useWebVital();
+  // Initialize Web Vitals monitoring (only in production to reduce dev API calls)
+  useWebVital(isProduction);
+
+  // Early return for development - skip monitoring effects
+  const shouldMonitor = isProduction;
 
   useEffect(() => {
+    if (!shouldMonitor) return;
+
     // Initialize monitoring when component mounts
     logger.info("Monitoring system initialized", {
       sessionId,
@@ -138,10 +144,12 @@ export function MonitoringProvider({ children }: MonitoringProviderProps) {
 
       logger.info("Monitoring system cleaned up");
     };
-  }, [session, sessionId]);
+  }, [session, sessionId, shouldMonitor]);
 
   // Monitor user authentication state changes
   useEffect(() => {
+    if (!shouldMonitor) return;
+
     if (session?.user) {
       logger.info("User authenticated", {
         userId: session.user.email,
@@ -158,10 +166,10 @@ export function MonitoringProvider({ children }: MonitoringProviderProps) {
 
       performanceMonitor.markCustomEvent("user-logout");
     }
-  }, [session, sessionId]);
+  }, [session, sessionId, shouldMonitor]);
 
   const contextValue: MonitoringContextType = {
-    isMonitoringEnabled: true,
+    isMonitoringEnabled: shouldMonitor,
     sessionId,
   };
 

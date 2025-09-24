@@ -1,5 +1,5 @@
-import { HeroSection, NavCards, PaperBackdrop } from "@/components/Homepage";
 import CopyrightInfo from "@/components/CopyrightInfo";
+import { HeroSection, NavCards, PaperBackdrop } from "@/components/Homepage";
 import Image from "next/image";
 export default function HomeContainer() {
   return (

@@ -126,8 +126,9 @@ const LabPageContainer = () => {
           transition={{ duration: 0.4 }}
         >
           <div className="flex gap-4">
-            {(Object.keys(categoryLabelEmoji) as LabCategory[]).map(
-              (category) => (
+            {(Object.keys(categoryLabelEmoji) as LabCategory[])
+              .filter((category) => category !== "life")
+              .map((category) => (
                 <motion.button
                   key={category}
                   onClick={() => setActiveCategory(category)}
@@ -141,8 +142,7 @@ const LabPageContainer = () => {
                 >
                   {categoryLabelEmoji[category]} {category.toUpperCase()}
                 </motion.button>
-              ),
-            )}
+              ))}
           </div>
           <div className="flex items-center gap-4">
             <Button

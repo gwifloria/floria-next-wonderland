@@ -19,9 +19,13 @@ import { dtf, PROSE_CLASS } from "./constants";
 import { mdxComponents } from "./mdxComponents";
 import TocClient from "./TocClient";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
-export function MarkdownWrapper({ path }: { path?: string | null }) {
+export function MarkdownWrapper({
+  path,
+  toc = true,
+}: {
+  path?: string | null;
+  toc?: boolean;
+}) {
   const activePath = path ?? null;
 
   // Guard: no active file selected
@@ -31,14 +35,12 @@ export function MarkdownWrapper({ path }: { path?: string | null }) {
     activePath
       ? `/api/posts/content?path=${encodeURIComponent(activePath)}`
       : null,
-    fetcher,
   );
 
-  const { data: commitInfo, error: commitError } = useSWR(
+  const { data: commitInfo } = useSWR(
     activePath
       ? `/api/posts/metadata?path=${encodeURIComponent(activePath)}`
       : null,
-    fetcher,
   );
   if (!activePath) return <EmptyState />;
 
@@ -62,7 +64,10 @@ export function MarkdownWrapper({ path }: { path?: string | null }) {
   return (
     <>
       <div data-markdown-container className="h-full flex w-full">
-        <div data-markdown-scroller className="overflow-auto min-w-0 mr-16">
+        <div
+          data-markdown-scroller
+          className={`overflow-auto min-w-0 ${toc ? "mr-16" : ""}`}
+        >
           <article className={PROSE_CLASS}>
             {commitInfo?.updatedAt && (
               <div className="mb-4 text-xs text-neutral-500">
@@ -78,7 +83,7 @@ export function MarkdownWrapper({ path }: { path?: string | null }) {
             </ReactMarkdown>
           </article>
         </div>
-        <TocClient />
+        {toc && <TocClient />}
       </div>
     </>
   );

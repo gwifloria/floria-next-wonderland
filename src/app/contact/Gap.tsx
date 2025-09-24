@@ -66,5 +66,5 @@ const mdxComponents: Components = {
 };
 
 export const GapMarkdown = () => {
-  return <MarkdownWrapper path="GAP.md"></MarkdownWrapper>;
+  return <MarkdownWrapper path="GAP.md" toc={false}></MarkdownWrapper>;
 };

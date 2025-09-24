@@ -65,13 +65,11 @@ export const labels: Record<
 export const skills = [
   { zh: "React", en: "React" },
   { zh: "TypeScript", en: "TypeScript" },
+  { zh: "Vue", en: "TypeScript" },
   { zh: "Next.js", en: "Next.js" },
   { zh: "Node.js", en: "Node.js" },
-  { zh: "Python", en: "Python" },
   { zh: "MongoDB", en: "MongoDB" },
-  { zh: "PostgreSQL", en: "PostgreSQL" },
   { zh: "Docker", en: "Docker" },
-  { zh: "AWS", en: "AWS" },
   { zh: "Git", en: "Git" },
   { zh: "Tailwind CSS", en: "Tailwind CSS" },
   { zh: "Ant Design", en: "Ant Design" },
@@ -111,8 +109,8 @@ export const experiences = [
             "实时展示车辆位置、运营数据与视频流，提高调度与运维效率",
             "基于 bmapgl 实现车辆移动、渐变轨迹、区域高亮及覆盖物交互",
             "ECharts 构建饼图/柱状图/仪表盘等可视化，支持条件筛选与联动",
-            "落地 WebSocket 长连接稳定重连与心跳（ping-pong）",
-            "Node 侧封装大文件分片上传组件，支持断点续传",
+            "useWebSocket 长连接稳定重连与心跳（ping-pong）",
+            "智能驾驶仿真平台canvas绘制",
           ],
           en: [
             "Real‑time vehicle location, ops metrics and live video to improve dispatch & operations",
@@ -139,9 +137,10 @@ export const experiences = [
         ],
         highlights: {
           zh: [
-            "从 0‑1 搭建后台：布局/路由/权限、请求与 store 封装",
+            "主导 3 人 team 完成从 0‑1 搭建后台：布局/路由/权限",
             "通过 Git hook + ESLint/TS/Prettier 统一提交与代码风格",
-            "配合运维优化 Docker 构建与部署流程，缩短发布时延",
+            "后台管理系统（vue/react 的表单增删改拆功能维护",
+            "配合后端及运维优化 Docker 构建与部署流程",
           ],
           en: [
             "Bootstrapped admin from scratch: layout/routing/ACL, request & store abstractions",

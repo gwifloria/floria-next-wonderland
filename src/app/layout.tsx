@@ -3,6 +3,7 @@ import "antd/dist/reset.css"; // ✅ 必须放在最靠前
 import "@ant-design/v5-patch-for-react-19";
 
 import AuthProvider from "@/components/AuthProvider";
+import BugFeedbackButton from "@/components/BugFeedbackButton";
 import CommitInfo from "@/components/CommitInfo";
 import PageHeader from "@/components/PageHeader";
 import { MonitoringProvider } from "@/components/MonitoringProvider";
@@ -35,7 +36,8 @@ export default function RootLayout({
                 <SpeedInsights></SpeedInsights>
               </div>
             </div>
-            <CommitInfo />{" "}
+            <CommitInfo />
+            <BugFeedbackButton />
           </MonitoringProvider>
         </AuthProvider>
       </body>

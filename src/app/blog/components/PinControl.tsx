@@ -3,6 +3,7 @@ import { BlogPostItem } from "@/types/blog";
 import { postFetcher } from "@/util/fetch";
 import { useSession } from "next-auth/react";
 import useSWRMutation from "swr/mutation";
+import Icon from "@/components/SmartIcon";
 
 const ADMIN_EMAIL = "ghuijue@gmail.com";
 
@@ -72,9 +73,9 @@ export default function PinControl({ post, category }: PinControlProps) {
       {isLoading ? (
         <span className="animate-spin">⏳</span>
       ) : post.isPinned ? (
-        "📌"
+        <Icon name="pin-icon" size={14} />
       ) : (
-        "📍"
+        <Icon name="pin-icon" size={14} className="opacity-50" />
       )}
     </button>
   );

@@ -1,4 +1,6 @@
 import { useConfetti } from "@/hooks/useConfetti";
+import { useModal } from "@/provider/UIProviders";
+import type { Lab, LabStatus } from "@/types/lab";
 import {
   CheckOutlined,
   DeleteOutlined,
@@ -7,10 +9,8 @@ import {
   PauseCircleOutlined,
   PlayCircleOutlined,
 } from "@ant-design/icons";
-import { App } from "antd";
 import { motion } from "framer-motion";
 import { cardVariants, statusColor, typeEmoji, typeStyle } from "./constant";
-import type { Lab, LabStatus } from "@/types/lab";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -32,7 +32,7 @@ export default function LabCard({
   onStatusChange,
   onEdit,
 }: any) {
-  const { modal } = App.useApp();
+  const modal = useModal();
   const { show, confettiContext } = useConfetti();
 
   const handleComplete = () => {

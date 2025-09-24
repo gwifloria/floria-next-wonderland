@@ -8,14 +8,18 @@ import {
 } from "@/monitoring/performance";
 import * as Sentry from "@sentry/nextjs";
 
-export const useWebVital = () => {
+export const useWebVital = (enabled: boolean = true) => {
   useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+
     // Initialize Web Vitals monitoring
     logger.info("Web Vitals monitoring initialized", {
       userAgent: navigator.userAgent,
       url: window.location.href,
     });
-  }, []);
+  }, [enabled]);
   const onGetWebVitalsData = useCallback((data: Metric) => {
     if (!data?.name) {
       return;
@@ -64,6 +68,11 @@ export const useWebVital = () => {
   }, []);
 
   const sendToMonitoringAPI = async (metric: PerformanceMetric) => {
+    // Only send to API in production to reduce development noise
+    if (process.env.NODE_ENV !== "production") {
+      return;
+    }
+
     try {
       await fetch("/api/monitoring/web-vitals", {
         method: "POST",
@@ -78,11 +87,15 @@ export const useWebVital = () => {
   };
 
   useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+
     onFCP(onGetWebVitalsData);
     onLCP(onGetWebVitalsData);
     onFID(onGetWebVitalsData);
     onCLS(onGetWebVitalsData);
     onINP(onGetWebVitalsData);
     onTTFB(onGetWebVitalsData);
-  }, [onGetWebVitalsData]);
+  }, [onGetWebVitalsData, enabled]);
 };

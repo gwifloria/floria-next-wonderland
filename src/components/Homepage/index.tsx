@@ -4,6 +4,7 @@ import { routeDescriptions } from "@/constants/routes";
 import Image from "next/image";
 import Link from "next/link";
 import { PageRoute, routes } from "../PageHeader/router";
+import UsageGuide from "../UsageGuide";
 
 const NAV = (
   Object.entries(routes) as [PageRoute, { emoji: string; icon?: string }][]
@@ -18,6 +19,9 @@ const NAV = (
 export const PaperBackdrop = () => {
   return (
     <>
+      <div className="absolute right-0 bottom-10">
+        <UsageGuide></UsageGuide>
+      </div>
       <Image
         src="/images/paper-beige-texture.png"
         alt="texture"

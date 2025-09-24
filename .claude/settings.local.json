@@ -2,10 +2,20 @@
   "permissions": {
     "allow": [
       "Bash(yarn typecheck)",
-      "Bash(grep:*)",
-      "Bash(pkill:*)",
-      "Bash(yarn lint)"
+      "Bash(yarn lint)",
+      "Bash(yarn test)",
+      "Bash(yarn build)",
+      "Bash(git status)",
+      "Bash(git diff)",
+      "Bash(npm run *)",
+      "Bash(yarn *)"
     ],
+    "hooks": {
+      "user-prompt-submit": "echo '开始任务...' && yarn typecheck",
+      "before-edit": "git status --porcelain",
+      "after-edit": "yarn lint --fix",
+      "before-commit": "yarn test && yarn build"
+    },
     "deny": [],
     "ask": []
   }
