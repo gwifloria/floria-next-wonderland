@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { GALLERY_CONFIG } from "./constants";
 
 export const useResponsiveColumns = () => {
@@ -7,22 +7,21 @@ export const useResponsiveColumns = () => {
   );
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const updateColumns = () => {
+    if (!containerRef.current) return;
+    const width = containerRef.current.offsetWidth;
+    if (width < GALLERY_CONFIG.BREAKPOINTS.MOBILE) {
+      setColumns(GALLERY_CONFIG.COLUMNS.MOBILE);
+    } else if (width < GALLERY_CONFIG.BREAKPOINTS.TABLET) {
+      setColumns(GALLERY_CONFIG.COLUMNS.TABLET);
+    } else if (width < GALLERY_CONFIG.BREAKPOINTS.DESKTOP) {
+      setColumns(GALLERY_CONFIG.COLUMNS.DESKTOP);
+    } else {
+      setColumns(GALLERY_CONFIG.COLUMNS.LARGE);
+    }
+  };
+
   useEffect(() => {
-    const updateColumns = () => {
-      if (!containerRef.current) return;
-
-      const width = containerRef.current.offsetWidth;
-      if (width < GALLERY_CONFIG.BREAKPOINTS.MOBILE) {
-        setColumns(GALLERY_CONFIG.COLUMNS.MOBILE);
-      } else if (width < GALLERY_CONFIG.BREAKPOINTS.TABLET) {
-        setColumns(GALLERY_CONFIG.COLUMNS.TABLET);
-      } else if (width < GALLERY_CONFIG.BREAKPOINTS.DESKTOP) {
-        setColumns(GALLERY_CONFIG.COLUMNS.DESKTOP);
-      } else {
-        setColumns(GALLERY_CONFIG.COLUMNS.LARGE);
-      }
-    };
-
     updateColumns();
     window.addEventListener("resize", updateColumns);
     return () => window.removeEventListener("resize", updateColumns);
@@ -38,6 +37,44 @@ export const useInfiniteScroll = (
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const isInitialMount = useRef(true);
   const lastTriggerTime = useRef(0);
+  const setupObserver = useCallback(() => {
+    if (!loadMoreRef.current || !onLoadMore) return;
+
+    let timeoutId: NodeJS.Timeout;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          // 防止频繁触发
+          const now = Date.now();
+          if (now - lastTriggerTime.current < 2000) {
+            return; // 2秒内不重复触发
+          }
+
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => {
+            // 再次检查页面可见性和条件
+            if (document.visibilityState === "visible" && hasMore) {
+              lastTriggerTime.current = Date.now();
+              onLoadMore();
+            }
+          }, GALLERY_CONFIG.OBSERVER.DEBOUNCE_DELAY);
+        }
+      },
+      {
+        rootMargin: GALLERY_CONFIG.OBSERVER.INFINITE_SCROLL_MARGIN,
+        threshold: GALLERY_CONFIG.OBSERVER.THRESHOLD,
+      },
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
+  }, [hasMore, onLoadMore]);
 
   useEffect(() => {
     if (!loadMoreRef.current || !onLoadMore || !hasMore) return;
@@ -54,46 +91,7 @@ export const useInfiniteScroll = (
     }
 
     setupObserver();
-
-    function setupObserver() {
-      if (!loadMoreRef.current || !onLoadMore) return;
-
-      let timeoutId: NodeJS.Timeout;
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            // 防止频繁触发
-            const now = Date.now();
-            if (now - lastTriggerTime.current < 2000) {
-              return; // 2秒内不重复触发
-            }
-
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => {
-              // 再次检查页面可见性和条件
-              if (document.visibilityState === "visible" && hasMore) {
-                lastTriggerTime.current = Date.now();
-                onLoadMore();
-              }
-            }, GALLERY_CONFIG.OBSERVER.DEBOUNCE_DELAY);
-          }
-        },
-        {
-          rootMargin: GALLERY_CONFIG.OBSERVER.INFINITE_SCROLL_MARGIN,
-          threshold: GALLERY_CONFIG.OBSERVER.THRESHOLD,
-        },
-      );
-
-      if (loadMoreRef.current) {
-        observer.observe(loadMoreRef.current);
-      }
-
-      return () => {
-        observer.disconnect();
-        clearTimeout(timeoutId);
-      };
-    }
-  }, [onLoadMore, hasMore]);
+  }, [onLoadMore, hasMore, setupObserver]);
 
   // 重置初始挂载状态当组件卸载时
   useEffect(() => {

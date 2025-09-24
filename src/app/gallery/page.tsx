@@ -3,16 +3,16 @@
 import { SWRShell } from "@/provider/SWRShell";
 import { GalleryApiResponse, GalleryImage } from "@/types/gallery";
 import { motion } from "framer-motion";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useSWR from "swr";
 import { HandwrittenTitle } from "../contact/components/ScrapbookCard";
 import { GalleryAdminPanel } from "./components/AdminSyncButton";
+import { BackToTop } from "./components/BackToTop";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 import { MasonryGallery } from "./components/MasonryGallery";
-import { BackToTop } from "./components/BackToTop";
 import { GALLERY_CONFIG, GALLERY_STYLES } from "./constants";
-import { formatGalleryImages } from "./utils";
 import "./styles.css";
+import { formatGalleryImages } from "./utils";
 
 export default function GalleryPage() {
   return (
@@ -25,36 +25,9 @@ function Gallery() {
   const [page, setPage] = useState(1);
   const [images, setAllImages] = useState<GalleryImage[]>([]);
   const [hasMore, setHasMore] = useState(true);
-  const [isInitialized, setIsInitialized] = useState(false);
-
-  const handleDataSuccess = useCallback(
-    (newData: GalleryApiResponse) => {
-      const formattedImages = formatGalleryImages(newData.images);
-
-      if (page === 1) {
-        // 初始加载或重置
-        setAllImages(formattedImages);
-        setIsInitialized(true);
-      } else {
-        // 分页加载 - 只有当新数据不为空时才拼接
-        if (formattedImages.length > 0) {
-          setAllImages((prev) => [...prev, ...formattedImages]);
-        } else {
-          // 如果新数据为空，但不影响现有数据，只更新 hasMore 状态
-          console.log(
-            `Page ${page} returned no images, maintaining existing data`,
-          );
-        }
-      }
-
-      setHasMore(newData.pagination.hasMore);
-    },
-    [page],
-  );
 
   const { data, isLoading } = useSWR<GalleryApiResponse>(
     `${GALLERY_CONFIG.PAGINATION.API_PATH}?page=${page}&limit=${GALLERY_CONFIG.PAGINATION.ITEMS_PER_PAGE}`,
-    { onSuccess: handleDataSuccess },
   );
 
   const loadMore = useCallback(() => {
@@ -66,6 +39,18 @@ function Gallery() {
   const handleImageClick = useCallback((image: GalleryImage) => {
     // Image preview handled by Ant Design
   }, []);
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    const formattedImages = formatGalleryImages(data.images);
+
+    setAllImages((prev) => {
+      return [...prev, ...formattedImages];
+    });
+    setHasMore(data.pagination.hasMore);
+  }, [data]);
 
   if (isLoading && images.length === 0) {
     return (
