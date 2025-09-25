@@ -18,13 +18,20 @@ export function PersonalInfoSection({ lang }: PersonalInfoSectionProps) {
           <strong className="text-neutral-500">{L.name}:</strong> 龚慧珏 /
           Floria
           <br />
-          <strong className="text-neutral-500">{L.location}:</strong> —
+          <strong className="text-neutral-500">毕业年份:</strong> 2019年 |{" "}
+          <strong className="text-neutral-500">性别:</strong> 女 |{" "}
+          <strong className="text-neutral-500">生日:</strong> 1997-05
           <br />
           <strong className="text-neutral-500">{L.email}:</strong>{" "}
-          gwifloria@outlook.com
+          ghuijue@gmail.com
           <br />
-          <strong className="text-neutral-500">{L.available}:</strong>{" "}
-          Full-time, Freelance
+          <strong className="text-neutral-500">电话:</strong> 18901829188 |{" "}
+          <strong className="text-neutral-500">微信:</strong> light__bj
+          <br />
+          <strong className="text-neutral-500">当前状态:</strong>{" "}
+          Gap（已调整好状态，随时可入职）
+          <br />
+          <strong className="text-neutral-500">期望:</strong> 小而美
         </div>
         <div>
           <strong className="text-neutral-500">{L.experience}:</strong> 5+ years

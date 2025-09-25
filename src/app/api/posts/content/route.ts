@@ -19,6 +19,7 @@ export async function GET(req: Request) {
         { status: 400 },
       );
     }
+    console.log(path);
     const blogContent = await githubService.getFileContent(path);
 
     return NextResponse.json({

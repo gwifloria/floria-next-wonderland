@@ -1,4 +1,3 @@
-import { BlogPostItem } from "@/types/blog";
 import { blogService } from "@/services/blog";
 import { Skeleton } from "antd";
 import Link from "next/link";
@@ -36,7 +35,6 @@ async function SidebarSection({
   try {
     // 直接调用服务层获取整合后的数据
     const group = await blogService.getBlogListWithPinData(category);
-
     if (group.length === 0) {
       return (
         <section className="space-y-2">

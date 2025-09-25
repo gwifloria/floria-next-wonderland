@@ -71,6 +71,13 @@ export class GitHubService {
     const safePath = path.split("/").map(encodeURIComponent).join("/");
     const url = `https://api.github.com/repos/${this.config.owner}/${this.config.repo}/contents/${safePath}?ref=${encodeURIComponent(this.config.branch)}`;
 
+    console.log("GitHub Service: Fetching content from:", url);
+    console.log("GitHub Service: Config:", {
+      owner: this.config.owner,
+      repo: this.config.repo,
+      branch: this.config.branch,
+    });
+
     const response = await this.makeRequest(url, {
       headers: {
         Accept: "application/vnd.github.raw",
@@ -80,7 +87,7 @@ export class GitHubService {
 
     const rawContent = await response.text();
     const { data: frontMatter, content } = matter(rawContent);
-
+    console.log(frontMatter, content);
     return {
       content,
       meta: {

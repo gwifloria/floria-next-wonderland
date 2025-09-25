@@ -1,4 +1,5 @@
 "use client";
+import { SWRShell } from "@/provider/SWRShell";
 import matter from "gray-matter";
 import "prismjs";
 import "prismjs/components/prism-bash";
@@ -16,18 +17,34 @@ import remarkGfm from "remark-gfm";
 import useSWR from "swr";
 import { BlogSkeleton, EmptyState } from "./BlogSkelton";
 import { dtf, PROSE_CLASS } from "./constants";
-import { mdxComponents } from "./mdxComponents";
+import { createMarkdownComponents } from "@/components/MarkdownComponents";
 import TocClient from "./TocClient";
-
-export function MarkdownWrapper({
+export function MarkdownWrapperShell({
   path,
   toc = true,
+  size = "default",
 }: {
   path?: string | null;
   toc?: boolean;
+  size?: "default" | "compact";
+}) {
+  return (
+    <SWRShell>
+      <MarkdownWrapper path={path} toc={toc} size={size}></MarkdownWrapper>
+    </SWRShell>
+  );
+}
+
+function MarkdownWrapper({
+  path,
+  toc = true,
+  size = "default",
+}: {
+  path?: string | null;
+  toc?: boolean;
+  size?: "default" | "compact";
 }) {
   const activePath = path ?? null;
-
   // Guard: no active file selected
 
   // Fetch content and metadata using SWR
@@ -77,7 +94,7 @@ export function MarkdownWrapper({
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeSlug, rehypeAutolinkHeadings, rehypePrism]}
-              components={mdxComponents}
+              components={createMarkdownComponents(size)}
             >
               {content}
             </ReactMarkdown>
@@ -89,4 +106,4 @@ export function MarkdownWrapper({
   );
 }
 
-export default MarkdownWrapper;
+export default MarkdownWrapperShell;

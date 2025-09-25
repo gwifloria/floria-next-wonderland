@@ -64,28 +64,39 @@ export const labels: Record<
 
 export const skills = [
   { zh: "React", en: "React" },
+  { zh: "Vue", en: "Vue" },
   { zh: "TypeScript", en: "TypeScript" },
-  { zh: "Vue", en: "TypeScript" },
-  { zh: "Next.js", en: "Next.js" },
-  { zh: "Node.js", en: "Node.js" },
-  { zh: "MongoDB", en: "MongoDB" },
-  { zh: "Docker", en: "Docker" },
+  { zh: "JavaScript(ES6+)", en: "JavaScript(ES6+)" },
+  { zh: "HTML5", en: "HTML5" },
+  { zh: "CSS3", en: "CSS3" },
+  { zh: "Taro", en: "Taro" },
+  { zh: "微信小程序", en: "WeChat Mini-Program" },
+  { zh: "Webpack", en: "Webpack" },
   { zh: "Git", en: "Git" },
-  { zh: "Tailwind CSS", en: "Tailwind CSS" },
-  { zh: "Ant Design", en: "Ant Design" },
+  { zh: "npm/yarn", en: "npm/yarn" },
+  { zh: "Docker基础", en: "Docker" },
+  { zh: "Node.js基础", en: "Node.js" },
+  { zh: "MySQL基础", en: "MySQL" },
+  { zh: "ECharts", en: "ECharts" },
+  { zh: "地图API开发", en: "Map API Development" },
+  { zh: "英语专八", en: "TEM-8 English" },
 ];
 
 export const experiences = [
   {
     role: {
-      zh: "前端开发工程师（智能驾驶）",
-      en: "Frontend Engineer (Autonomous Driving)",
+      zh: "前端开发工程师",
+      en: "Frontend Engineer",
     },
     company: { zh: "商汤科技", en: "SenseTime" },
-    period: "2019.06 – Present",
+    department: {
+      zh: "智能驾驶云平台组",
+      en: "Autonomous Driving Cloud Platform",
+    },
+    period: "2021.06 - 2024.04",
     description: {
-      zh: "负责商汤智能驾驶云控与运营平台的前端整体交付，主导 React/Vue/TypeScript 技术栈建设与工程规范（私有 npm 组件、Git hooks、ESLint/Prettier、Docker 发布），并在地图/实时通信/可视化等核心模块落地。对外支撑 ToB 场景，对内沉淀可复用能力。",
-      en: "Owned end‑to‑end delivery of SenseTime’s AD Cloud Control & Ops platforms, leading React/Vue/TypeScript stack and engineering standards (private npm components, Git hooks, ESLint/Prettier, Docker releases) while shipping core modules for maps, realtime comms and analytics. Delivered reusable capabilities for both internal and B2B use.",
+      zh: "使用React, TypeScript, Vue, Taro完成云控平台产品的前端开发工作。参与项目评审，技术设计方案的制定和落实；参与公用组件的编写、封装和代码优化。与产品设计团队、后端团队协作，实现云平台组的管理系统和移动端H5的功能迭代及维护。",
+      en: "Used React, TypeScript, Vue, Taro to complete frontend development of cloud control platform products. Participated in project reviews, technical design planning and implementation; participated in writing, packaging and code optimization of common components. Collaborated with product design team and backend team to realize functional iteration and maintenance of cloud platform management systems and mobile H5.",
     },
     projects: [
       {
@@ -154,10 +165,10 @@ export const experiences = [
   {
     role: { zh: "前端开发工程师", en: "Frontend Engineer" },
     company: { zh: "砼车信息技术有限公司", en: "Concrete Truck InfoTech Co." },
-    period: "2019.07 – 2021.05",
+    period: "2019.07 - 2021.04",
     description: {
-      zh: "负责公司 B 端地图与 ERP 后台的前端交付与迭代，独立完成 Vue+Element 的 0‑1 搭建与工程优化，并联动后端/小程序完成业务闭环。",
-      en: "Delivered the company’s B‑side map and ERP admin UIs, bootstrapping Vue+Element from 0‑1 with build optimizations, and partnering with backend/mini‑program teams to complete the business loop.",
+      zh: "使用Vue完成公司B端e地图及ERP管理后台的前端开发、产品迭代与维护。完成微信小程序端（原生wxml）前端功能模块，与后端协作实现用户下单、模版消息推送等功能。使用PHP+MySQL实现业务需求。",
+      en: "Used Vue to complete frontend development, product iteration and maintenance of company's B-end e-map and ERP management backend. Completed WeChat mini-program frontend functional modules (native wxml), collaborated with backend to implement user ordering, template message push and other functions. Used PHP+MySQL to implement business requirements.",
     },
     projects: [
       {
@@ -224,7 +235,7 @@ export const education = [
   {
     degree: { zh: "英语本科", en: "B.A. in English" },
     school: { zh: "上海师范大学", en: "Shanghai Normal University" },
-    period: "2015.09 – 2019.06",
+    period: "2015.09 ~ 2019.06",
     description: {
       zh: "英语专八，能流畅阅读英文技术文档与进行英文沟通。",
       en: "TEM-8; comfortable reading technical documentation and communicating in English.",
@@ -265,7 +276,7 @@ export const DECORATION_IMAGES = {
 export const SPACING = {
   container: "p-12 my-12 md:my-16 lg:my-20",
   cardMargin: "mb-10",
-  sectionGap: "space-y-10 md:space-y-0",
+  sectionGap: "space-y-10 ",
   contentGap: "space-y-6",
 } as const;
 

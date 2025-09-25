@@ -3,19 +3,31 @@ import { GapMarkdown } from "./Gap";
 import "./print.css";
 
 // Components
-import { EducationSection } from "./components/EducationSection";
-import { ExperienceSection } from "./components/ExperienceSection";
+import ResumeWrapper from "@/components/ResumeWrapper";
+import { githubService } from "@/services/github";
 import { HeroSection } from "./components/HeroSection";
 import { PaperContainer } from "./components/PaperContainer";
-import { PersonalInfoSection } from "./components/PersonalInfoSection";
 import { ScrapbookCard } from "./components/ScrapbookCard";
-import { SkillsSection } from "./components/SkillsSection";
+import { StaticResumeContent } from "./components/StaticResumeContent";
 import { PrintButton } from "./PrintButton";
 import { getTapeVariant } from "./utils";
 
-export default function AboutMePage() {
+export default async function AboutMePage() {
   const lang = "zh";
   const L = labels[lang];
+
+  // 尝试 SSR 获取远程 Resume.md
+  let resumeContent = null;
+
+  try {
+    const result = await githubService.getFileContent("resume.md");
+    console.log("Contact page: result from githubService:", result);
+
+    resumeContent = result.content;
+  } catch (error) {
+    console.log("Contact page: Error caught:", error);
+    console.log("Contact page: Resume.md not found, using static content");
+  }
 
   return (
     <>
@@ -23,23 +35,12 @@ export default function AboutMePage() {
         <PaperContainer>
           <HeroSection lang={lang} />
 
-          <div className="space-y-10 md:space-y-0">
+          <div className="space-y-10">
             <section>
-              <ScrapbookCard title={L.personal} tapeVariant={getTapeVariant(0)}>
-                <PersonalInfoSection lang={lang} />
-              </ScrapbookCard>
-
-              <ScrapbookCard title={L.skills} tapeVariant={getTapeVariant(1)}>
-                <SkillsSection lang={lang} />
-              </ScrapbookCard>
-
-              <ScrapbookCard title={L.work} tapeVariant={getTapeVariant(2)}>
-                <ExperienceSection lang={lang} />
-              </ScrapbookCard>
-
-              <ScrapbookCard title={L.edu} tapeVariant={getTapeVariant(3)}>
-                <EducationSection lang={lang} />
-              </ScrapbookCard>
+              <ResumeWrapper
+                content={resumeContent || undefined}
+                fallbackComponent={<StaticResumeContent lang={lang} />}
+              />
 
               <ScrapbookCard
                 title={L.journey}

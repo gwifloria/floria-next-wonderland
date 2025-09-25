@@ -9,7 +9,7 @@ export const UsageGuide = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="relative max-w-md flex justify-center py-4">
+    <div className="relative max-w-md flex justify-center py-4 hidden sm:block">
       <div className="relative w-[300px]">
         {/* 主便签 - 预留图片位置 */}
         <div className="absolute opacity-60 z-22 w-full">
