@@ -4,7 +4,7 @@ import { getTapeVariant } from "@/app/contact/utils";
 import {
   createMarkdownComponents,
   type MarkdownSize,
-} from "@/components/MarkdownComponents";
+} from "@/components/Markdown";
 import matter from "gray-matter";
 import { ReactNode } from "react";
 import ReactMarkdown from "react-markdown";

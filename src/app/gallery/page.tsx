@@ -36,10 +36,6 @@ function Gallery() {
     }
   }, [isLoading, hasMore]);
 
-  const handleImageClick = useCallback((image: GalleryImage) => {
-    // Image preview handled by Ant Design
-  }, []);
-
   useEffect(() => {
     if (!data) {
       return;
@@ -88,7 +84,6 @@ function Gallery() {
       <div className="px-3 sm:px-6 pb-16 sm:pb-20 masonry-container">
         <MasonryGallery
           images={images}
-          onImageClick={handleImageClick}
           onLoadMore={loadMore}
           hasMore={hasMore}
         />

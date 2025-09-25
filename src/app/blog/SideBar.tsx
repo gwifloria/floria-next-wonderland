@@ -1,6 +1,7 @@
 import { blogService } from "@/services/blog";
 import { Skeleton } from "antd";
 import Link from "next/link";
+import Icon from "@/components/SmartIcon";
 import PinControl from "./components/PinControl";
 import { categories, CatKey } from "./constants";
 import { catStyles, cx } from "./util";
@@ -88,7 +89,11 @@ async function SidebarSection({
                 >
                   <span className="flex items-center gap-2">
                     {file.isPinned && (
-                      <span className="text-amber-500 flex-shrink-0">📌</span>
+                      <Icon
+                        name="pin-icon"
+                        size={16}
+                        className="text-amber-500 flex-shrink-0"
+                      />
                     )}
                     <span className="truncate">{display}</span>
                   </span>

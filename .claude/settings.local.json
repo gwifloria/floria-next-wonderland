@@ -14,7 +14,10 @@
       "user-prompt-submit": "echo '开始任务...' && yarn typecheck",
       "before-edit": "git status --porcelain",
       "after-edit": "yarn lint --fix",
-      "before-commit": "yarn test && yarn build"
+      "before-commit": "yarn test && yarn build",
+      "PostToolUse": {
+        "Edit|Write|MultiEdit": "echo '✅ 代码已修改，开始自动检查...' && yarn typecheck && yarn lint && echo '🏗️ 开始构建检查...' && yarn build && echo '✅ 所有检查通过！'"
+      }
     },
     "deny": [],
     "ask": []

@@ -70,13 +70,7 @@ export default function PinControl({ post, category }: PinControlProps) {
         }
       `}
     >
-      {isLoading ? (
-        <span className="animate-spin">⏳</span>
-      ) : post.isPinned ? (
-        <Icon name="pin-icon" size={14} />
-      ) : (
-        <Icon name="pin-icon" size={14} className="opacity-50" />
-      )}
+      {isLoading ? <span className="animate-spin">⏳</span> : "📌"}
     </button>
   );
 }

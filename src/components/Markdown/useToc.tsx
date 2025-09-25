@@ -1,6 +1,13 @@
+"use client";
 import { useScroll, useSize } from "ahooks";
-import { useCallback, useEffect, useMemo, useState, useRef } from "react";
-import { TocAside } from "./TocAside";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  TOC_OFFSET,
+  TOC_SELECTOR,
+  TocItem,
+  computeTopsRelativeToScroller,
+  pickActiveIndex,
+} from "./utils";
 
 export type UseTocOptions = {
   /** Sticky header offset (px). Default: 96 */
@@ -10,26 +17,21 @@ export type UseTocOptions = {
 };
 
 /**
- * TOC + ScrollSpy relative to a scrollable container (non-window friendly).
+ * TOC Data Hook - Pure logic for table of contents functionality.
  * - Creates and manages refs internally
  * - Computes heading positions relative to the scrollable ancestor
  * - Listens directly to the scroller's `scroll` event
+ * - Returns only data and state, no UI components
  */
-export const useTableOfContents = (options?: UseTocOptions) => {
+export const useTocData = (options?: UseTocOptions) => {
   const containerRef = useRef<HTMLElement | null>(null);
   const scrollerRef = useRef<HTMLElement | null>(null);
-  type TocItem = {
-    id: string;
-    text: string;
-    level: 2 | 3;
-    el: HTMLHeadingElement;
-  };
 
   const scroll = useScroll(scrollerRef);
   const size = useSize(containerRef);
 
-  const offset = options?.offset ?? 96;
-  const selector = options?.selector ?? "h2[id], h3[id]";
+  const offset = options?.offset ?? TOC_OFFSET;
+  const selector = options?.selector ?? TOC_SELECTOR;
 
   const [tocItems, setTocItems] = useState<TocItem[]>([]);
   const [tocPositions, setTocPositions] = useState<number[]>([]);
@@ -67,18 +69,7 @@ export const useTableOfContents = (options?: UseTocOptions) => {
     const scrollerEl = scrollerRef.current;
     if (!scrollerEl) return;
 
-    const computePositions = () => {
-      const scrollerRect = scrollerEl.getBoundingClientRect();
-      const currentScrollTop = scroll?.top ?? 0;
-      return tocItems.map(
-        (item) =>
-          item.el.getBoundingClientRect().top -
-          scrollerRect.top +
-          currentScrollTop,
-      );
-    };
-
-    setTocPositions(computePositions());
+    setTocPositions(computeTopsRelativeToScroller(tocItems, scrollerEl));
   }, [tocItems, scroll?.top, scrollerRef, size]);
 
   // Determine active heading based on scroll position and offset
@@ -91,11 +82,7 @@ export const useTableOfContents = (options?: UseTocOptions) => {
     cancelAnimationFrame(rafId);
     rafId = requestAnimationFrame(() => {
       const y = scrollTop + offset;
-      let activeIndex = 0;
-      for (let i = 0; i < tocPositions.length; i++) {
-        if (tocPositions[i] <= y + 1) activeIndex = i;
-        else break;
-      }
+      const activeIndex = pickActiveIndex(tocPositions, y);
       const currentId = tocItems[activeIndex]?.id ?? tocItems[0].id;
       setActiveHeadingId((prev) => (prev === currentId ? prev : currentId));
     });
@@ -106,14 +93,10 @@ export const useTableOfContents = (options?: UseTocOptions) => {
     };
   }, [tocItems, tocPositions, scroll?.top, offset]);
 
-  const aside = useMemo(
-    () => <TocAside items={tocItems} activeId={activeHeadingId} />,
-    [tocItems, activeHeadingId],
-  );
-
   return {
     containerRef,
     scrollerRef,
-    tocAside: aside,
+    tocItems,
+    activeHeadingId,
   };
 };

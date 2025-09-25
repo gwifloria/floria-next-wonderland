@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { App } from "antd";
 import { useSession } from "next-auth/react";
 import useSWRMutation from "swr/mutation";
-import BugFeedbackButton from "./BugFeedbackButton";
+import BugFeedbackButton from ".";
 
 // Mock dependencies
 jest.mock("next-auth/react");

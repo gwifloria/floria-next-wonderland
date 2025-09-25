@@ -2,43 +2,35 @@
 
 一个充满创意的个人网站，采用手帐风格设计，记录生活、分享想法、展示作品。
 
-**🌐 线上地址**: [floria-next-wonderland.onrender.com](https://floria-next-wonderland.onrender.com)
-*（免费部署，首次访问可能需要等待 30 秒唤醒）*
+**🌐 线上地址**: [https://floria-next-wonderland.vercel.app/](https://floria-next-wonderland.vercel.app/)
 
 ## ✨ 核心功能
 
-### 🎨 **作品展示 (Lab)**
-- 项目展示与技术分享
-- Bug/Idea 反馈收集系统
-- 实时状态管理与分类展示
-
 ### 📝 **博客系统**
+
 - Markdown 支持，语法高亮
 - 文章置顶与分类管理
 - 目录导航与阅读体验优化
 
 ### 💌 **Letters (论坛)**
+
 - 富文本编辑器 (TipTap)
 - 评论系统与消息通知
 - GitHub 登录集成
 
-### 🗺️ **旅行记录**
-- Mapbox 地图集成
-- 地理位置标记与游记
+### 🎨 **Gallery (图片)**
 
-### 🎭 **交互体验**
-- 3D 场景与动画效果
-- 响应式设计，适配各端
-- 暗色/亮色主题切换
+- 随手拍的图片
 
-### 🗂️ **反馈系统**
-- 全局悬浮反馈按钮
-- Bug/Idea 快速提交
-- GitHub 认证与权限管理
+### 👋 **Contact （AboutMe）**
+
+- 个人简历
+- 关于 gap 随想
 
 ## 🏗️ 技术架构
 
 ### 前端技术栈
+
 - **Next.js 15** + **App Router** - 现代化 React 框架
 - **React 19** - 最新的 React 特性
 - **TypeScript** - 类型安全保障
@@ -48,12 +40,14 @@
 - **TipTap** - 富文本编辑器
 
 ### 后端与数据
+
 - **MongoDB** + **Mongoose** - 文档数据库
 - **NextAuth.js** - GitHub OAuth 认证
 - **SWR** - 数据获取与缓存
 - **API Routes** - 服务端接口
 
 ### 开发体验
+
 - **Yarn 4.2.2** - 包管理器
 - **ESLint** + **Prettier** - 代码规范
 - **Husky** + **lint-staged** - Git 钩子
@@ -62,6 +56,7 @@
 ## 🎨 设计理念
 
 ### 手帐风格 (Journal Style)
+
 这个项目遵循 **手帐/笔记本美学**，而非传统的后台管理风格：
 
 - **色彩**: 薄荷绿 (#72B385) 为主色调，避免传统蓝色
@@ -73,11 +68,12 @@
 ## 🚀 快速开始
 
 ### 环境要求
+
 - Node.js 18+
 - Yarn 4.2.2
-- MongoDB 数据库
 
 ### 环境配置
+
 ```bash
 # 安装依赖
 yarn install
@@ -90,6 +86,7 @@ yarn dev
 ```
 
 ### 环境变量
+
 ```env
 MONGODB_URI=your_mongodb_connection_string
 NEXTAUTH_SECRET=your_nextauth_secret
@@ -140,16 +137,19 @@ src/
 ## 🔧 特殊功能
 
 ### 性能监控
+
 - 生产环境自动监控 Web Vitals
 - 用户行为分析与错误追踪
 - 开发环境完全跳过监控逻辑
 
 ### 主题定制
+
 - 基于 Ant Design 的主题系统
 - 支持 CSS-in-JS 和 SCSS 模块
 - 响应式设计适配
 
 ### 数据库模型
+
 - **Lab**: 项目展示与反馈管理
 - **Message**: 论坛消息系统
 - **BlogPost**: 博客文章管理
@@ -164,6 +164,7 @@ src/
 - 📝 **文档完善**: 帮助改进项目文档
 
 ### 贡献指南
+
 1. Fork 本仓库
 2. 创建特性分支: `git checkout -b feature/amazing-feature`
 3. 提交更改: `git commit -m 'Add amazing feature'`

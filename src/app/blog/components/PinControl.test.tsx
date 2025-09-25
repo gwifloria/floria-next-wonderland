@@ -100,7 +100,7 @@ describe("PinControl", () => {
       render(<PinControl post={mockPost} category="ByteNotes" />);
 
       const button = screen.getByRole("button");
-      expect(button).toHaveTextContent("📍");
+      expect(button).toHaveTextContent("📌");
     });
 
     it("should display correct icon for pinned post", () => {

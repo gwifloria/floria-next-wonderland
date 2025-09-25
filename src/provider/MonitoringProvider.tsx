@@ -1,11 +1,11 @@
 "use client";
 
-import { createContext, useContext, useEffect, ReactNode } from "react";
-import { useSession } from "next-auth/react";
+import { useWebVital } from "@/hooks/useWebVitals";
 import { logger } from "@/monitoring/logger";
 import { performanceMonitor } from "@/monitoring/performance";
-import { useWebVital } from "@/hooks/useWebVitals";
-import { ErrorBoundary } from "./ErrorBoundary";
+import { useSession } from "next-auth/react";
+import { createContext, ReactNode, useContext, useEffect } from "react";
+import { ErrorBoundary } from "../components/ErrorBoundary";
 
 interface MonitoringContextType {
   isMonitoringEnabled: boolean;

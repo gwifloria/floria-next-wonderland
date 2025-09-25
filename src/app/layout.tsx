@@ -6,7 +6,7 @@ import AuthProvider from "@/components/AuthProvider";
 import BugFeedbackButton from "@/components/BugFeedbackButton";
 import CommitInfo from "@/components/CommitInfo";
 import PageHeader from "@/components/PageHeader";
-import { MonitoringProvider } from "@/components/MonitoringProvider";
+import { MonitoringProvider } from "@/provider/MonitoringProvider";
 
 import { defaultMetadata } from "@/constants/metadata";
 import { SpeedInsights } from "@vercel/speed-insights/next";

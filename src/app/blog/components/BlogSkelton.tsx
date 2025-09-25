@@ -1,7 +1,7 @@
 import PageIntro from "@/components/PageIntro";
 import { Skeleton, Space } from "antd";
 import Image from "next/image";
-import BlogTechDetails from "./BlogTechDetails";
+import BlogTechDetails from "../BlogTechDetails";
 
 export function EmptyState() {
   return (

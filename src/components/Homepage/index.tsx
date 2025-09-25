@@ -19,7 +19,7 @@ const NAV = (
 export const PaperBackdrop = () => {
   return (
     <>
-      <div className="absolute right-0 bottom-10">
+      <div className="absolute right-28 bottom-0">
         <UsageGuide></UsageGuide>
       </div>
       <Image
@@ -64,7 +64,7 @@ export const PaperBackdrop = () => {
 
       <div
         aria-hidden
-        className="opacity-0 sm:opacity-50 transition-opacity duration-300 w-48 h-60 pointer-events-none absolute bottom-24 left-24 md:left-32 -rotate-12 "
+        className="opacity-0 sm:opacity-50 transition-opacity duration-300 w-48 h-60 pointer-events-none absolute bottom-36 left-24 md:left-32 -rotate-12 "
       >
         <Image
           src="/images/book.png"
@@ -122,12 +122,12 @@ export const CardLink = ({ item }: { item: (typeof NAV)[number] }) => {
     <Link
       href={item.href}
       aria-label={item.title}
-      className="group flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-white/50 transition-colors"
+      className="group flex items-center justify-center gap-3 px-3 py-3 rounded-xl hover:bg-white/50 transition-colors"
     >
       <div className="flex-shrink-0 flex items-center justify-center">
         <RouteIcon route={item.href} size={22} />
       </div>
-      <div className="flex-1 min-w-0">
+      <div className="min-w-0">
         <div className="flex items-center gap-1">
           <span className="text-neutral-800 font-semibold text-[15px] tracking-tight">
             {item.title}

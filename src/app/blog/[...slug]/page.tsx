@@ -2,7 +2,7 @@ import { toAbsPath } from "@/util/path";
 import { LeftOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import Link from "next/link";
-import MarkdownWrapperShell from "../MarkdownWrapper";
+import { MarkdownWrapper as MarkdownWrapperShell } from "@/components/Markdown";
 
 export default async function BlogSlugPage({
   params,
@@ -28,7 +28,7 @@ export default async function BlogSlugPage({
           返回
         </Button>
       </Link>
-      <MarkdownWrapperShell path={path} />
+      <MarkdownWrapperShell path={path} showLastUpdated={true} />
     </>
   );
 }

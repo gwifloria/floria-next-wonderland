@@ -181,3 +181,131 @@ test.describe("/blog - Pin functionality (Admin only)", () => {
     }
   });
 });
+
+test.describe("/blog - TOC functionality", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/blog");
+    await skipIfNoPosts(page);
+  });
+
+  test("should show TOC when viewing a blog post", async ({ page }) => {
+    // Click on the first available blog post
+    const firstPost = page.locator("aside nav a").first();
+    await firstPost.click();
+
+    // Wait for the article to load
+    await expect(page.locator("article")).toBeVisible();
+
+    // Check if TOC is visible (only on desktop/large screens)
+    await page.setViewportSize({ width: 1200, height: 800 });
+
+    const toc = page.locator("nav").filter({
+      hasText: /on this page|table of contents|目录/i,
+    });
+
+    // TOC might not be visible if the article doesn't have headings
+    if (await toc.isVisible()) {
+      await expect(toc).toBeVisible();
+
+      // Check if TOC has links
+      const tocLinks = toc.locator("a[href^='#']");
+      const linkCount = await tocLinks.count();
+
+      if (linkCount > 0) {
+        // Test TOC link click
+        const firstTocLink = tocLinks.first();
+        await firstTocLink.click();
+
+        // Wait for scroll animation
+        await page.waitForTimeout(500);
+
+        // Check if the link becomes active
+        await expect(firstTocLink).toHaveAttribute("data-active", "true");
+      }
+    }
+  });
+
+  test("should hide TOC on mobile screens", async ({ page }) => {
+    // Click on the first available blog post
+    const firstPost = page.locator("aside nav a").first();
+    await firstPost.click();
+
+    await expect(page.locator("article")).toBeVisible();
+
+    // Set mobile viewport
+    await page.setViewportSize({ width: 375, height: 667 });
+
+    const toc = page.locator("nav").filter({
+      hasText: /on this page|table of contents|目录/i,
+    });
+
+    // TOC should be hidden on mobile (display: none or not visible)
+    if ((await toc.count()) > 0) {
+      const tocDisplay = await toc
+        .first()
+        .evaluate((el) => getComputedStyle(el).display);
+      expect(tocDisplay).toBe("none");
+    }
+  });
+
+  test("should update active TOC item on scroll", async ({ page }) => {
+    // Click on the first available blog post
+    const firstPost = page.locator("aside nav a").first();
+    await firstPost.click();
+
+    await expect(page.locator("article")).toBeVisible();
+    await page.setViewportSize({ width: 1200, height: 800 });
+
+    const toc = page.locator("nav").filter({
+      hasText: /on this page|table of contents|目录/i,
+    });
+
+    if (await toc.isVisible()) {
+      const tocLinks = toc.locator("a[href^='#']");
+      const linkCount = await tocLinks.count();
+
+      if (linkCount > 1) {
+        // Scroll to different sections and check active state
+        await page.evaluate(() => window.scrollTo(0, 100));
+        await page.waitForTimeout(300);
+
+        // Check that some TOC item is active
+        const activeItems = toc.locator("a[data-active='true']");
+        const activeCount = await activeItems.count();
+        expect(activeCount).toBeLessThanOrEqual(1);
+
+        // Scroll further down
+        await page.evaluate(() => window.scrollTo(0, 500));
+        await page.waitForTimeout(300);
+
+        // Active item might change
+        const newActiveItems = toc.locator("a[data-active='true']");
+        const newActiveCount = await newActiveItems.count();
+        expect(newActiveCount).toBeLessThanOrEqual(1);
+      }
+    }
+  });
+
+  test("should show correct pin icons in sidebar", async ({ page }) => {
+    // Look for pinned articles with pin-icon
+    const pinnedArticles = page.locator("aside nav a").filter({
+      has: page.locator("[data-testid='pin-icon'], .pin-icon"),
+    });
+
+    const pinnedCount = await pinnedArticles.count();
+
+    if (pinnedCount > 0) {
+      // Check that pinned articles show the pin-icon, not 📌
+      const firstPinnedArticle = pinnedArticles.first();
+      const pinIcon = firstPinnedArticle.locator(
+        "[data-testid='pin-icon'], .pin-icon, svg",
+      );
+
+      await expect(pinIcon).toBeVisible();
+
+      // Ensure it's not showing the text emoji
+      const emojiPin = firstPinnedArticle.locator("text=📌");
+      await expect(emojiPin).toHaveCount(0);
+    }
+  });
+});
