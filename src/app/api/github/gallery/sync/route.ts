@@ -1,16 +1,12 @@
 import connectDB from "@/app/api/lib/mongoose";
 import GalleryImage from "@/app/api/models/GalleryImage";
 import { NextResponse } from "next/server";
+import { GitHubFileBase } from "@/types/common";
 
 export const dynamic = "force-dynamic";
 
-interface GitHubFileItem {
-  name: string;
-  path: string;
-  sha: string;
-  size: number;
-  type: string;
-}
+// 使用基础 GitHub 文件类型
+type GitHubFileItem = GitHubFileBase;
 
 export async function POST(req: Request) {
   try {

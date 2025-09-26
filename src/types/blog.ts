@@ -1,10 +1,16 @@
-import { WithDbId, WithApiId } from "./common";
+import { WithDbId, WithApiId, CommitInfoBase, TimestampBase } from "./common";
 
 // Re-export common types for blog domain
-export type { WithDbId, WithApiId, GitHubFile } from "./common";
+export type {
+  WithDbId,
+  WithApiId,
+  GitHubFile,
+  CommitInfoBase,
+  TimestampBase,
+} from "./common";
 
 // Database layer core types (used by API models)
-export interface BlogPostCore {
+export interface BlogPostCore extends TimestampBase {
   path: string;
   title: string;
   category: "ByteNotes" | "Murmurs";
@@ -12,8 +18,6 @@ export interface BlogPostCore {
   pinOrder: number;
   pinnedAt?: Date;
   pinnedBy?: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 // Database type with MongoDB Document interface
@@ -32,13 +36,8 @@ export interface BlogContent {
   meta: BlogMeta;
 }
 
-export interface CommitMeta {
-  updatedAt: string;
-  author: string;
-  message: string;
-  sha: string;
-  url: string;
-}
+// 使用基础提交信息类型
+export interface CommitMeta extends CommitInfoBase {}
 
 export interface BlogPostItem {
   name: string;
