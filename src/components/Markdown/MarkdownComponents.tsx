@@ -19,9 +19,9 @@ export function createMarkdownComponents(
       li: "mb-1",
     },
     compact: {
-      h1: "text-md font-bold text-neutral-800 mb-3",
-      h2: "text-base font-semibold text-neutral-700 mb-2 mt-4",
-      h3: "text-sm font-semibold text-neutral-700 mb-2 mt-3",
+      h1: "text-sm font-bold text-neutral-800 mb-3",
+      h2: "text-sm font-semibold text-neutral-700 mb-2 mt-4",
+      h3: "text-xs font-semibold text-neutral-700 mb-2 mt-3",
       h4: "text-xs font-medium text-neutral-600 mb-1",
       p: "text-xs text-neutral-600 mb-2 leading-relaxed",
       ul: "list-disc list-inside space-y-0.5 text-xs text-neutral-600 mb-2",
