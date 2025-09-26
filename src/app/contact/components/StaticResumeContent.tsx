@@ -3,7 +3,7 @@ import { ExperienceSection } from "./ExperienceSection";
 import { PersonalInfoSection } from "./PersonalInfoSection";
 import { ScrapbookCard } from "./ScrapbookCard";
 import { SkillsSection } from "./SkillsSection";
-import { labels } from "../constant";
+import { labels } from "../constants";
 import { getTapeVariant } from "../utils";
 
 interface StaticResumeContentProps {

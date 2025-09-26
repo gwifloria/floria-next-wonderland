@@ -1,4 +1,4 @@
-import { education, SPACING } from "../constant";
+import { education, SPACING } from "../constants";
 import { getLocalizedText } from "../utils";
 
 function TimelineBar() {

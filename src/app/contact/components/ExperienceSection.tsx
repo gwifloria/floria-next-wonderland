@@ -3,7 +3,7 @@ import {
   DECORATION_IMAGES,
   DECORATION_SIZES,
   SPACING,
-} from "../constant";
+} from "../constants";
 import { getLocalizedText } from "../utils";
 import { ProjectItem } from "./ProjectItem";
 import { FloatingDecoration } from "./FloatingDecoration";

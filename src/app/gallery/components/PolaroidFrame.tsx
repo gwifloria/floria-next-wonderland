@@ -3,7 +3,7 @@
 import { GalleryImage } from "@/types/gallery";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { TAPE_VARIANTS } from "../../contact/constant";
+import { TAPE_VARIANTS } from "../../contact/constants";
 import { GALLERY_CONFIG, GALLERY_STYLES } from "../constants";
 import { LazyImage } from "./LazyImage";
 

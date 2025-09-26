@@ -1,4 +1,4 @@
-import { labels, DECORATION_IMAGES, DECORATION_SIZES } from "../constant";
+import { labels, DECORATION_IMAGES, DECORATION_SIZES } from "../constants";
 import { getLocalizedText } from "../utils";
 import { FloatingDecoration } from "./FloatingDecoration";
 

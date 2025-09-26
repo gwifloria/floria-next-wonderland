@@ -1,4 +1,4 @@
-import { labels } from "./constant";
+import { labels } from "./constants";
 import { GapMarkdown } from "./components/GapMarkdown";
 import "./print.css";
 

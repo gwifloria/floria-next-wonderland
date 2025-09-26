@@ -4,7 +4,7 @@ import {
   HERO_TITLE_STYLE,
   labels,
   THEME_COLORS,
-} from "../constant";
+} from "../constants";
 
 type Lang = "zh" | "en";
 

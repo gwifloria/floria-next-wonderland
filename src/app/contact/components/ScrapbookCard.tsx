@@ -6,7 +6,7 @@ import {
   SPACING,
   TAPE_VARIANTS,
   THEME_COLORS,
-} from "../constant";
+} from "../constants";
 
 interface HandwrittenTitleProps {
   children: ReactNode;

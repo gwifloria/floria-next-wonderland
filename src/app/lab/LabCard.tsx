@@ -10,7 +10,7 @@ import {
   PlayCircleOutlined,
 } from "@ant-design/icons";
 import { motion } from "framer-motion";
-import { cardVariants, statusColor, typeEmoji, typeStyle } from "./constant";
+import { cardVariants, statusColor, typeEmoji, typeStyle } from "./constants";
 
 const isProd = process.env.NODE_ENV === "production";
 

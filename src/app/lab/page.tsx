@@ -9,7 +9,7 @@ import {
   categoryLabelEmoji,
   containerVariants,
   tabVariants,
-} from "./constant";
+} from "./constants";
 import LabCard from "./LabCard";
 import LabTechDetails from "./LabTechDetails";
 import { useLabInitializer } from "./useLabInitializer";
