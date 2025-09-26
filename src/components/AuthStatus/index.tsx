@@ -1,8 +1,8 @@
+import { GithubOutlined } from "@ant-design/icons";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
 import Decoration from "../Decoration";
-import GitHubIcon from "../icons/GitHubIcon";
 import { AVATAR_SIZES, DECORATIVE_IMAGES, STYLES } from "./constants";
 
 interface AuthStatusProps {
@@ -140,7 +140,7 @@ export default function AuthStatus({
             "登录中..."
           ) : (
             <>
-              <GitHubIcon />
+              <GithubOutlined />
               GitHub 登录
             </>
           )}
