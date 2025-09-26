@@ -47,7 +47,7 @@ const LabSchema = new Schema<ILab>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Lab: Model<ILab> =

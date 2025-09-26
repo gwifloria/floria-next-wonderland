@@ -1,16 +1,8 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
+import { GalleryImageCore } from "@/types/gallery";
 
-export interface IGalleryImage extends Document {
-  filename: string;
-  path: string;
-  sha: string;
-  size: number;
-  repo: string;
-  branch: string;
-  imageUrl: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+// Re-export types for backward compatibility
+export interface IGalleryImage extends Document, GalleryImageCore {}
 
 const GalleryImageSchema = new Schema<IGalleryImage>(
   {

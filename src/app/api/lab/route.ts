@@ -2,7 +2,7 @@
 import { ApiResponse } from "@/types/lab";
 import { NextResponse } from "next/server";
 import dbConnect from "../lib/mongoose";
-import Lab from "./models/Lab";
+import Lab from "../models/Lab";
 
 export async function DELETE(): Promise<
   NextResponse<ApiResponse<{ deletedCount: number }>>

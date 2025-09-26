@@ -2,7 +2,7 @@ import { ApiResponse } from "@/types/lab";
 import { NextRequest, NextResponse } from "next/server";
 import { handleError, validateObjectId } from "../../lib/api-helpers";
 import dbConnect from "../../lib/mongoose";
-import Lab, { ILab } from "../models/Lab";
+import Lab, { ILab } from "../../models/Lab";
 
 // POST /api/lab/delete - 删除单个 lab
 export async function POST(

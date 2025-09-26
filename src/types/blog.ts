@@ -1,11 +1,23 @@
-export interface GitHubFile {
-  name: string;
+import { WithDbId, WithApiId } from "./common";
+
+// Re-export common types for blog domain
+export type { WithDbId, WithApiId, GitHubFile } from "./common";
+
+// Database layer core types (used by API models)
+export interface BlogPostCore {
   path: string;
-  type: string;
-  sha: string;
-  size: number;
-  download_url: string;
+  title: string;
+  category: "ByteNotes" | "Murmurs";
+  isPinned: boolean;
+  pinOrder: number;
+  pinnedAt?: Date;
+  pinnedBy?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
+
+// Database type with MongoDB Document interface
+export type BlogPostDb = WithDbId<BlogPostCore>;
 
 export interface BlogMeta {
   title?: string;

@@ -1,16 +1,8 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
+import { BlogPostCore } from "@/types/blog";
 
-export interface IBlogPost extends Document {
-  path: string;
-  title: string;
-  category: "ByteNotes" | "Murmurs";
-  isPinned: boolean;
-  pinOrder: number;
-  pinnedAt?: Date;
-  pinnedBy?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+// Re-export types for backward compatibility
+export interface IBlogPost extends Document, BlogPostCore {}
 
 const BlogPostSchema = new Schema<IBlogPost>(
   {
