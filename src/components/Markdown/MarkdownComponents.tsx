@@ -10,8 +10,8 @@ export function createMarkdownComponents(
 ): Components {
   const sizeClasses = {
     default: {
-      h1: "text-xl font-bold text-neutral-800 mb-4",
-      h2: "text-lg font-semibold text-neutral-700 mb-3 mt-6",
+      h1: "text-lg font-bold text-neutral-800 mb-4",
+      h2: "text-md font-semibold text-neutral-700 mb-3 mt-6",
       h3: "text-base font-semibold text-neutral-700 mb-2 mt-4",
       h4: "text-sm font-medium text-neutral-600 mb-2",
       p: "text-sm text-neutral-600 mb-3 leading-relaxed",

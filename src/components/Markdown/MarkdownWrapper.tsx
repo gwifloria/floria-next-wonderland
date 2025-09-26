@@ -45,7 +45,7 @@ export function MarkdownEmptyState({
 
 // 通用的Prose类名
 const PROSE_CLASS =
-  "prose prose-sm sm:prose lg:prose-lg xl:prose-xl mx-auto max-w-none " +
+  "prose prose-sm mx-auto max-w-none " +
   "prose-headings:font-semibold prose-headings:text-neutral-800 " +
   "prose-p:text-neutral-700 prose-p:leading-relaxed " +
   "prose-a:text-mint-600 hover:prose-a:text-mint-700 " +
