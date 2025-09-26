@@ -1,7 +1,7 @@
 import { ApiResponse, LabListResponse, LabStatus, LabType } from "@/types/lab";
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "../../lib/mongoose";
-import Lab, { ILab } from "../models/Lab";
+import Lab, { ILab } from "../../models/Lab";
 
 // GET /api/labs - 获取 labs 列表
 export async function GET(
@@ -44,8 +44,7 @@ export async function GET(
 
     // 转换数据格式
     const data = labs.map((doc) => ({
-      //@ts-ignore
-      id: doc._id.toString(),
+      id: (doc._id as any).toString(),
       title: doc.title,
       type: doc.type,
       status: doc.status,

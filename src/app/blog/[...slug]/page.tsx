@@ -1,17 +1,15 @@
-"use client";
 import { toAbsPath } from "@/util/path";
 import { LeftOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import Link from "next/link";
-import React from "react";
-import { MarkdownWrapper } from "../MarkdownWrapper";
+import { MarkdownWrapper as MarkdownWrapperShell } from "@/components/Markdown";
 
-export default function BlogSlugPage({
+export default async function BlogSlugPage({
   params,
 }: {
   params: Promise<{ slug: string[] }>;
 }) {
-  const resolved = React.use(params);
+  const resolved = await params;
   const path = resolved.slug.map(decodeURIComponent).join("/");
 
   return (
@@ -30,7 +28,7 @@ export default function BlogSlugPage({
           返回
         </Button>
       </Link>
-      <MarkdownWrapper path={path} />
+      <MarkdownWrapperShell path={path} showLastUpdated={true} />
     </>
   );
 }

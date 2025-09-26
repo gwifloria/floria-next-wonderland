@@ -1,3 +1,79 @@
+import { WithDbId, WithApiId } from "./common";
+
+// Re-export common types for letter domain
+export type { WithDbId, WithApiId } from "./common";
+
+// Database layer core types (used by API models)
+export interface AuthorCore {
+  name: string;
+  address: string;
+}
+
+export interface CommentDbCore {
+  threadId: string;
+  author: AuthorCore;
+  type: string;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface MailPersonCore {
+  name?: string;
+  address: string;
+}
+
+export interface MailAttachmentCore {
+  id: string;
+  name: string;
+  contentType: string;
+  size: number;
+  isInline?: boolean;
+  contentId?: string;
+  url?: string;
+}
+
+export interface MailMessageDbCore {
+  _id: string;
+  threadId: string;
+  from: MailPersonCore;
+  to: MailPersonCore[];
+  cc: MailPersonCore[];
+  sentAt: Date;
+  subject?: string;
+  bodyPreview?: string;
+  html?: string;
+  attachments: MailAttachmentCore[];
+  contentHash?: string;
+  flagged?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface ThreadParticipantCore {
+  name: string;
+  address: string;
+}
+
+export interface ThreadDbCore {
+  _id: string;
+  subject?: string;
+  participants: ThreadParticipantCore[];
+  messageCount?: number;
+  lastSyncAt?: Date;
+  deltaLink?: string;
+  contentHash?: string;
+  tags?: string[];
+  visibility: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Database types with MongoDB Document interface
+export type CommentDb = WithDbId<CommentDbCore>;
+export type MailMessageDb = WithDbId<MailMessageDbCore>;
+export type ThreadDb = WithDbId<ThreadDbCore>;
+
 export type AttachmentType = {
   id?: string | null;
   name?: string | null;
@@ -31,8 +107,6 @@ export type ThreadCore = {
   updatedAt?: string | null;
   messageCount?: number;
 };
-export type WithDbId<T> = T & { _id: string }; // or Types.ObjectId
-export type WithApiId<T> = T & { id: string };
 export type MailMessageApi = WithApiId<MailMessageCore>;
 export type CommentApi = WithApiId<CommentCore>;
 export type ThreadApi = WithApiId<ThreadCore>;

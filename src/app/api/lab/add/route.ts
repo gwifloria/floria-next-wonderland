@@ -2,7 +2,7 @@ import { ApiResponse, LabCreateInput } from "@/types/lab";
 import { NextRequest, NextResponse } from "next/server";
 import { handleError } from "../../lib/api-helpers";
 import dbConnect from "../../lib/mongoose";
-import Lab, { ILab } from "../models/Lab";
+import Lab, { ILab } from "../../models/Lab";
 
 export async function POST(
   request: NextRequest,

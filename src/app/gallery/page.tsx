@@ -3,16 +3,16 @@
 import { SWRShell } from "@/provider/SWRShell";
 import { GalleryApiResponse, GalleryImage } from "@/types/gallery";
 import { motion } from "framer-motion";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useSWR from "swr";
 import { HandwrittenTitle } from "../contact/components/ScrapbookCard";
 import { GalleryAdminPanel } from "./components/AdminSyncButton";
+import { BackToTop } from "./components/BackToTop";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 import { MasonryGallery } from "./components/MasonryGallery";
-import { BackToTop } from "./components/BackToTop";
 import { GALLERY_CONFIG, GALLERY_STYLES } from "./constants";
-import { formatGalleryImages } from "./utils";
 import "./styles.css";
+import { formatGalleryImages } from "./utils";
 
 export default function GalleryPage() {
   return (
@@ -26,24 +26,8 @@ function Gallery() {
   const [images, setAllImages] = useState<GalleryImage[]>([]);
   const [hasMore, setHasMore] = useState(true);
 
-  const handleDataSuccess = useCallback(
-    (newData: GalleryApiResponse) => {
-      const formattedImages = formatGalleryImages(newData.images);
-
-      if (page === 1) {
-        setAllImages(formattedImages);
-      } else {
-        setAllImages((prev) => [...prev, ...formattedImages]);
-      }
-
-      setHasMore(newData.pagination.hasMore);
-    },
-    [page],
-  );
-
   const { data, isLoading } = useSWR<GalleryApiResponse>(
     `${GALLERY_CONFIG.PAGINATION.API_PATH}?page=${page}&limit=${GALLERY_CONFIG.PAGINATION.ITEMS_PER_PAGE}`,
-    { onSuccess: handleDataSuccess },
   );
 
   const loadMore = useCallback(() => {
@@ -52,9 +36,17 @@ function Gallery() {
     }
   }, [isLoading, hasMore]);
 
-  const handleImageClick = useCallback((image: GalleryImage) => {
-    // Image preview handled by Ant Design
-  }, []);
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    const formattedImages = formatGalleryImages(data.images);
+
+    setAllImages((prev) => {
+      return [...prev, ...formattedImages];
+    });
+    setHasMore(data.pagination.hasMore);
+  }, [data]);
 
   if (isLoading && images.length === 0) {
     return (
@@ -92,8 +84,8 @@ function Gallery() {
       <div className="px-3 sm:px-6 pb-16 sm:pb-20 masonry-container">
         <MasonryGallery
           images={images}
-          onImageClick={handleImageClick}
           onLoadMore={loadMore}
+          hasMore={hasMore}
         />
 
         {hasMore && (

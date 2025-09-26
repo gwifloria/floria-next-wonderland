@@ -1,124 +1,49 @@
+// Hybrid SSR + CSR Letters List Component
 "use client";
 import PageIntro from "@/components/PageIntro";
+import { ThreadsListResponse } from "@/services/letters";
 import { ThreadApi } from "@/types/letter";
 import { fmtDateTime } from "@/util/date";
 import Image from "next/image";
 import Link from "next/link";
-import useSWR from "swr";
-import { ApiResp, COVERS, STICKER_IMGS, STICKER_POS } from "./constants";
 import LettersTechDetails from "./LettersTechDetails";
+import { COVERS, STICKER_IMGS, STICKER_POS } from "./constants";
 import { initials } from "./util";
 
-function highlight(text: string, q?: string) {
-  if (!q) return text;
-  try {
-    const re = new RegExp(
-      `(${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
-      "ig",
-    );
-    return text.split(re).map((seg, i) =>
-      i % 2 === 1 ? (
-        <mark key={i} className="bg-yellow-100">
-          {seg}
-        </mark>
-      ) : (
-        <span key={i}>{seg}</span>
-      ),
-    );
-  } catch {
-    return text;
-  }
+interface LettersListClientProps {
+  initialData?: ThreadsListResponse;
 }
 
 export default function LettersListClient({
-  initialQ,
-  initialPage,
-}: {
-  initialQ?: string;
-  initialPage?: number;
-}) {
-  const q = (initialQ || "").trim();
-  const page = initialPage && initialPage > 0 ? initialPage : 1;
-
-  const params = new URLSearchParams();
-  if (q) params.set("q", q);
-  params.set("page", String(page));
-  params.set("limit", "20");
-
-  const { data, error, isLoading } = useSWR<ApiResp>(
-    `/api/letters/list?${params.toString()}`,
-    {
-      keepPreviousData: true,
-    },
-  );
+  initialData,
+}: LettersListClientProps) {
+  // Use SSR data initially, then switch to CSR data after user interactions
+  const data = {
+    data: initialData?.data || [],
+    pagination: initialData?.pagination,
+  };
 
   const items = data?.data || [];
-  const currentPage = data?.pagination?.page || page;
-  const pages = data?.pagination?.pages || 1;
 
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-8">
+      {/* Header */}
       <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div className="flex items-center gap-2 sm:gap-4">
           <h1 className="text-xl sm:text-2xl font-semibold">Letters</h1>
-
           <PageIntro>
             <LettersTechDetails />
           </PageIntro>
         </div>
-        <form className="w-full sm:w-auto" action="/letters" method="get">
-          <input
-            name="q"
-            defaultValue={q}
-            placeholder="搜索主题…"
-            className="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-neutral-300"
-          />
-        </form>
       </header>
 
-      {isLoading && !items.length && (
-        <div className="rounded-lg border border-dashed p-8 text-center text-neutral-500">
-          加载中…
-        </div>
-      )}
-      {error && (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
-          加载失败，请稍后重试
-        </div>
-      )}
-
-      {!items.length && !isLoading ? (
-        <Empty q={q} />
-      ) : (
-        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((t, i) => (
-            <li key={t.id}>
-              <ThreadCard t={t} q={q} index={i} />
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {items.length > 0 && (
-        <div className="mt-8 flex items-center justify-center gap-3">
-          {currentPage > 1 && (
-            <Link
-              className="rounded-md border px-4 py-2 text-sm hover:bg-neutral-50"
-              href={`/letters?${new URLSearchParams({ ...(q ? { q } : {}), page: String(currentPage - 1) }).toString()}`}
-            >
-              上一页
-            </Link>
-          )}
-          {currentPage < pages && (
-            <Link
-              className="rounded-md border px-4 py-2 text-sm hover:bg-neutral-50"
-              href={`/letters?${new URLSearchParams({ ...(q ? { q } : {}), page: String(currentPage + 1) }).toString()}`}
-            >
-              下一页
-            </Link>
-          )}
-        </div>
-      )}
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {items.map((t, i) => (
+          <li key={t.id}>
+            <ThreadCard t={t} index={i} />
+          </li>
+        ))}
+      </ul>
     </main>
   );
 }
@@ -129,7 +54,6 @@ export function ThreadHeader({ t, index }: { t: ThreadApi; index: number }) {
   const init = initials(who);
   return (
     <>
-      {" "}
       {/* 封面背景（按 1~4 轮换） */}
       <span
         aria-hidden
@@ -171,15 +95,7 @@ export function ThreadHeader({ t, index }: { t: ThreadApi; index: number }) {
   );
 }
 
-function ThreadCard({
-  t,
-  q,
-  index,
-}: {
-  t: ThreadApi;
-  q?: string;
-  index: number;
-}) {
+export function ThreadCard({ t, index }: { t: ThreadApi; index: number }) {
   const title = t.subject || "(无标题)";
 
   return (
@@ -194,7 +110,7 @@ function ThreadCard({
         <header className="flex flex-col justify-between pr-14 min-h-[104px] h-auto max-h-32 pt-3 pb-2">
           {/* 留出邮票空间 */}
           <h2 className="font-serif text-[15px] sm:text-[17px] leading-tight text-stone-900 line-clamp-3 [-webkit-text-stroke:0.25px_white] [text-shadow:0_1px_0_#fff,0_0_2px_rgba(0,0,0,.06)] overflow-hidden">
-            {highlight(title, q)}
+            {title}
           </h2>
           <p className="mt-auto text-xs text-stone-700/90 [text-shadow:0_1px_0_#fff] flex-shrink-0">
             更新于 {fmtDateTime(t.updatedAt)} · {t.messageCount ?? 0} 封
@@ -242,23 +158,5 @@ function ThreadCard({
         );
       })()}
     </Link>
-  );
-}
-
-function Empty({ q }: { q?: string }) {
-  return (
-    <div className="rounded-lg border border-dashed p-8 text-center text-neutral-500">
-      {q ? (
-        <p>
-          没找到与 <span className="font-medium text-neutral-700">“{q}”</span>{" "}
-          匹配的线程。
-          <Link className="ml-2 underline" href="/letters">
-            清除搜索
-          </Link>
-        </p>
-      ) : (
-        <p>还没有线程数据，先去同步一把吧～</p>
-      )}
-    </div>
   );
 }

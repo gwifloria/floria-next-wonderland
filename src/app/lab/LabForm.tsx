@@ -1,7 +1,7 @@
 import { Lab, LabCategory, LabType } from "@/types/lab";
 import { Button, Form, Input, Select } from "antd";
 import { useRef } from "react";
-import { categoryLabelEmoji, typeEmoji } from "./constant";
+import { categoryLabelEmoji, typeEmoji } from "./constants";
 
 interface LabFormProps {
   initialValues?: Partial<Lab>;

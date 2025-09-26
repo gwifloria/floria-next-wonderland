@@ -37,8 +37,10 @@ function validateRequiredEnvVars() {
   console.log("✅ Authentication environment variables validated successfully");
 }
 
-// Run validation during build
-validateRequiredEnvVars();
+// Run validation during build (skip for test environment)
+if (process.env.NODE_ENV !== "test") {
+  validateRequiredEnvVars();
+}
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
@@ -88,10 +90,6 @@ const nextConfig = {
   async rewrites() {
     console.log("🚀 Rewrites configuration loaded");
     return [
-      {
-        source: "/web-vital/:path*",
-        destination: `http://localhost:4001/:path*`,
-      },
       { source: "/floria-service/:path*", destination: `${ip}/:path*` },
     ];
   },

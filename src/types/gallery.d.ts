@@ -1,10 +1,27 @@
-// Gallery API 图片项
-export interface GitHubImageItem {
-  name: string;
-  path: string;
-  size: number;
+import { WithDbId, WithApiId, GitHubFileBase, TimestampBase } from "./common";
+
+// Re-export common types for gallery domain
+export type {
+  WithDbId,
+  WithApiId,
+  GitHubFileBase,
+  TimestampBase,
+} from "./common";
+
+// Database layer core types (used by API models)
+export interface GalleryImageCore extends GitHubFileBase, TimestampBase {
+  filename: string;
+  repo: string;
+  branch: string;
   imageUrl: string;
-  sha: string;
+}
+
+// Database type with MongoDB Document interface
+export type GalleryImageDb = WithDbId<GalleryImageCore>;
+
+// Gallery API 图片项
+export interface GitHubImageItem extends GitHubFileBase {
+  imageUrl: string;
   type: "image";
 }
 

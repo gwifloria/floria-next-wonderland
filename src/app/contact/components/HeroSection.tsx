@@ -1,18 +1,16 @@
 import Image from "next/image";
 import {
-  labels,
   DECORATION_IMAGES,
-  DECORATION_SIZES,
   HERO_TITLE_STYLE,
+  labels,
   THEME_COLORS,
-} from "../constant";
-import { LanguageToggle } from "./LanguageToggle";
+} from "../constants";
 
 type Lang = "zh" | "en";
 
 interface HeroSectionProps {
   lang: Lang;
-  onLanguageChange: (lang: Lang) => void;
+  onLanguageChange?: (lang: Lang) => void;
 }
 
 export function HeroSection({ lang, onLanguageChange }: HeroSectionProps) {
@@ -20,12 +18,10 @@ export function HeroSection({ lang, onLanguageChange }: HeroSectionProps) {
 
   return (
     <div
-      className={`text-center mb-16 ${THEME_COLORS.cardBg} ${THEME_COLORS.border} border rounded-2xl p-6`}
+      className={`text-center mb-16 ${THEME_COLORS.cardBg} ${THEME_COLORS.border} border rounded-2xl p-6 print:hidden`}
     >
-      <LanguageToggle lang={lang} onChange={onLanguageChange} />
-
       <div className="relative inline-block mb-6">
-        <div className="pointer-events-none absolute -top-6 left-2 rotate-24 opacity-90 w-10 h-10">
+        <div className="pointer-events-none absolute -top-6 left-2 rotate-24 opacity-90 w-10 h-10 print:hidden">
           <Image
             priority
             src={DECORATION_IMAGES.whiteBow}

@@ -3,8 +3,10 @@ import "antd/dist/reset.css"; // ✅ 必须放在最靠前
 import "@ant-design/v5-patch-for-react-19";
 
 import AuthProvider from "@/components/AuthProvider";
+import BugFeedbackButton from "@/components/BugFeedbackButton";
 import CommitInfo from "@/components/CommitInfo";
 import PageHeader from "@/components/PageHeader";
+import { MonitoringProvider } from "@/provider/MonitoringProvider";
 
 import { defaultMetadata } from "@/constants/metadata";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -23,17 +25,20 @@ export default function RootLayout({
     <html title="floria-wonderland" lang="en">
       <body className={`${delius.className} bg-mint-100`}>
         <AuthProvider>
-          <div className="fixed inset-0 -z-10 bg-white/10 overflow-hidden" />
-          {/* 柔化遮罩 */}
-          <div className="main-background overflow-hidden mx-auto h-dvh p-16 pt-[56px]">
-            <PageHeader />
+          <MonitoringProvider>
+            <div className="fixed inset-0 -z-10 bg-white/10 overflow-hidden" />
+            {/* 柔化遮罩 */}
+            <div className="main-background overflow-hidden mx-auto h-dvh p-16 pt-[56px]">
+              <PageHeader />
 
-            <div className="h-full overflow-auto">
-              {children}
-              <SpeedInsights></SpeedInsights>
+              <div className="h-full overflow-auto">
+                {children}
+                <SpeedInsights></SpeedInsights>
+              </div>
             </div>
-          </div>
-          <CommitInfo />{" "}
+            <CommitInfo />
+            <BugFeedbackButton />
+          </MonitoringProvider>
         </AuthProvider>
       </body>
     </html>

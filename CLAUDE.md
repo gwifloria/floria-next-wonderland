@@ -2,6 +2,15 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## ⚠️ CRITICAL: Design Philosophy
+
+**🎨 This project follows a JOURNAL/NOTEBOOK aesthetic, NOT an admin dashboard style.**
+
+Before making any UI changes, remember:
+- ❌ **AVOID**: Blue colors, corporate styling, sharp edges, formal layouts
+- ✅ **USE**: Mint green (#72B385), soft curves, organic layouts, warm typography
+- 🎯 **GOAL**: Create a personal, intimate, handwritten journal feeling
+
 ## Project Overview
 
 Floria's Wonderland is a personal website built with Next.js 15, featuring a portfolio, blog, interactive components, and database-backed features. The site includes forum/messaging functionality, a lab/projects section, travel logs, and experimental features.
@@ -96,6 +105,70 @@ yarn img:opt               # Optimize images using scripts/optimize-images.mjs
 - Component library: Ant Design v5 with React 19 compatibility patch
 - Font: Delius Google Font for branding
 - Background: Custom parallax and 3D elements for visual appeal
+
+### Code Quality Guidelines
+- **Avoid Deprecated APIs**: Don't use deprecated Ant Design properties (check docs first)
+- **Style Organization**: Prefer SCSS modules over inline styles
+- **Component Wrapping**: Use AntDShell to ensure consistent theming
+- **Performance**: Monitor components skip expensive operations in development
+
+## Design System & Style Guidelines
+
+### Journal Style Theme
+**IMPORTANT**: This project follows a **journal/notebook aesthetic**, NOT a typical admin dashboard style.
+
+#### Visual Principles:
+- **Color Palette**: Mint green (#72B385) as primary, avoiding default blue
+- **Typography**: Soft, rounded fonts with emotional warmth
+- **Layout**: Organic, flowing layouts with plenty of whitespace
+- **Components**: Rounded corners, soft shadows, subtle gradients
+- **Interactions**: Gentle animations, hover effects with scale transforms
+
+#### Component Styling Requirements:
+1. **Always use SCSS modules** instead of inline styles
+2. **Wrap important components with AntDShell** for proper style overrides
+3. **Override Ant Design colors** to match mint green theme
+4. **Prefer lightweight interactions** - Popover over Modal when possible
+5. **Include texture and depth** with subtle shadows and gradients
+
+#### Ant Design Customization:
+- Primary colors should be overridden to mint green variants
+- Use `classNames` prop for custom styling (not deprecated `overlayClassName`)
+- Buttons, inputs, and interactive elements need journal-style treatment
+- Maintain consistency with existing design tokens in `constants/theme.ts`
+
+## Ant Design Deprecation Warnings
+
+⚠️ **IMPORTANT REMINDERS FOR CLAUDE CODE**:
+
+### Deprecated Properties to Avoid:
+1. **`overlayClassName`** - Use `classNames={{ content: "your-class" }}` instead
+2. **`dropdownClassName`** - Use `classNames={{ dropdown: "your-class" }}` instead
+3. **`popupClassName`** - Use `classNames={{ popup: "your-class" }}` instead
+4. **`getPopupContainer`** - Use `getContainer` instead (context-dependent)
+
+### Style Organization:
+- **NO inline `<style jsx>` tags** - Always create corresponding `.module.scss` files
+- **NO hardcoded blue colors** - Use theme constants or mint green variants
+- **NO plain Ant components without customization** - Apply journal theme styling
+
+### Component Wrapping Pattern:
+```tsx
+// ✅ Good: Wrapped with AntDShell for styling
+<AntDShell>
+  <Popover
+    classNames={{ content: styles.customPopover }}
+    // ... other props
+  >
+    {children}
+  </Popover>
+</AntDShell>
+
+// ❌ Bad: Using deprecated properties
+<Popover overlayClassName="custom-class">
+  {children}
+</Popover>
+```
 
 ## Git Workflow
 - Main branch: `main`

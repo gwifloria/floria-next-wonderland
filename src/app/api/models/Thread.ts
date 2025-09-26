@@ -1,15 +1,13 @@
 import mongoose, { Document, Schema } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
+import { ThreadParticipantCore, ThreadDbCore } from "@/types/letter";
 
-export interface ThreadParticipant {
-  name: string;
-  address: string;
-}
-
+// Re-export types for backward compatibility
+export type ThreadParticipant = ThreadParticipantCore;
 export interface ThreadDocument extends Document {
   _id: string;
   subject?: string;
-  participants: ThreadParticipant[];
+  participants: ThreadParticipantCore[];
   messageCount?: number;
   lastSyncAt?: Date;
   deltaLink?: string;
@@ -21,7 +19,7 @@ export interface ThreadDocument extends Document {
   id: string;
 }
 
-const ParticipantSchema = new Schema<ThreadParticipant>(
+const ParticipantSchema = new Schema<ThreadParticipantCore>(
   {
     name: { type: String, required: true },
     address: { type: String, required: true },

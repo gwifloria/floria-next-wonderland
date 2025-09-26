@@ -55,19 +55,28 @@ export default function Icon({
   onClick,
 }: IconProps) {
   return (
-    <Image
-      src={`/icons/${name}.png`}
-      alt={alt || name}
-      width={size}
-      height={size}
-      className={`select-none ${onClick ? "cursor-pointer hover:opacity-80 transition-opacity" : ""} ${className}`}
-      onClick={onClick}
-      priority={priority}
+    <div
+      className={`inline-flex items-center justify-center flex-shrink-0 ${onClick ? "cursor-pointer hover:opacity-80 transition-opacity" : ""}`}
       style={{
         width: size,
         height: size,
-        objectFit: "contain",
       }}
-    />
+      onClick={onClick}
+    >
+      <Image
+        src={`/icons/${name}.png`}
+        alt={alt || name}
+        width={size}
+        height={size}
+        className={`select-none ${className}`}
+        priority={priority}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "contain",
+          objectPosition: "center",
+        }}
+      />
+    </div>
   );
 }

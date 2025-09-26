@@ -55,6 +55,22 @@
     display: none !important;
   }
 
+  /* Hide hero section decorations */
+  .pointer-events-none.absolute.-top-6 {
+    display: none !important;
+  }
+
+  /* Hide tape decorations on cards */
+  .pointer-events-none.absolute.-top-3 {
+    display: none !important;
+  }
+
+  /* Hide all decorative images */
+  img[alt="bow"],
+  img[alt="tape"] {
+    display: none !important;
+  }
+
   /* Improve text contrast for print */
   .prose,
   .about-page {
@@ -70,5 +86,34 @@
   .about-page .rounded-3xl {
     break-inside: avoid;
     page-break-inside: avoid;
+  }
+
+  /* Personal header styling for print */
+  .print\:block {
+    display: block !important;
+  }
+  .print\:mb-8 {
+    margin-bottom: 2rem !important;
+  }
+
+  /* Clean layout after hero section removal */
+  .about-page main {
+    padding-top: 0 !important;
+  }
+
+  /* Ensure proper spacing for personal header */
+  .hidden.print\:block h1 {
+    color: #111 !important;
+    font-size: 1.5rem !important;
+    font-weight: bold !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* Personal info text styling */
+  .hidden.print\:block p {
+    color: #666 !important;
+    font-size: 0.9rem !important;
+    line-height: 1.4 !important;
+    margin: 0.25rem 0 !important;
   }
 }

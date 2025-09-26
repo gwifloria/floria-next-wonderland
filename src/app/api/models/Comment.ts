@@ -1,20 +1,10 @@
+import { AuthorCore, CommentDbCore } from "@/types/letter";
 import mongoose, { Document, Model, Schema } from "mongoose";
 
-export interface IAuthor {
-  name: string;
-  address: string;
-}
+// Re-export types for backward compatibility
+export interface IComment extends Document, CommentDbCore {}
 
-export interface IComment extends Document {
-  threadId: string;
-  author: IAuthor;
-  type: string;
-  content: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-const AuthorSchema = new Schema<IAuthor>({
+const AuthorSchema = new Schema<AuthorCore>({
   name: { type: String, required: true, trim: true },
   address: { type: String, required: true, trim: true },
 });

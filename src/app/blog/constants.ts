@@ -38,6 +38,3 @@ export const dtf = new Intl.DateTimeFormat(undefined, {
   hour: "2-digit",
   minute: "2-digit",
 });
-export interface CommitMeta {
-  updatedAt?: string; // ISO string
-}

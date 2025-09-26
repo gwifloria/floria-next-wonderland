@@ -1,33 +1,21 @@
+import { MailAttachmentCore, MailPersonCore } from "@/types/letter";
 import mongoose, { Document, Schema } from "mongoose";
 import mongooseLeanVirtuals from "mongoose-lean-virtuals";
 
-// 子对象
-export interface MailPerson {
-  name?: string;
-  address: string;
-}
-
-export interface MailAttachment {
-  id: string;
-  name: string;
-  contentType: string;
-  size: number;
-  isInline?: boolean;
-  contentId?: string;
-  url?: string;
-}
-
+// Re-export types for backward compatibility
+export type MailPerson = MailPersonCore;
+export type MailAttachment = MailAttachmentCore;
 export interface MailMessageDocument extends Document {
   _id: string;
   threadId: string;
-  from: MailPerson;
-  to: MailPerson[];
-  cc: MailPerson[];
+  from: MailPersonCore;
+  to: MailPersonCore[];
+  cc: MailPersonCore[];
   sentAt: Date;
   subject?: string;
   bodyPreview?: string;
   html?: string;
-  attachments: MailAttachment[];
+  attachments: MailAttachmentCore[];
   contentHash?: string;
   flagged?: boolean;
   createdAt?: Date;
@@ -35,7 +23,7 @@ export interface MailMessageDocument extends Document {
   id?: string; // virtual
 }
 
-const MailPersonSchema = new Schema<MailPerson>(
+const MailPersonSchema = new Schema<MailPersonCore>(
   {
     name: { type: String },
     address: { type: String, required: true },
@@ -43,7 +31,7 @@ const MailPersonSchema = new Schema<MailPerson>(
   { _id: false },
 );
 
-const MailAttachmentSchema = new Schema<MailAttachment>(
+const MailAttachmentSchema = new Schema<MailAttachmentCore>(
   {
     id: { type: String, required: true },
     name: { type: String, required: true },

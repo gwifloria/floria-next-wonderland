@@ -1,4 +1,4 @@
-import { skills } from "../constant";
+import { skills } from "../constants";
 import { getLocalizedText } from "../utils";
 
 type Lang = "zh" | "en";

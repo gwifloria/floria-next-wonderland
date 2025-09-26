@@ -6,7 +6,7 @@ import {
   SPACING,
   TAPE_VARIANTS,
   THEME_COLORS,
-} from "../constant";
+} from "../constants";
 
 interface HandwrittenTitleProps {
   children: ReactNode;
@@ -57,7 +57,7 @@ export function ScrapbookCard({
       className={`relative p-6 rounded-3xl border border-milktea-200 shadow-sm bg-milktea-50/85 ${SPACING.cardMargin} ${className}`}
     >
       {tape && (
-        <div className="pointer-events-none absolute -top-3 -left-4 rotate-9 opacity-90 w-[60px] h-[40px]">
+        <div className="pointer-events-none absolute -top-3 -left-4 rotate-9 opacity-90 w-[60px] h-[40px] print:hidden">
           <Image
             src={tapeSrc}
             alt="tape"

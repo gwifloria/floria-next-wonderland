@@ -2,7 +2,7 @@ import { ApiResponse } from "@/types/lab";
 import { NextRequest, NextResponse } from "next/server";
 import { handleError, validateObjectId } from "../../lib/api-helpers";
 import dbConnect from "../../lib/mongoose";
-import Lab, { ILab } from "../models/Lab";
+import Lab, { ILab } from "../../models/Lab";
 import { LabUpdateInput } from "@/types/lab";
 
 // PUT /api/lab/update - 更新 lab

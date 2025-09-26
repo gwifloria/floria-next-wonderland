@@ -11,7 +11,6 @@ export function useConfetti() {
   const show = useCallback(
     (opts?: { numberOfPieces?: number; duration?: number }) => {
       setVisible(true);
-      console.log("hjfkhsdkfjh");
       const duration = opts?.duration ?? 2500;
       setTimeout(() => setVisible(false), duration);
     },

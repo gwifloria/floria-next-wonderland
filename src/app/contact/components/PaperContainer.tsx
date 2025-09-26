@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { PAPER_TEXTURE_STYLE, SPACING, THEME_COLORS } from "../constant";
+import { PAPER_TEXTURE_STYLE, SPACING, THEME_COLORS } from "../constants";
 
 interface PaperContainerProps {
   children: ReactNode;
