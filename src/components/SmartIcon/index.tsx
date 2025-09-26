@@ -36,7 +36,14 @@ export function RouteIcon({
   const routeConfig = routes[route as keyof typeof routes];
 
   if (routeConfig?.icon) {
-    return <Icon name={routeConfig.icon} size={size} className={className} />;
+    return (
+      <Icon
+        name={routeConfig.icon}
+        size={size}
+        className={className}
+        priority={true}
+      />
+    );
   }
 
   return <span className={className}>{routeConfig?.emoji || "🌟"}</span>;
@@ -71,10 +78,11 @@ export default function Icon({
         className={`select-none ${className}`}
         priority={priority}
         style={{
-          width: "100%",
-          height: "100%",
+          width: size,
+          height: size,
           objectFit: "contain",
           objectPosition: "center",
+          display: "block",
         }}
       />
     </div>

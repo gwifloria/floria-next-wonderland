@@ -1,4 +1,4 @@
-import { CatKey } from "@/app/blog/constants";
+import { CatKey } from "@/types/blog";
 
 export function cx(...classes: Array<string | false | undefined>) {
   return classes.filter(Boolean).join(" ");
