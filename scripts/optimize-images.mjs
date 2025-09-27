@@ -28,16 +28,16 @@ async function convert(file) {
 
   const input = sharp(file);
 
-  // 你可以根据图片类型区分质量，这里给一个均衡配置
+  // 优化质量设置以获得更好的压缩比
   await input
     .clone()
-    .avif({ quality: 50, effort: 4 }) // effort 越大越慢；50~60 画质/体积比较均衡
+    .avif({ quality: 40, effort: 6 }) // 降低质量，提高压缩效率
     .toFile(avifOut)
     .catch(() => null);
 
   await input
     .clone()
-    .webp({ quality: 70 })
+    .webp({ quality: 60 }) // 降低 WebP 质量
     .toFile(webpOut)
     .catch(() => null);
 
