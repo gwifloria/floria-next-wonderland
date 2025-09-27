@@ -1,7 +1,8 @@
-import { githubService } from "./github";
-import { BlogPostItem, PinnedPost } from "@/types/blog";
 import dbConnect from "@/app/api/lib/mongoose";
 import BlogPost from "@/app/api/models/BlogPost";
+import { CatKey } from "@/types/blog";
+import { BlogPostItem, PinnedPost } from "@/types/blog";
+import { githubService } from "./github";
 
 export class BlogService {
   /**
@@ -82,7 +83,7 @@ export class BlogService {
    * 获取所有分类的博客文章（用于 sitemap 等）
    */
   async getAllBlogPosts(): Promise<BlogPostItem[]> {
-    const categories = ["ByteNotes", "Murmurs"];
+    const categories: CatKey[] = ["ByteNotes", "Murmurs"];
     const allPosts: BlogPostItem[] = [];
 
     for (const category of categories) {

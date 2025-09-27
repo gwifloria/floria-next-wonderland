@@ -1,18 +1,13 @@
-export type CatKey = "ByteNotes" | "Murmurs";
+// Import blog types from centralized type definitions
+import type { CatKey, BlogCategory, CateGroup, GitHubItem } from "@/types/blog";
 
-export type BlogCategory = { key: CatKey; label: string };
-
-export type CateGroup = BlogCategory & { files: string[] };
+// Re-export types for backward compatibility
+export type { CatKey, BlogCategory, CateGroup, GitHubItem };
 
 export const categories: readonly BlogCategory[] = [
   { key: "ByteNotes", label: "ByteNotes" },
   { key: "Murmurs", label: "Murmurs" },
 ];
-export interface GitHubItem {
-  name: string;
-  path: string;
-  type: string;
-}
 // -----------------------------
 // UI constants
 // -----------------------------

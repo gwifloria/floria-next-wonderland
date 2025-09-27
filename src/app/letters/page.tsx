@@ -5,7 +5,7 @@ import LettersListClient from "./LettersListClient";
 
 export const metadata = {
   title: "Letters",
-  robots: { index: false, follow: true },
+  robots: { index: true, follow: true },
 };
 
 export default async function LettersPage() {

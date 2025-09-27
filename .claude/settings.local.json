@@ -1,24 +1,73 @@
 {
-  "permissions": {
-    "allow": [
-      "Bash(yarn typecheck)",
-      "Bash(yarn lint)",
-      "Bash(yarn test)",
-      "Bash(yarn build)",
-      "Bash(git status)",
-      "Bash(git diff)",
-      "Bash(npm run *)",
-      "Bash(yarn *)"
-    ],
-    "hooks": {
-      "user-prompt-submit": "echo '开始任务...' ",
-      "before-edit": "git status --porcelain",
-      "after-edit": "yarn lint --fix && yarn typecheck &&  yarn test && yarn build",
-      "PostToolUse": {
-        "Edit|Write|MultiEdit": "echo '✅ 代码已修改，开始自动检查...' && yarn typecheck && yarn lint && echo '🏗️ 开始构建检查...' && yarn build && echo '✅ 所有检查通过！'"
-      }
+  "hooks": {
+    "permissions": {
+      "defaultMode": "plan"
     },
-    "deny": [],
-    "ask": []
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'hi'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'end'"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-send 'Claude Code' 'Awaiting your input'"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'prompt received'"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'session start'"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "yarn typecheck && yarn lint"
+          }
+        ]
+      }
+    ]
   }
 }

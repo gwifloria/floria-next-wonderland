@@ -1,19 +1,33 @@
-import { WithDbId, WithApiId, CommitInfoBase, TimestampBase } from "./common";
+import { CommitInfoBase, TimestampBase, WithDbId } from "./common";
 
 // Re-export common types for blog domain
 export type {
-  WithDbId,
-  WithApiId,
-  GitHubFile,
   CommitInfoBase,
+  GitHubFile,
   TimestampBase,
+  WithApiId,
+  WithDbId,
 } from "./common";
+
+// Blog category types (moved from constants.ts to centralize type definitions)
+export type CatKey = "ByteNotes" | "Murmurs";
+
+export type BlogCategory = { key: CatKey; label: string };
+
+export type CateGroup = BlogCategory & { files: string[] };
+
+// GitHub API related types (moved from constants.ts)
+export interface GitHubItem {
+  name: string;
+  path: string;
+  type: string;
+}
 
 // Database layer core types (used by API models)
 export interface BlogPostCore extends TimestampBase {
   path: string;
   title: string;
-  category: "ByteNotes" | "Murmurs";
+  category: CatKey;
   isPinned: boolean;
   pinOrder: number;
   pinnedAt?: Date;
