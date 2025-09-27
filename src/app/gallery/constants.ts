@@ -11,7 +11,7 @@ export const GALLERY_CONFIG = {
   // 分页配置
   PAGINATION: {
     ITEMS_PER_PAGE: 16,
-    API_PATH: "/api/github/gallery",
+    API_PATH: "/api/gallery",
   },
 
   // 响应式断点配置

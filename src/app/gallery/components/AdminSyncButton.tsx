@@ -77,13 +77,13 @@ export function GalleryAdminPanel() {
   };
 
   const { trigger: handleSync, isMutating: syncing } =
-    useSWRMutation<SyncResult>(`/api/github/gallery/sync`, postFetcher, {
+    useSWRMutation<SyncResult>(`/api/gallery/sync`, postFetcher, {
       onSuccess: (result) => handleOperationSuccess("sync", result),
       onError: (error) => handleOperationError("sync", error),
     });
 
   const { trigger: handleCleanup, isMutating: cleaning } =
-    useSWRMutation<CleanupResult>(`/api/github/gallery/cleanup`, postFetcher, {
+    useSWRMutation<CleanupResult>(`/api/gallery/cleanup`, postFetcher, {
       onSuccess: (result) => handleOperationSuccess("cleanup", result),
       onError: (error) => handleOperationError("cleanup", error),
     });

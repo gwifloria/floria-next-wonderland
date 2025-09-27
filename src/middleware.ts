@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
 
 // 管理员邮箱
 const ADMIN_EMAIL = "ghuijue@gmail.com";
@@ -9,10 +9,8 @@ const ADMIN_ROUTES = [
   "/api/lab/add",
   "/api/lab/update",
   "/api/lab/delete",
-  "/api/gallery-sync",
-  "/api/gallery-cleanup",
-  "/api/github/gallery/sync", // 保留旧路由兼容性
-  "/api/github/gallery/cleanup", // 保留旧路由兼容性
+  "/api/gallery/sync",
+  "/api/gallery/cleanup",
   "/api/monitoring",
 ];
 
