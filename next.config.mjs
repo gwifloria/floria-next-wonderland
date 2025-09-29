@@ -44,6 +44,7 @@ if (process.env.NODE_ENV !== "test") {
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
+  openAnalyzer: false,
 });
 const nextConfig = {
   reactStrictMode: false,
@@ -76,13 +77,22 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: "/(.*)\\.(avif|webp|jpg|jpeg|png)$",
+        source: "/(.*)\\.(avif|webp|jpg|jpeg|png|ico|svg)$",
         headers: [
           {
             key: "Cache-Control",
-            value: "public, immutable",
+            value: "public, max-age=31536000, immutable",
           },
           { key: "Vary", value: "Accept" },
+        ],
+      },
+      {
+        source: "/(.*)\\.(js|css|woff|woff2)$",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
         ],
       },
     ];

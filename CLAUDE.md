@@ -13,7 +13,7 @@ Before making any UI changes, remember:
 
 ## Project Overview
 
-Floria's Wonderland is a personal website built with Next.js 15, featuring a portfolio, blog, interactive components, and database-backed features. The site includes forum/messaging functionality, a lab/projects section, travel logs, and experimental features.
+Floria's Wonderland is a personal website built with Next.js 15, featuring a portfolio, blog, interactive components, and database-backed features. The site includes forum/messaging functionality, a lab/projects section, gallery showcase, performance monitoring, and experimental features.
 
 ## Development Commands
 
@@ -40,6 +40,8 @@ yarn test:e2e:debug        # Debug Playwright tests
 
 # Utilities
 yarn img:opt               # Optimize images using scripts/optimize-images.mjs
+yarn clean:cache           # Clear Next.js cache
+yarn clean:console         # Remove console statements from code
 ```
 
 ## Architecture
@@ -59,23 +61,27 @@ yarn img:opt               # Optimize images using scripts/optimize-images.mjs
 - **Connection**: Centralized database connection in `/src/app/api/lib/mongoose.js`
 
 ### Key Features
-1. **Blog System**: Markdown-based blog with TOC and syntax highlighting
+1. **Blog System**: Markdown-based blog with TOC, syntax highlighting, and pin functionality
 2. **Forum/Letters**: Message threading system with rich text editing
 3. **Lab**: Project showcase with CRUD operations
-4. **Interactive Elements**: 3D scenes, maps, animations
-5. **Travel**: Geographic content with Mapbox integration
+4. **Gallery**: Image showcase with optimization and sync capabilities
+5. **Performance Monitoring**: Real-time web vitals and error tracking (admin-only)
+6. **Interactive Elements**: 3D scenes, maps, animations
+7. **Contact System**: Personal contact and resume integration
+8. **Travel**: Geographic content with Mapbox integration
 
 ### Route Structure
 ```
 /                    # Homepage with navigation cards
-/blog               # Blog listing and articles
+/blog               # Blog listing and articles with pin support
 /letters            # Message/forum system
 /lab                # Projects showcase
-/about              # Personal information
-/forum              # Discussion threads
+/gallery            # Image gallery with optimization
+/contact            # Contact information and resume
 /space              # 3D interactive scene
 /tools              # Utility tools
 /dance              # Dance-related content
+/admin/monitoring   # Performance monitoring dashboard (admin-only)
 /travel             # Travel logs (hidden route)
 ```
 
@@ -83,15 +89,21 @@ yarn img:opt               # Optimize images using scripts/optimize-images.mjs
 - **Lab**: Project/experiment entries
 - **Message**: Forum/letter threading system
 - **Github**: Integration for repository data
+- **WebVitals**: Performance monitoring data
+- **Logs**: Error and performance logs
+- **Posts**: Blog posts with metadata and pin status
 
 ### Environment Setup
 - Requires `.env.local` with `MONGODB_URI`
 - Optional: Mapbox tokens for map features
 - GitHub integration for repository data
+- Optional: Sentry configuration for error tracking
+- Optional: NextAuth configuration for admin features
 
 ### Build Process
 - **Pre-build**: Ant Design CSS extraction via `scripts/genAntdCss.tsx`
-- **Image Optimization**: Custom script for asset optimization
+- **Console Removal**: Automatic console statement removal in production
+- **Image Optimization**: Custom script for asset optimization via `scripts/optimize-images.mjs`
 - **Bundle Analysis**: Available via `ANALYZE=true yarn build`
 
 ### Testing Strategy
@@ -103,6 +115,8 @@ yarn img:opt               # Optimize images using scripts/optimize-images.mjs
 - Uses Yarn 4.2.2 as package manager
 - Husky pre-commit hooks with lint-staged
 - Component library: Ant Design v5 with React 19 compatibility patch
+- Performance monitoring: Web Vitals integration with @ant-design/plots
+- Error tracking: Sentry integration for production monitoring
 - Font: Delius Google Font for branding
 - Background: Custom parallax and 3D elements for visual appeal
 
@@ -174,3 +188,54 @@ yarn img:opt               # Optimize images using scripts/optimize-images.mjs
 - Main branch: `main`
 - Development branch: `dev`
 - Conventional commits enforced via commitlint
+
+## Security & Admin Features
+
+### Admin-Only Routes
+- **`/admin/monitoring`** - Performance monitoring dashboard
+  - Web Vitals tracking and analysis
+  - Error log monitoring
+  - Performance metrics visualization
+  - **⚠️ Should be hidden from public access**
+
+### Performance Monitoring
+- Real-time web vitals collection
+- Error tracking and logging
+- Performance metrics analysis
+- Device type breakdown
+- Time-based performance trends
+
+### API Endpoints
+```
+# Public APIs
+/api/posts/*           # Blog post management
+/api/letters/*         # Forum/messaging system
+/api/lab/*             # Lab project operations
+/api/gallery/*         # Gallery management
+
+# Admin APIs (require authentication)
+/api/monitoring/*      # Performance monitoring data
+```
+
+## Recent Updates
+
+### Performance & Monitoring (Latest)
+- Added comprehensive performance monitoring dashboard
+- Integrated web vitals tracking with @ant-design/plots
+- Error logging and monitoring capabilities
+- Device-specific performance analytics
+
+### Gallery System
+- Image optimization and compression
+- Gallery sync and cleanup APIs
+- AVIF format support for better performance
+
+### Blog Enhancements
+- Pin functionality for important posts
+- Improved metadata handling
+- Enhanced content management
+
+### Code Quality Improvements
+- Console statement removal in production builds
+- Enhanced TypeScript configurations
+- Improved error handling and logging

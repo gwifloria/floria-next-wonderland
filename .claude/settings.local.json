@@ -1,70 +1,61 @@
 {
   "hooks": {
-    "permissions": {
-      "defaultMode": "plan"
-    },
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo 'hi'"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo 'end'"
-          }
-        ]
-      }
-    ],
     "Notification": [
       {
-        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "notify-send 'Claude Code' 'Awaiting your input'"
+            "command": "osascript -e 'display notification \"🎉 Claude Code 通知\" with title \"Claude Code\" sound name \"Crystal\"'"
           }
         ]
       }
     ],
-    "UserPromptSubmit": [
+    "Stop": [
       {
-        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "echo 'prompt received'"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "matcher": "bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo 'session start'"
+            "command": "osascript -e 'display notification \"🎉 完成 Code 通知\" with title \"Claude Code\" sound name \"Crystal\"'"
           }
         ]
       }
     ],
     "SubagentStop": [
       {
-        "matcher": "bash",
         "hooks": [
           {
             "type": "command",
-            "command": "yarn typecheck && yarn lint"
+            "command": "echo '🤖 [SubagentStop] 子代理停止 - $(date \"+%H:%M:%S\")'"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '📦 [PreCompact] 即将压缩上下文 - $(date \"+%H:%M:%S\")'"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '🚀 [SessionStart] 会话开始 - $(date \"+%H:%M:%S\")'"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '👋 [SessionEnd] 会话结束 - $(date \"+%H:%M:%S\")'"
           }
         ]
       }

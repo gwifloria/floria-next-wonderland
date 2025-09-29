@@ -78,10 +78,10 @@ function FeedBackButton() {
               text-gray-700 rounded-l-lg shadow-md border border-gray-200 border-r-0
               transition-all duration-300 ease-out
               flex items-center overflow-hidden
-              ${hovered ? "pr-3" : "pr-0"}
+              ${hovered || open ? "pr-3" : "pr-0"}
             `}
             style={{
-              width: hovered ? "auto" : "32px",
+              width: hovered || open ? "auto" : "32px",
               minWidth: "32px",
             }}
           >
@@ -94,7 +94,7 @@ function FeedBackButton() {
             <div
               className={`
                 whitespace-nowrap text-sm font-medium transition-all duration-300 ease-out overflow-hidden
-                ${hovered ? "opacity-100 max-w-20 ml-1" : "opacity-0 max-w-0 ml-0"}
+                ${hovered || open ? "opacity-100 max-w-20 ml-1" : "opacity-0 max-w-0 ml-0"}
               `}
             >
               反馈
