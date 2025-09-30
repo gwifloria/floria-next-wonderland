@@ -7,6 +7,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { Button, Tag } from "antd";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { isAdminUser } from "@/constants/auth";
 
 interface WhisperEntryCardProps {
   entry: WhisperEntryApi;
@@ -26,7 +27,7 @@ export default function WhisperEntryCard({
   const modalApi = useModal();
 
   // Check if user is admin
-  const isAdmin = session?.user?.email === "ghuijue@gmail.com";
+  const isAdmin = isAdminUser(session?.user?.email);
 
   const handleDelete = () => {
     modalApi.confirm({
@@ -63,16 +64,50 @@ export default function WhisperEntryCard({
     });
   };
 
+  // Calculate decoration type based on entry ID hash (same logic as DecorativeCard)
+  const decorationHash = Array.from(String(entry.id)).reduce(
+    (acc, ch) => acc + ch.charCodeAt(0),
+    0,
+  );
+  const decorationType = decorationHash % 2;
+
   return (
     <div className="relative pl-16">
-      {/* Timeline marker */}
-      <div className="absolute left-3 top-4 w-5 h-5 bg-gradient-to-br from-milktea-400 to-milktea-500 border-4 border-milktea-50 rounded-full shadow-sm"></div>
+      {/* Timeline marker - positioned to align with the vertical line */}
+      <div className="absolute left-[19px] top-4 w-[14px] h-[14px] bg-gradient-to-br from-milktea-400 to-milktea-500 border-[3px] border-white rounded-full shadow-sm z-10"></div>
 
-      {/* Entry card */}
-      <div className="bg-gradient-to-br from-white to-milktea-50 border border-milktea-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-1">
+      {/* Entry card with decorative elements */}
+      <article className="group relative rounded-2xl border border-dashed border-rose-200 bg-[#FFFDF9] shadow-[0_1px_0_rgba(0,0,0,0.04)] p-4 hover:shadow-md transition-all duration-200 hover:-translate-y-1">
+        {/* Washi tape decoration - alternates based on entry ID */}
+        {decorationType === 0 ? (
+          <div
+            className="pointer-events-none absolute -top-2 left-3 w-[56px] h-[18px] -rotate-2 opacity-70"
+            aria-hidden="true"
+          >
+            <Image
+              src="/images/tape-beige.png"
+              alt=""
+              fill
+              className="object-contain"
+            />
+          </div>
+        ) : (
+          <div
+            className="pointer-events-none absolute -top-3 right-5 w-8 h-8 rotate-6 opacity-55"
+            aria-hidden="true"
+          >
+            <Image
+              src="/images/washi-2.png"
+              alt=""
+              fill
+              className="object-contain"
+            />
+          </div>
+        )}
+
         {/* Entry header */}
-        <div className="flex justify-between items-center mb-3 pb-2 border-b border-milktea-100">
-          <time className="text-xs text-milktea-700 font-medium">
+        <div className="flex justify-between items-center mb-3 pb-2 border-b border-rose-100">
+          <time className="text-xs text-rose-700 font-medium">
             {fmtDateTime(entry.timestamp.toString())}
           </time>
           {isAdmin && (
@@ -82,14 +117,14 @@ export default function WhisperEntryCard({
               size="small"
               icon={<DeleteOutlined />}
               onClick={handleDelete}
-              className="opacity-60 hover:opacity-100"
+              className="opacity-0 group-hover:opacity-100 transition-opacity"
               title="删除"
             />
           )}
         </div>
 
         {/* Entry content */}
-        <div className="mb-3 text-xs text-gray-700 leading-relaxed">
+        <div className="mb-3 text-xs text-neutral-700 leading-relaxed prose prose-sm max-w-none">
           {entry.content.split("\n").map((paragraph, pIndex) =>
             paragraph.trim() ? (
               <p key={pIndex} className="mb-1 last:mb-0">
@@ -107,16 +142,20 @@ export default function WhisperEntryCard({
             {entry.images.map((image, imgIndex) => (
               <div
                 key={imgIndex}
-                className="relative rounded-lg overflow-hidden border border-milktea-100 shadow-sm"
+                className="relative rounded-lg overflow-hidden border border-rose-100 shadow-sm"
               >
                 <Image
                   src={image}
-                  alt="Whisper image"
+                  alt={`Whisper image ${imgIndex + 1}`}
                   width={300}
                   height={200}
                   className="w-full h-auto object-cover transition-transform duration-200 hover:scale-105"
-                  placeholder="blur"
-                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+                  unoptimized
+                  onError={(e) => {
+                    // Hide broken images gracefully
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = "none";
+                  }}
                 />
               </div>
             ))}
@@ -131,8 +170,8 @@ export default function WhisperEntryCard({
                 key={tag}
                 className={`cursor-pointer transition-all duration-200 ${
                   selectedTag === tag
-                    ? "bg-milktea-500 text-white border-milktea-500"
-                    : "bg-milktea-100 text-milktea-700 border-milktea-200 hover:bg-milktea-200"
+                    ? "bg-rose-500 text-white border-rose-500"
+                    : "bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100"
                 }`}
                 onClick={() => onTagClick(tag)}
               >
@@ -141,7 +180,7 @@ export default function WhisperEntryCard({
             ))}
           </div>
         )}
-      </div>
+      </article>
     </div>
   );
 }

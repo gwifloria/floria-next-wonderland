@@ -1,5 +1,5 @@
 import AuthStatus from "@/components/AuthStatus";
-import CommentCard from "@/components/CommentCard";
+import DecorativeCard from "@/components/DecorativeCard";
 import TipTapEditor from "@/components/TipTapEditor";
 import { useMessage } from "@/provider/UIProviders";
 import { fmtDateTime } from "@/util/date";
@@ -49,7 +49,7 @@ export function MailComment({ threadId }: { threadId: string }) {
       {comments?.length ? (
         <div className="space-y-4">
           {comments.map((comment) => (
-            <CommentCard
+            <DecorativeCard
               key={comment.id}
               id={comment.id}
               author={

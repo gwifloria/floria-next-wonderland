@@ -3,7 +3,12 @@ import { format } from "date-fns";
 import Image from "next/image";
 import { ReactNode } from "react";
 
-interface CommentCardProps {
+/**
+ * DecorativeCard - A journal-style decorative card component
+ * Features washi tape decorations, dashed borders, and warm paper-like background
+ * Perfect for comments, messages, or any content that needs a scrapbook aesthetic
+ */
+interface DecorativeCardProps {
   id: string;
   author: string;
   createdAt: Date | string;
@@ -13,7 +18,7 @@ interface CommentCardProps {
   className?: string;
 }
 
-export default function CommentCard({
+export default function DecorativeCard({
   id,
   author,
   createdAt,
@@ -21,7 +26,7 @@ export default function CommentCard({
   onDelete,
   showDeleteButton = false,
   className = "",
-}: CommentCardProps) {
+}: DecorativeCardProps) {
   const handleDelete = () => {
     if (onDelete) {
       onDelete(id);

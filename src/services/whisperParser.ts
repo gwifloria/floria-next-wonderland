@@ -256,7 +256,31 @@ export class WhisperParser {
     imageFiles: Array<{ original: string; target: string }>,
   ): Promise<string | null> {
     try {
-      // Extract filename and extension
+      // Handle base64 encoded images
+      if (originalPath.startsWith("data:image/")) {
+        const timestamp = Date.now();
+        const ext = this.getBase64Extension(originalPath);
+        const newFileName = `${entryId}_${timestamp}.${ext}`;
+        const targetRelativePath = `${this.IMAGE_BASE_PATH}/${newFileName}`;
+
+        // Store base64 data for extraction
+        imageFiles.push({
+          original: originalPath, // This contains the base64 data
+          target: targetRelativePath,
+        });
+
+        return targetRelativePath;
+      }
+
+      // Handle external URLs - keep as is
+      if (
+        originalPath.startsWith("http://") ||
+        originalPath.startsWith("https://")
+      ) {
+        return originalPath;
+      }
+
+      // Handle local file paths
       const fileName = path.basename(originalPath);
       const ext = path.extname(fileName);
 
@@ -265,7 +289,7 @@ export class WhisperParser {
       const newFileName = `${entryId}_${timestamp}${ext}`;
       const targetRelativePath = `${this.IMAGE_BASE_PATH}/${newFileName}`;
 
-      // Store mapping for file copying (but we won't copy since files are in uploaded HTML)
+      // Store mapping for file copying
       imageFiles.push({
         original: originalPath,
         target: targetRelativePath,
@@ -279,24 +303,85 @@ export class WhisperParser {
   }
 
   /**
-   * Since images are embedded in uploaded HTML, we don't need to copy files
-   * This is a placeholder for API compatibility
+   * Extract file extension from base64 data URL
+   */
+  private static getBase64Extension(dataUrl: string): string {
+    const match = dataUrl.match(/^data:image\/(\w+);base64,/);
+    return match ? match[1] : "png";
+  }
+
+  /**
+   * Extract and save images from base64 data or copy from local paths
    */
   static async copyImageFiles(
     imageFiles: Array<{ original: string; target: string }>,
     sourceDir?: string,
   ): Promise<{ success: string[]; errors: string[] }> {
-    // Images are embedded in HTML or need to be handled differently
-    // For now, just return success for all
-    const success = imageFiles.map((file) => file.target);
+    const success: string[] = [];
     const errors: string[] = [];
 
-    if (imageFiles.length > 0) {
-      errors.push(
-        "Image copying skipped - images should be embedded in HTML or uploaded separately",
-      );
+    for (const file of imageFiles) {
+      try {
+        // Handle base64 encoded images
+        if (file.original.startsWith("data:image/")) {
+          await this.saveBase64Image(file.original, file.target);
+          success.push(file.target);
+        }
+        // Handle external URLs - no need to download, they're referenced directly
+        else if (
+          file.original.startsWith("http://") ||
+          file.original.startsWith("https://")
+        ) {
+          success.push(file.target);
+        }
+        // Handle local file paths - would need source directory
+        else if (sourceDir) {
+          const sourcePath = path.join(sourceDir, file.original);
+          const targetPath = path.join(this.PUBLIC_PATH, file.target);
+
+          // Ensure target directory exists
+          await fs.mkdir(path.dirname(targetPath), { recursive: true });
+
+          // Copy file
+          await fs.copyFile(sourcePath, targetPath);
+          success.push(file.target);
+        } else {
+          errors.push(
+            `Cannot copy local file without source directory: ${file.original}`,
+          );
+        }
+      } catch (error) {
+        console.error(`Error processing image ${file.original}:`, error);
+        errors.push(
+          `${file.original}: ${error instanceof Error ? error.message : String(error)}`,
+        );
+      }
     }
 
     return { success, errors };
+  }
+
+  /**
+   * Save base64 encoded image to disk
+   */
+  private static async saveBase64Image(
+    dataUrl: string,
+    targetPath: string,
+  ): Promise<void> {
+    // Extract base64 data
+    const matches = dataUrl.match(/^data:image\/\w+;base64,(.+)$/);
+    if (!matches) {
+      throw new Error("Invalid base64 data URL");
+    }
+
+    const base64Data = matches[1];
+    const buffer = Buffer.from(base64Data, "base64");
+
+    // Ensure target directory exists
+    const fullPath = path.join(this.PUBLIC_PATH, targetPath);
+    await fs.mkdir(path.dirname(fullPath), { recursive: true });
+
+    // Write file
+    await fs.writeFile(fullPath, buffer);
   }
 }

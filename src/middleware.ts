@@ -1,8 +1,6 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
-
-// 管理员邮箱
-const ADMIN_EMAIL = "ghuijue@gmail.com";
+import { ADMIN_EMAIL } from "@/constants/auth";
 
 // 需要管理员权限的路由
 const ADMIN_ROUTES = [

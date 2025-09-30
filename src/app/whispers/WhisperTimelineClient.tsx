@@ -1,9 +1,7 @@
 "use client";
 import PageIntro from "@/components/PageIntro";
 import { WhisperListResponse, WhisperStatsResponse } from "@/types/whisper";
-import { PlusOutlined } from "@ant-design/icons";
-import { Button, Empty, Input, Pagination, Spin, Tag } from "antd";
-import Link from "next/link";
+import { Empty, Input, Pagination, Spin, Tag } from "antd";
 import { useState } from "react";
 import useSWR from "swr";
 import WhisperAdminControls from "./components/WhisperAdminControls";
@@ -22,7 +20,7 @@ export default function WhisperTimelineClient() {
   // Build query string
   const queryParams = new URLSearchParams({
     page: page.toString(),
-    limit: "10",
+    limit: "20",
     ...(searchQuery && { search: searchQuery }),
     ...(selectedTag && { tag: selectedTag }),
   });
@@ -120,19 +118,16 @@ export default function WhisperTimelineClient() {
             <Spin size="large" />
           </div>
         ) : !data?.data || data.data.length === 0 ? (
-          <Empty description="No whisper entries found" className="py-12">
-            <Link href="/whispers/upload">
-              <Button type="primary" icon={<PlusOutlined />}>
-                Upload your first whisper export
-              </Button>
-            </Link>
-          </Empty>
+          <Empty
+            description="No whisper entries found"
+            className="py-12"
+          ></Empty>
         ) : (
           <>
             {/* Timeline */}
             <div className="relative">
-              {/* Vertical timeline line */}
-              <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-milktea-300 to-milktea-100"></div>
+              {/* Vertical timeline line - dashed style */}
+              <div className="absolute left-6 top-0 bottom-0 w-px border-l-2 border-dashed border-milktea-300"></div>
 
               <div className="space-y-6">
                 {data.data.map((entry) => (

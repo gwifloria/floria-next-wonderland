@@ -11,6 +11,9 @@ jest.mock("swr/mutation");
 jest.mock("swr", () => ({
   mutate: jest.fn(),
 }));
+jest.mock("@/constants/auth", () => ({
+  isAdminUser: jest.fn((email) => email === "ghuijue@gmail.com"),
+}));
 
 const mockUseSession = useSession as jest.MockedFunction<typeof useSession>;
 const mockUseSWRMutation = useSWRMutation as jest.MockedFunction<

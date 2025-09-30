@@ -21,6 +21,7 @@ import {
 import AntDShell from "@/provider/AntDShell";
 import Link from "next/link";
 import { WhisperUploadResponse } from "@/types/whisper";
+import { isAdminUser } from "@/constants/auth";
 
 const { Dragger } = Upload;
 
@@ -31,7 +32,7 @@ export default function WhisperUploadClient() {
   const [error, setError] = useState<string | null>(null);
 
   // 检查是否为管理员
-  const isAdmin = session?.user?.email === "ghuijue@gmail.com";
+  const isAdmin = isAdminUser(session?.user?.email);
 
   // 如果不是管理员，显示无权限页面
   if (!isAdmin) {

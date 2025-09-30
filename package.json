@@ -17,9 +17,8 @@
     "test:e2e:debug": "playwright test --debug",
     "prepare": "husky",
     "predev": "ts-node --project ./tsconfig.node.json ./scripts/genAntdCss.tsx",
-    "prebuild": "cross-env NODE_ENV=production ts-node --project ./tsconfig.node.json ./scripts/genAntdCss.tsx && node scripts/remove-console.mjs",
-    "clean:cache": "rm -rf .next/cache",
-    "clean:console": "REMOVE_CONSOLE=true node scripts/remove-console.mjs"
+    "prebuild": "cross-env NODE_ENV=production ts-node --project ./tsconfig.node.json ./scripts/genAntdCss.tsx",
+    "clean:cache": "rm -rf .next/cache"
   },
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [

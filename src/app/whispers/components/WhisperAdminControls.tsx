@@ -5,6 +5,7 @@ import { ClearOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { isAdminUser } from "@/constants/auth";
 
 interface WhisperAdminControlsProps {
   onClearSuccess: () => void;
@@ -18,7 +19,7 @@ export default function WhisperAdminControls({
   const modalApi = useModal();
 
   // Check if user is admin
-  const isAdmin = session?.user?.email === "ghuijue@gmail.com";
+  const isAdmin = isAdminUser(session?.user?.email);
 
   const handleClearAll = () => {
     modalApi.confirm({

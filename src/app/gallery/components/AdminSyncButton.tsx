@@ -6,8 +6,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import useSWRMutation from "swr/mutation";
 import { useMessage } from "@/provider/UIProviders";
-
-const ADMIN_EMAIL = "ghuijue@gmail.com";
+import { isAdminUser } from "@/constants/auth";
 
 interface SyncResult {
   success: boolean;
@@ -36,7 +35,7 @@ export function GalleryAdminPanel() {
   const { data: session } = useSession();
   const messageApi = useMessage();
   const [authLoading, setAuthLoading] = useState(false);
-  const isAdmin = session?.user?.email === ADMIN_EMAIL;
+  const isAdmin = isAdminUser(session?.user?.email);
 
   // 公共的成功处理函数
   const handleOperationSuccess = (

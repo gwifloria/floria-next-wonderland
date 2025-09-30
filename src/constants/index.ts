@@ -3,6 +3,7 @@ export * from "./routes";
 export * from "./theme";
 export * from "./metadata";
 export * from "./projectExperience";
+export * from "./auth";
 
 // Re-export app-specific constants with namespaces to avoid conflicts
 export * as BlogConstants from "../app/blog/constants";

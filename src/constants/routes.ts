@@ -1,7 +1,7 @@
 export type PageRoute =
   | "blog"
-  | "letters"
   | "whispers"
+  | "letters"
   | "contact"
   | "tools"
   | "space"
@@ -15,26 +15,13 @@ type PartialRouteMap<T> = Partial<Record<PageRoute, T>>;
 // 路由图标配置 - 支持 emoji 和本地图标文件
 export const routes: PartialRouteMap<{ emoji: string; icon?: string }> = {
   blog: { emoji: "🪶", icon: "blog-icon" },
-  letters: { emoji: "✉️", icon: "letters-icon" },
   whispers: { emoji: "💭", icon: "whisper-icon" },
+  letters: { emoji: "✉️", icon: "letters-icon" },
   gallery: { emoji: "📸", icon: "gallery-icon" },
   contact: { emoji: "👋", icon: "contact-icon" },
 };
 
 export const hiddenRoutes = ["tools", "space", "travel", "dance", "lab"];
-
-export const routeLabels: PartialRouteMap<string> = {
-  blog: "Blog",
-  letters: "Letters",
-  whispers: "Whispers",
-  contact: "Contact",
-  lab: "Lab",
-  tools: "Tools",
-  space: "Space",
-  travel: "Travel",
-  dance: "Dance",
-  gallery: "Gallery",
-};
 
 export const routeDescriptions: PartialRouteMap<string> = {
   blog: "随便写的",
