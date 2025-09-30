@@ -1,7 +1,8 @@
 "use client";
 import PageIntro from "@/components/PageIntro";
 import { WhisperListResponse, WhisperStatsResponse } from "@/types/whisper";
-import { Empty, Input, Pagination, Spin, Tag } from "antd";
+import { Empty, Input, Spin, Tag } from "antd";
+import JournalPagination from "@/components/JournalPagination";
 import { useState } from "react";
 import useSWR from "swr";
 import WhisperAdminControls from "./components/WhisperAdminControls";
@@ -145,12 +146,11 @@ export default function WhisperTimelineClient() {
             {/* Pagination */}
             {data.pagination.pages > 1 && (
               <div className="flex justify-center mt-12 pt-8">
-                <Pagination
+                <JournalPagination
                   current={page}
                   total={data.pagination.total}
                   pageSize={data.pagination.limit}
                   onChange={handlePageChange}
-                  showSizeChanger={false}
                   showQuickJumper
                   showTotal={(total, range) =>
                     `${range[0]}-${range[1]} of ${total} entries`

@@ -10,12 +10,16 @@ import { ReactNode } from "react";
  */
 interface DecorativeCardProps {
   id: string;
-  author: string;
-  createdAt: Date | string;
+  author?: string;
+  createdAt?: Date | string;
   content: string | ReactNode;
   onDelete?: (id: string) => void;
   showDeleteButton?: boolean;
   className?: string;
+
+  // Custom render functions for flexible layouts
+  renderHeader?: () => ReactNode;
+  renderFooter?: () => ReactNode;
 }
 
 export default function DecorativeCard({
@@ -26,6 +30,8 @@ export default function DecorativeCard({
   onDelete,
   showDeleteButton = false,
   className = "",
+  renderHeader,
+  renderFooter,
 }: DecorativeCardProps) {
   const handleDelete = () => {
     if (onDelete) {
@@ -70,35 +76,39 @@ export default function DecorativeCard({
         </div>
       )}
 
-      {/* Header with author and date */}
-      <div className="flex items-center justify-between mb-2">
-        <span className="font-handwritten text-rose-700 text-base">
-          {author}
-        </span>
-        <div className="flex items-center gap-3">
-          <time className="text-[11px] text-neutral-400 italic">
-            {typeof createdAt === "string"
-              ? createdAt
-              : format(createdAt, "yyyy-MM-dd HH:mm:ss")}
-          </time>
-          {showDeleteButton && (
-            <Popconfirm
-              title="删除确认"
-              description="确定要删除这条留言吗？"
-              okText="删除"
-              cancelText="取消"
-              onConfirm={handleDelete}
-            >
-              <button
-                className="opacity-0 text-rose-500 bg-rose-100 group-hover:opacity-100 transition-opacity text-xs border px-2 py-0.5 rounded"
-                aria-label="删除"
+      {/* Header - use custom render or default */}
+      {renderHeader ? (
+        renderHeader()
+      ) : (
+        <div className="flex items-center justify-between mb-2">
+          <span className="font-handwritten text-rose-700 text-base">
+            {author}
+          </span>
+          <div className="flex items-center gap-3">
+            <time className="text-[11px] text-neutral-400 italic">
+              {typeof createdAt === "string"
+                ? createdAt
+                : createdAt && format(createdAt, "yyyy-MM-dd HH:mm:ss")}
+            </time>
+            {showDeleteButton && (
+              <Popconfirm
+                title="删除确认"
+                description="确定要删除这条留言吗？"
+                okText="删除"
+                cancelText="取消"
+                onConfirm={handleDelete}
               >
-                删除
-              </button>
-            </Popconfirm>
-          )}
+                <button
+                  className="opacity-0 text-rose-500 bg-rose-100 group-hover:opacity-100 transition-opacity text-xs border px-2 py-0.5 rounded"
+                  aria-label="删除"
+                >
+                  删除
+                </button>
+              </Popconfirm>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Content */}
       <div className="prose prose-sm max-w-none leading-relaxed text-neutral-700">
@@ -108,6 +118,9 @@ export default function DecorativeCard({
           content
         )}
       </div>
+
+      {/* Footer - custom render if provided */}
+      {renderFooter && renderFooter()}
     </article>
   );
 }

@@ -90,22 +90,34 @@ export default function JournalPagination({
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 py-6 px-4 relative">
+    <div className="flex flex-col items-center gap-4 py-6 px-24 relative">
       {/* Background decoration using pagination.png */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-16 opacity-35 pointer-events-none z-0">
-        <Image
-          src="/images/pagination.png"
-          alt=""
-          fill
-          className="object-contain"
-          priority={false}
-        />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-28 opacity-75 pointer-events-none z-0">
+        <Image src="/images/pagination.png" alt="" fill priority={false} />
       </div>
 
       {/* Total info */}
       {showTotal && (
-        <div className="text-sm text-milktea-600 italic relative z-10 tracking-wide">
-          {showTotal(total, [startItem, endItem])}
+        <div className="flex items-center gap-3 text-sm relative z-10 font-handwritten mb-1">
+          {/* Current range */}
+          <div className="flex items-center gap-1.5">
+            <span className="text-milktea-500 text-xs">Showing</span>
+            <span className="text-milktea-800 font-bold text-base px-1.5 py-0.5 bg-milktea-50/50 rounded">
+              {startItem}–{endItem}
+            </span>
+          </div>
+
+          {/* Separator */}
+          <span className="text-milktea-300">•</span>
+
+          {/* Total count */}
+          <div className="flex items-center gap-1.5">
+            <span className="text-milktea-500 text-xs">Total</span>
+            <span className="text-milktea-800 font-bold text-base px-1.5 py-0.5 bg-milktea-50/50 rounded">
+              {total}
+            </span>
+            <span className="text-milktea-600 text-xs">entries</span>
+          </div>
         </div>
       )}
 
@@ -117,13 +129,13 @@ export default function JournalPagination({
             min-w-[40px] h-10 px-3
             border-2 border-transparent rounded-xl
             bg-transparent
-            text-lg font-medium
+            text-lg font-medium font-handwritten
             flex items-center justify-center
             transition-all duration-200
             ${
               current === 1
-                ? "opacity-30 cursor-not-allowed text-milktea-600"
-                : "text-milktea-700 hover:bg-rose-50/50 hover:text-rose-500 hover:scale-105 active:scale-95 cursor-pointer"
+                ? "opacity-30 cursor-not-allowed text-milktea-700"
+                : "text-milktea-800 hover:bg-milktea-50/50 hover:text-milktea-500 hover:scale-105 active:scale-95 cursor-pointer"
             }
           `}
           onClick={handlePrevious}
@@ -138,7 +150,7 @@ export default function JournalPagination({
           {getPageNumbers().map((page, index) => (
             <React.Fragment key={`${page}-${index}`}>
               {page === "..." ? (
-                <span className="inline-flex items-center justify-center min-w-[32px] h-10 text-milktea-500 text-lg tracking-wider select-none italic">
+                <span className="inline-flex items-center justify-center min-w-[32px] h-10 text-milktea-400 text-lg tracking-wider select-none italic font-handwritten">
                   ···
                 </span>
               ) : (
@@ -146,12 +158,12 @@ export default function JournalPagination({
                   className={`
                     min-w-[40px] h-10 px-3
                     rounded-xl
-                    text-base font-medium
+                    text-base font-medium font-handwritten
                     transition-all duration-250
                     ${
                       current === page
-                        ? "font-bold text-rose-600 border-2 border-dashed border-rose-400 bg-rose-50/30"
-                        : "italic text-milktea-700 border-2 border-transparent hover:underline hover:decoration-2 hover:underline-offset-4 hover:text-rose-500 hover:-translate-y-0.5 active:scale-95"
+                        ? "font-bold text-milktea-700 border-2 border-dashed border-milktea-400 bg-milktea-50/30"
+                        : "italic text-milktea-800 border-2 border-transparent hover:underline hover:decoration-2 hover:underline-offset-4 hover:text-milktea-500 hover:-translate-y-0.5 active:scale-95"
                     }
                   `}
                   onClick={() => handlePageClick(page)}
@@ -171,13 +183,13 @@ export default function JournalPagination({
             min-w-[40px] h-10 px-3
             border-2 border-transparent rounded-xl
             bg-transparent
-            text-lg font-medium
+            text-lg font-medium font-handwritten
             flex items-center justify-center
             transition-all duration-200
             ${
               current === totalPages
-                ? "opacity-30 cursor-not-allowed text-milktea-600"
-                : "text-milktea-700 hover:bg-rose-50/50 hover:text-rose-500 hover:scale-105 active:scale-95 cursor-pointer"
+                ? "opacity-30 cursor-not-allowed text-milktea-700"
+                : "text-milktea-800 hover:bg-milktea-50/50 hover:text-milktea-500 hover:scale-105 active:scale-95 cursor-pointer"
             }
           `}
           onClick={handleNext}
@@ -189,21 +201,21 @@ export default function JournalPagination({
 
         {/* Quick jumper */}
         {showQuickJumper && (
-          <div className="flex items-center gap-2 ml-4 text-sm text-milktea-700 italic">
+          <div className="flex items-center gap-2 ml-4 text-sm text-milktea-800 italic font-handwritten">
             <span className="whitespace-nowrap">Go to</span>
             <input
               type="number"
               min={1}
               max={totalPages}
-              onKeyPress={handleQuickJump}
+              onKeyDown={handleQuickJump}
               aria-label="Jump to page"
               className="
                 w-[60px] h-9 px-2
                 border-2 border-milktea-300 rounded-lg
                 bg-milktea-50/80
-                text-milktea-700 text-sm italic text-center
+                text-milktea-700 text-sm italic text-center font-handwritten
                 transition-all duration-200
-                focus:outline-none focus:border-rose-400 focus:bg-white
+                focus:outline-none focus:border-milktea-400 focus:bg-white
                 hover:border-milktea-400
                 [appearance:textfield]
                 [&::-webkit-outer-spin-button]:appearance-none

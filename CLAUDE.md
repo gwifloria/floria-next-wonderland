@@ -124,7 +124,7 @@ yarn clean:console         # Remove console statements from code
 
 ### Code Quality Guidelines
 - **Avoid Deprecated APIs**: Don't use deprecated Ant Design properties (check docs first)
-- **Style Organization**: Prefer SCSS modules over inline styles
+- **Style Organization**: Use inline Tailwind classes - NO SCSS modules, NO CSS modules
 - **Component Wrapping**: Use AntDShell to ensure consistent theming
 - **Performance**: Monitor components skip expensive operations in development
 
@@ -141,17 +141,26 @@ yarn clean:console         # Remove console statements from code
 - **Interactions**: Gentle animations, hover effects with scale transforms
 
 #### Component Styling Requirements:
-1. **Always use SCSS modules** instead of inline styles
-2. **Wrap important components with AntDShell** for proper style overrides
-3. **Override Ant Design colors** to match mint green theme
-4. **Prefer lightweight interactions** - Popover over Modal when possible
-5. **Include texture and depth** with subtle shadows and gradients
+1. **Use inline Tailwind classes** - NO SCSS modules, NO CSS modules
+2. **Use custom journal components** - Prefer JournalPagination over Ant Design Pagination
+3. **Wrap important components with AntDShell** for proper style overrides
+4. **Override Ant Design colors** - Avoid blue and mint-green in pagination, use rose/amber/warmOrange from tailwind.config
+5. **Use Next.js Image for decorations** - Avoid CSS pseudo-elements for background images
+6. **Prefer lightweight interactions** - Popover over Modal when possible
+7. **Include texture and depth** - Subtle shadows, warm colors, handwritten fonts (Delius)
 
 #### Ant Design Customization:
 - Primary colors should be overridden to mint green variants
 - Use `classNames` prop for custom styling (not deprecated `overlayClassName`)
 - Buttons, inputs, and interactive elements need journal-style treatment
 - Maintain consistency with existing design tokens in `constants/theme.ts`
+
+#### Pagination Guidelines:
+- **Always use JournalPagination** for list pagination (whispers, letters, etc.)
+- **Color scheme**: Rose (复古玫瑰红) - rose-300/400/500/600
+- **Avoid**: Mint-green, blue, or corporate colors in pagination
+- **Style**: Handwritten numbers, dashed borders, pagination.png background
+- **Location**: `/src/components/JournalPagination`
 
 ## Ant Design Deprecation Warnings
 

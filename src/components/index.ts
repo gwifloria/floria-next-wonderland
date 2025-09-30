@@ -4,6 +4,7 @@ export { default as AuthStatus } from "./AuthStatus";
 export { BriefIntroduction as BriefIntro } from "./BriefIntro";
 export { default as BugFeedbackButton } from "./BugFeedbackButton";
 export { default as DecorativeCard } from "./DecorativeCard";
+export { default as JournalPagination } from "./JournalPagination";
 export { default as CommitInfo } from "./CommitInfo";
 export { default as CopyrightInfo } from "./CopyrightInfo";
 export { default as Decoration } from "./Decoration";
