@@ -31,7 +31,7 @@
     margin-bottom: 16px;
   }
 
-  .polaroid-frame {
+  .scrapbook-photo {
     margin-bottom: 20px;
   }
 }
@@ -45,7 +45,7 @@
     margin-bottom: 20px;
   }
 
-  .polaroid-frame {
+  .scrapbook-photo {
     margin-bottom: 24px;
   }
 }
@@ -59,7 +59,7 @@
     margin-bottom: 24px;
   }
 
-  .polaroid-frame {
+  .scrapbook-photo {
     margin-bottom: 28px;
   }
 }
@@ -81,26 +81,16 @@
   filter: blur(0);
 }
 
-/* 拍立得相框的纸质纹理 */
-.polaroid-texture {
+/* Scrapbook photo paper texture */
+.scrapbook-photo {
   background-image:
     repeating-linear-gradient(
-      45deg,
+      90deg,
       transparent,
-      transparent 2px,
-      rgba(255, 255, 255, 0.03) 2px,
-      rgba(255, 255, 255, 0.03) 4px
+      transparent 1px,
+      rgba(176, 139, 122, 0.02) 1px,
+      rgba(176, 139, 122, 0.02) 2px
     );
-}
-
-/* 胶带的粘贴效果 */
-.tape-shadow {
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
-}
-
-.tape-shadow:hover {
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-  transition: filter 0.2s ease;
 }
 
 /* 滚动条美化 */
@@ -109,57 +99,38 @@
 }
 
 .gallery-container::-webkit-scrollbar-track {
-  background: rgba(139, 90, 90, 0.1);
+  background: rgba(176, 139, 122, 0.1);
   border-radius: 4px;
 }
 
 .gallery-container::-webkit-scrollbar-thumb {
-  background: rgba(139, 90, 90, 0.3);
+  background: rgba(176, 139, 122, 0.3);
   border-radius: 4px;
 }
 
 .gallery-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(139, 90, 90, 0.5);
+  background: rgba(176, 139, 122, 0.5);
 }
 
-/* 加载动画优化 */
-@keyframes polaroidDrop {
+/* Scrapbook photo appearance animation */
+@keyframes scrapbookDrop {
   0% {
-    transform: translateY(-20px) rotate(0deg);
+    transform: translateY(-15px);
     opacity: 0;
   }
-  50% {
-    transform: translateY(5px) rotate(2deg);
-    opacity: 0.8;
-  }
   100% {
-    transform: translateY(0) rotate(1deg);
+    transform: translateY(0);
     opacity: 1;
   }
 }
 
-.polaroid-drop-animation {
-  animation: polaroidDrop 0.8s ease-out forwards;
-}
-
-/* 悬停时的浮起效果 */
-.polaroid-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.polaroid-hover:hover {
-  transform: translateY(-4px) rotate(0deg) scale(1.02);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+.scrapbook-drop-animation {
+  animation: scrapbookDrop 0.4s ease-out forwards;
 }
 
 /* 移动端触摸优化 */
 @media (hover: none) {
-  .polaroid-hover:hover {
-    transform: none;
-    box-shadow: none;
-  }
-
-  .polaroid-hover:active {
+  .scrapbook-photo:active {
     transform: scale(0.98);
     transition: transform 0.1s ease;
   }

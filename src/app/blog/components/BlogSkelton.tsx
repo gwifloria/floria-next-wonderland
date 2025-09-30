@@ -7,13 +7,20 @@ export function EmptyState() {
   return (
     <>
       <div className=" relative flex items-center flex-col justify-center bg-gray-50/30 rounded-xl">
-        <Image
-          className="opacity-80 mx-auto mb-6"
-          alt="note"
-          height={100}
-          width={100}
-          src="/images/note-rose.png"
-        ></Image>
+        {/* Layer 2: Notebook journal spread (decorative focal point) */}
+        <div className="fixed inset-0 pointer-events-none opacity-[0.18] -z-10 flex items-center justify-center">
+          <Image
+            src="/images/notebook.png"
+            alt=""
+            width={800}
+            height={600}
+            style={{
+              objectFit: "contain",
+              mixBlendMode: "multiply",
+            }}
+            className="scale-110 md:scale-120 lg:scale-130 opacity-70"
+          />
+        </div>
         <div className="max-w-5xl text-left mx-auto p-6">
           <div className="flex align-center">
             <h2 className="text-xl mr-8 font-semibold mb-4">

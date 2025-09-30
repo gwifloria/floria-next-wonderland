@@ -1,8 +1,9 @@
 "use client";
+import JournalPagination from "@/components/JournalPagination";
 import PageIntro from "@/components/PageIntro";
 import { WhisperListResponse, WhisperStatsResponse } from "@/types/whisper";
 import { Empty, Input, Spin, Tag } from "antd";
-import JournalPagination from "@/components/JournalPagination";
+import Image from "next/image";
 import { useState } from "react";
 import useSWR from "swr";
 import WhisperAdminControls from "./components/WhisperAdminControls";
@@ -66,50 +67,93 @@ export default function WhisperTimelineClient() {
   }
 
   return (
-    <main className="max-w-4xl mx-auto px-4 py-8">
+    <main className="relative max-w-4xl mx-auto px-4 py-8">
+      {/* Background layers - dual-layer journal aesthetic */}
+      {/* Layer 1: Crumpled kraft paper texture (base) */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.20] z-1">
+        <Image src="/images/niupizhi-bg-cropped.png" alt="" fill priority />
+      </div>
+
+      {/* Layer 2: Notebook journal spread (decorative focal point) */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.18] -z-10 flex items-center justify-center">
+        <Image
+          src="/images/pintie.png"
+          alt=""
+          width={800}
+          height={600}
+          style={{
+            objectFit: "contain",
+            mixBlendMode: "multiply",
+          }}
+          className="scale-150 md:scale-125 lg:scale-150 opacity-70"
+        />
+      </div>
+
       {/* Header */}
-      <header className="flex flex-col gap-2 mb-6">
-        <div className="flex items-center justify-between flex-wrap gap-3">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-semibold text-milktea-800">Whispers</h1>
-            <PageIntro>
-              <WhisperTechDetails />
-            </PageIntro>
-          </div>
-
-          <div className="flex items-center gap-2 flex-wrap">
-            <Search
-              placeholder="Search..."
-              allowClear
-              onSearch={handleSearch}
-              style={{ width: 200 }}
-              size="small"
-            />
-
-            <WhisperAdminControls onClearSuccess={() => mutate()} />
-          </div>
+      <header className="relative flex flex-col gap-2 mb-8">
+        {/* Left top decoration - envelope */}
+        <div className="absolute -left-2 -top-4 w-16 h-16 rotate-12 opacity-60 pointer-events-none">
+          <Image src="/images/env-small.png" alt="" fill />
         </div>
 
-        {selectedTag && (
-          <div className="flex items-center gap-2">
-            <Tag
-              closable
-              onClose={() => setSelectedTag(null)}
-              className="bg-milktea-500 text-white border-milktea-500"
-            >
-              #{selectedTag}
-            </Tag>
-          </div>
-        )}
+        {/* Right top decoration - daisy */}
+        <div className="absolute -right-3 -top-6 w-20 h-20 -rotate-6 opacity-50 pointer-events-none">
+          <Image src="/images/daisy-flower-single.png" alt="" fill />
+        </div>
 
-        {/* Stats as footnote */}
-        {stats && (
-          <div className="text-[10px] text-milktea-400 opacity-60">
-            {stats.overview.totalEntries} entries /{" "}
-            {stats.overview.totalWithImages} with images /{" "}
-            {stats.overview.totalTags} tags
+        {/* Header content with backdrop */}
+        <div className="relative z-10 bg-white/80 backdrop-blur-sm rounded-xl p-4 border-2 border-dashed border-milktea-200">
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl font-semibold text-milktea-800">
+                Whispers
+              </h1>
+              <PageIntro>
+                <WhisperTechDetails />
+              </PageIntro>
+            </div>
+
+            <div className="flex items-center gap-2 flex-wrap">
+              {/* Search box with decoration */}
+              <div className="relative">
+                <div className="absolute -top-2 -left-3 w-8 h-8 rotate-12 opacity-60 z-10 pointer-events-none">
+                  <Image src="/images/stamp-memories.png" alt="" fill />
+                </div>
+                <Search
+                  placeholder="Search whispers..."
+                  allowClear
+                  onSearch={handleSearch}
+                  style={{ width: 200 }}
+                  size="small"
+                  className="rounded-lg"
+                />
+              </div>
+
+              <WhisperAdminControls onClearSuccess={() => mutate()} />
+            </div>
           </div>
-        )}
+
+          {selectedTag && (
+            <div className="flex items-center gap-2">
+              <Tag
+                closable
+                onClose={() => setSelectedTag(null)}
+                className="bg-milktea-500 text-white border-milktea-500"
+              >
+                #{selectedTag}
+              </Tag>
+            </div>
+          )}
+
+          {/* Stats as footnote */}
+          {stats && (
+            <div className="text-[10px] text-milktea-400 opacity-60">
+              {stats.overview.totalEntries} entries /{" "}
+              {stats.overview.totalWithImages} with images /{" "}
+              {stats.overview.totalTags} tags
+            </div>
+          )}
+        </div>
       </header>
 
       {/* Content */}
@@ -120,9 +164,19 @@ export default function WhisperTimelineClient() {
           </div>
         ) : !data?.data || data.data.length === 0 ? (
           <Empty
-            description="No whisper entries found"
+            image={
+              <div className="relative w-32 h-32 mx-auto opacity-50">
+                <Image src="/images/notebook.png" alt="" fill />
+              </div>
+            }
+            description={
+              <div className="text-milktea-600 font-handwritten">
+                <p className="text-base mb-2">No whispers yet...</p>
+                <p className="text-xs">Start recording your thoughts ✨</p>
+              </div>
+            }
             className="py-12"
-          ></Empty>
+          />
         ) : (
           <>
             {/* Timeline */}
@@ -131,14 +185,37 @@ export default function WhisperTimelineClient() {
               <div className="absolute left-6 top-0 bottom-0 w-px border-l-2 border-dashed border-milktea-300"></div>
 
               <div className="space-y-6">
-                {data.data.map((entry) => (
-                  <WhisperEntryCard
-                    key={entry.id}
-                    entry={entry}
-                    selectedTag={selectedTag}
-                    onTagClick={handleTagClick}
-                    onDeleteSuccess={() => mutate()}
-                  />
+                {data.data.map((entry, index) => (
+                  <div key={entry.id} className="relative">
+                    {/* Timeline side decorations - appear occasionally */}
+                    {index % 7 === 0 && (
+                      <div className="absolute -left-8 top-4 w-12 h-12 opacity-40 rotate-12 pointer-events-none">
+                        <Image src="/images/note-rose.png" alt="" fill />
+                      </div>
+                    )}
+                    {index % 5 === 2 && (
+                      <div className="absolute -left-10 top-2 w-14 h-14 opacity-30 -rotate-6 pointer-events-none">
+                        <Image src="/images/orange-flowers.png" alt="" fill />
+                      </div>
+                    )}
+                    {index % 6 === 4 && (
+                      <div className="absolute -left-9 top-6 w-10 h-10 opacity-35 rotate-6 pointer-events-none">
+                        <Image src="/images/pink-bow.png" alt="" fill />
+                      </div>
+                    )}
+                    {index % 8 === 1 && (
+                      <div className="absolute -left-8 top-8 w-11 h-11 opacity-40 -rotate-12 pointer-events-none">
+                        <Image src="/images/music-blue.png" alt="" fill />
+                      </div>
+                    )}
+
+                    <WhisperEntryCard
+                      entry={entry}
+                      selectedTag={selectedTag}
+                      onTagClick={handleTagClick}
+                      onDeleteSuccess={() => mutate()}
+                    />
+                  </div>
                 ))}
               </div>
             </div>
@@ -160,6 +237,27 @@ export default function WhisperTimelineClient() {
             )}
           </>
         )}
+      </div>
+
+      {/* Bottom decoration layer */}
+      <div className="relative mt-16 mb-8 h-32">
+        {/* Pencils scattered */}
+        <div className="absolute bottom-0 left-[10%] w-32 h-32 opacity-40 -rotate-12 pointer-events-none">
+          <Image src="/images/pencils.png" alt="" fill />
+        </div>
+
+        {/* Dog sticker */}
+        <div className="absolute bottom-0 right-[15%] w-24 h-24 opacity-50 rotate-6 pointer-events-none">
+          <Image src="/images/dog.png" alt="" fill />
+        </div>
+
+        {/* Daisy basket */}
+        <div className="absolute bottom-12 left-[50%] -translate-x-1/2 w-28 h-28 opacity-35 pointer-events-none">
+          <Image src="/images/daisy-basket.png" alt="" fill />
+        </div>
+
+        {/* Bottom dashed line */}
+        <div className="absolute bottom-0 w-full border-b-2 border-dashed border-milktea-200 opacity-50"></div>
       </div>
     </main>
   );

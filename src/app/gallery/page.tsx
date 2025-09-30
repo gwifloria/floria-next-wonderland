@@ -62,7 +62,19 @@ function Gallery() {
   }
 
   return (
-    <div className={`${GALLERY_STYLES.CONTAINER} gallery-container`}>
+    <div className={`${GALLERY_STYLES.CONTAINER} gallery-container relative`}>
+      {/* Notebook background - large scrapbook aesthetic */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.12] -z-10">
+        <motion.img
+          src="/images/notebook.png"
+          alt=""
+          className="w-full h-full object-cover"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.2 }}
+        />
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}

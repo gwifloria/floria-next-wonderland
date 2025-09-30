@@ -33,7 +33,7 @@ export interface ParsedWhisperEntry {
 export interface WhisperParseResult {
   entries: ParsedWhisperEntry[];
   totalEntries: number;
-  imageFiles: Array<{ original: string; target: string }>;
+  imageFiles: Array<{ original: string; target: string; index: number }>;
   errors: string[];
 }
 

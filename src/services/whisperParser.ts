@@ -2,17 +2,16 @@ import path from "path";
 import { promises as fs } from "fs";
 import crypto from "crypto";
 import { ParsedWhisperEntry, WhisperParseResult } from "@/types/whisper";
+import { uploadBase64Image, uploadBufferImage } from "@/lib/cloudinary";
 
 export class WhisperParser {
-  private static readonly IMAGE_BASE_PATH = "/uploads/whisper/images";
-  private static readonly PUBLIC_PATH = path.join(process.cwd(), "public");
-
   /**
    * Parse whisper HTML export file using regex (no JSDOM dependency)
    */
   static async parseWhisperHTML(
     htmlContent: string,
     sourceFileName?: string,
+    sourceDir?: string,
   ): Promise<WhisperParseResult> {
     const result: WhisperParseResult = {
       entries: [],
@@ -35,6 +34,7 @@ export class WhisperParser {
             memoHtml,
             sourceFileName,
             result.imageFiles,
+            sourceDir,
           );
           if (entry) {
             result.entries.push(entry);
@@ -118,7 +118,8 @@ export class WhisperParser {
   private static async parseMemoBlock(
     memoHtml: string,
     sourceFileName?: string,
-    imageFiles?: Array<{ original: string; target: string }>,
+    imageFiles?: Array<{ original: string; target: string; index: number }>,
+    sourceDir?: string,
   ): Promise<ParsedWhisperEntry | null> {
     // Extract timestamp - handle cases where closing div might be missing
     const timeMatch = memoHtml.match(/<div class="time">([^<]*)/);
@@ -147,7 +148,12 @@ export class WhisperParser {
     while ((imgMatch = imgRegex.exec(memoHtml)) !== null) {
       const src = imgMatch[1];
       if (imageFiles) {
-        const targetPath = await this.processImage(src, originalId, imageFiles);
+        const targetPath = await this.processImage(
+          src,
+          originalId,
+          imageFiles,
+          sourceDir,
+        );
         if (targetPath) {
           images.push(targetPath);
         }
@@ -248,28 +254,26 @@ export class WhisperParser {
   }
 
   /**
-   * Process image file and prepare for copying
+   * Process image file and prepare for Cloudinary upload
    */
   private static async processImage(
     originalPath: string,
     entryId: string,
-    imageFiles: Array<{ original: string; target: string }>,
+    imageFiles: Array<{ original: string; target: string; index: number }>,
+    sourceDir?: string,
   ): Promise<string | null> {
     try {
       // Handle base64 encoded images
       if (originalPath.startsWith("data:image/")) {
-        const timestamp = Date.now();
-        const ext = this.getBase64Extension(originalPath);
-        const newFileName = `${entryId}_${timestamp}.${ext}`;
-        const targetRelativePath = `${this.IMAGE_BASE_PATH}/${newFileName}`;
-
-        // Store base64 data for extraction
+        // Store base64 data for Cloudinary upload
         imageFiles.push({
           original: originalPath, // This contains the base64 data
-          target: targetRelativePath,
+          target: "", // Will be filled with Cloudinary URL
+          index: imageFiles.length,
         });
 
-        return targetRelativePath;
+        // Return placeholder, will be replaced with Cloudinary URL
+        return `CLOUDINARY_PENDING_${imageFiles.length - 1}`;
       }
 
       // Handle external URLs - keep as is
@@ -281,21 +285,15 @@ export class WhisperParser {
       }
 
       // Handle local file paths
-      const fileName = path.basename(originalPath);
-      const ext = path.extname(fileName);
-
-      // Generate new filename with entry ID
-      const timestamp = Date.now();
-      const newFileName = `${entryId}_${timestamp}${ext}`;
-      const targetRelativePath = `${this.IMAGE_BASE_PATH}/${newFileName}`;
-
-      // Store mapping for file copying
+      // sourceDir is always provided now (ZIP-only upload)
       imageFiles.push({
         original: originalPath,
-        target: targetRelativePath,
+        target: "", // Will be filled with Cloudinary URL
+        index: imageFiles.length,
       });
 
-      return targetRelativePath;
+      // Return placeholder, will be replaced with Cloudinary URL
+      return `CLOUDINARY_PENDING_${imageFiles.length - 1}`;
     } catch (error) {
       console.error("Error processing image:", error);
       return null;
@@ -311,77 +309,70 @@ export class WhisperParser {
   }
 
   /**
-   * Extract and save images from base64 data or copy from local paths
+   * Upload images to Cloudinary from base64 data or local file paths
    */
   static async copyImageFiles(
-    imageFiles: Array<{ original: string; target: string }>,
+    imageFiles: Array<{ original: string; target: string; index: number }>,
     sourceDir?: string,
-  ): Promise<{ success: string[]; errors: string[] }> {
+    entryId?: string,
+  ): Promise<{
+    success: string[];
+    errors: string[];
+    urlMap: Map<string, string>;
+  }> {
     const success: string[] = [];
     const errors: string[] = [];
+    const urlMap = new Map<string, string>(); // Maps placeholder to actual Cloudinary URL
 
     for (const file of imageFiles) {
       try {
+        let cloudinaryUrl: string;
+
         // Handle base64 encoded images
         if (file.original.startsWith("data:image/")) {
-          await this.saveBase64Image(file.original, file.target);
-          success.push(file.target);
+          cloudinaryUrl = await uploadBase64Image(
+            file.original,
+            entryId || "unknown",
+            file.index,
+          );
+          success.push(cloudinaryUrl);
+          urlMap.set(`CLOUDINARY_PENDING_${file.index}`, cloudinaryUrl);
         }
-        // Handle external URLs - no need to download, they're referenced directly
+        // Handle external URLs - no need to upload, they're referenced directly
         else if (
           file.original.startsWith("http://") ||
           file.original.startsWith("https://")
         ) {
-          success.push(file.target);
+          success.push(file.original);
         }
-        // Handle local file paths - would need source directory
+        // Handle local file paths - read file and upload to Cloudinary
         else if (sourceDir) {
           const sourcePath = path.join(sourceDir, file.original);
-          const targetPath = path.join(this.PUBLIC_PATH, file.target);
 
-          // Ensure target directory exists
-          await fs.mkdir(path.dirname(targetPath), { recursive: true });
+          // Read the file as buffer
+          const buffer = await fs.readFile(sourcePath);
 
-          // Copy file
-          await fs.copyFile(sourcePath, targetPath);
-          success.push(file.target);
+          // Upload buffer to Cloudinary
+          cloudinaryUrl = await uploadBufferImage(
+            buffer,
+            entryId || "unknown",
+            file.index,
+          );
+          success.push(cloudinaryUrl);
+          urlMap.set(`CLOUDINARY_PENDING_${file.index}`, cloudinaryUrl);
         } else {
           errors.push(
-            `Cannot copy local file without source directory: ${file.original}`,
+            `Cannot process local file without source directory: ${file.original}`,
           );
         }
       } catch (error) {
-        console.error(`Error processing image ${file.original}:`, error);
+        console.error(`Error uploading image ${file.original}:`, error);
         errors.push(
           `${file.original}: ${error instanceof Error ? error.message : String(error)}`,
         );
       }
     }
 
-    return { success, errors };
-  }
-
-  /**
-   * Save base64 encoded image to disk
-   */
-  private static async saveBase64Image(
-    dataUrl: string,
-    targetPath: string,
-  ): Promise<void> {
-    // Extract base64 data
-    const matches = dataUrl.match(/^data:image\/\w+;base64,(.+)$/);
-    if (!matches) {
-      throw new Error("Invalid base64 data URL");
-    }
-
-    const base64Data = matches[1];
-    const buffer = Buffer.from(base64Data, "base64");
-
-    // Ensure target directory exists
-    const fullPath = path.join(this.PUBLIC_PATH, targetPath);
-    await fs.mkdir(path.dirname(fullPath), { recursive: true });
-
-    // Write file
-    await fs.writeFile(fullPath, buffer);
+    return { success, errors, urlMap };
   }
 }

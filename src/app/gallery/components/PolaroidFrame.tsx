@@ -3,7 +3,7 @@
 import { GalleryImage } from "@/types/gallery";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { TAPE_VARIANTS } from "../../contact/constants";
+import { useMemo } from "react";
 import { GALLERY_CONFIG, GALLERY_STYLES } from "../constants";
 import { LazyImage } from "./LazyImage";
 
@@ -13,43 +13,72 @@ interface PolaroidFrameProps {
   tapeColor?: "pink" | "beige" | "blue";
 }
 
-export function PolaroidFrame({
-  image,
-  variant = "tape",
-  tapeColor = "beige",
-}: PolaroidFrameProps) {
+export function PolaroidFrame({ image, variant = "tape" }: PolaroidFrameProps) {
   const aspectRatio = image.height / image.width;
   const frameHeight = Math.min(
     aspectRatio * GALLERY_CONFIG.IMAGE.BASE_SIZE,
     GALLERY_CONFIG.IMAGE.MAX_HEIGHT,
   );
 
-  const tapePosition =
-    GALLERY_CONFIG.TAPE_POSITIONS[
-      Math.floor(Math.random() * GALLERY_CONFIG.TAPE_POSITIONS.length)
-    ];
+  // Generate random rotation for photo
+  const randomRotation = useMemo(
+    () =>
+      Math.random() * GALLERY_CONFIG.ANIMATION.ROTATION_RANGE -
+      GALLERY_CONFIG.ANIMATION.ROTATION_RANGE / 2,
+    [],
+  );
 
-  const randomRotation =
-    Math.random() * GALLERY_CONFIG.ANIMATION.SLIGHT_ROTATION_RANGE -
-    GALLERY_CONFIG.ANIMATION.SLIGHT_ROTATION_RANGE / 2;
+  // Select 2-4 random tapes per photo (mobile: 2, desktop: 3-4)
+  const tapes = useMemo(() => {
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
+    const tapeCount = isMobile ? 2 : Math.floor(Math.random() * 2) + 3; // 2 on mobile, 3-4 on desktop
+    const selectedTapes = [];
+    const usedPositions = new Set<number>();
+
+    for (let i = 0; i < tapeCount; i++) {
+      let posIndex;
+      do {
+        posIndex = Math.floor(
+          Math.random() * GALLERY_CONFIG.TAPE_POSITIONS.length,
+        );
+      } while (usedPositions.has(posIndex));
+
+      usedPositions.add(posIndex);
+
+      selectedTapes.push({
+        src: GALLERY_CONFIG.WASHI_TAPE_VARIANTS[
+          Math.floor(Math.random() * GALLERY_CONFIG.WASHI_TAPE_VARIANTS.length)
+        ],
+        position: GALLERY_CONFIG.TAPE_POSITIONS[posIndex],
+        rotation: Math.random() * 30 - 15, // -15 to +15 degrees
+      });
+    }
+
+    return selectedTapes;
+  }, []);
 
   return (
     <motion.div
-      className="relative group polaroid-hover"
+      className="relative group"
       whileHover={{
-        scale: 1.02,
-        transition: { duration: GALLERY_CONFIG.ANIMATION.DURATION },
+        y: -6,
+        rotate: Math.random() * 2 - 1,
+        transition: {
+          duration: GALLERY_CONFIG.ANIMATION.DURATION,
+          ease: "easeOut",
+        },
       }}
     >
       <div
-        className={GALLERY_STYLES.POLAROID_FRAME}
+        className={GALLERY_STYLES.SCRAPBOOK_PHOTO}
         style={{
           transform: `rotate(${randomRotation}deg)`,
-          filter: "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))",
+          filter: "drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15))",
         }}
       >
+        {/* Photo */}
         <div
-          className="relative overflow-hidden bg-gray-100"
+          className="relative overflow-hidden bg-gray-100 rounded-sm"
           style={{ height: `${frameHeight}px` }}
         >
           <LazyImage
@@ -61,68 +90,58 @@ export function PolaroidFrame({
           />
         </div>
 
-        <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3 right-2 sm:right-3 h-6 sm:h-8 flex items-center justify-center">
-          {image.caption && (
+        {/* Caption below photo */}
+        {image.caption && (
+          <div className="mt-1 sm:mt-2 px-1 flex items-center justify-center min-h-[24px] sm:min-h-[28px]">
             <div
-              className="text-gray-600 text-xs sm:text-sm text-center truncate px-1 sm:px-2"
+              className="text-milktea-700 text-xs sm:text-sm text-center truncate px-1"
               style={{
                 fontFamily: "'Caveat', cursive",
-                fontSize: "clamp(14px, 2vw, 16px)",
-                transform: `rotate(${Math.random() * 4 - 2}deg)`,
+                fontSize: "clamp(13px, 2vw, 15px)",
+                transform: `rotate(${Math.random() * 6 - 3}deg)`,
+                textShadow: "1px 1px 1px rgba(0, 0, 0, 0.1)",
               }}
               title={image.caption}
             >
               {image.caption}
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
-        {variant === "tape" && (
-          <motion.div
-            className="absolute pointer-events-none opacity-90 w-[40px] sm:w-[50px] h-[28px] sm:h-[35px] z-10 tape-shadow"
-            style={{
-              ...tapePosition,
-            }}
-            whileHover={{
-              scale: 1.1,
-              opacity: 1,
-              transition: { duration: 0.2 },
-            }}
-          >
-            <Image
-              src={TAPE_VARIANTS[tapeColor]}
-              alt="tape"
-              width={50}
-              height={35}
-              className="object-contain"
+        {/* Washi tapes - multiple per photo */}
+        {variant === "tape" &&
+          tapes.map((tape, index) => (
+            <div
+              key={index}
+              className="absolute pointer-events-none opacity-85 w-[35px] sm:w-[45px] h-[24px] sm:h-[32px] z-10"
               style={{
-                filter: "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))",
+                ...tape.position,
               }}
-            />
-          </motion.div>
-        )}
+            >
+              <Image
+                src={tape.src}
+                alt="washi tape"
+                width={45}
+                height={32}
+                className="object-contain"
+                style={{
+                  filter: "drop-shadow(0 2px 3px rgba(0, 0, 0, 0.15))",
+                }}
+              />
+            </div>
+          ))}
 
-        {variant === "corner" && (
-          <div
-            className="absolute bottom-0 right-0 w-0 h-0 pointer-events-none"
-            style={{
-              borderLeft: "15px solid transparent",
-              borderTop: "15px solid rgba(0, 0, 0, 0.1)",
-              transform: "rotate(180deg)",
-            }}
-          />
-        )}
-
+        {/* Hover tooltip with location/date */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileHover={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
           className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 translate-y-full
-                     bg-white px-3 py-2 rounded-lg shadow-lg
+                     bg-milktea-50/95 px-3 py-2 rounded-lg shadow-lg
                      opacity-0 group-hover:opacity-100 transition-opacity duration-200
-                     pointer-events-none z-20 whitespace-nowrap"
+                     pointer-events-none z-20 whitespace-nowrap border border-milktea-200"
         >
-          <div className="text-xs text-gray-600 space-y-1">
+          <div className="text-xs text-milktea-700 space-y-1">
             {image.location && (
               <div className="flex items-center gap-1">
                 <span>📍</span>
@@ -141,7 +160,7 @@ export function PolaroidFrame({
             style={{
               borderLeft: "4px solid transparent",
               borderRight: "4px solid transparent",
-              borderBottom: "4px solid white",
+              borderBottom: `4px solid rgba(176, 139, 122, 0.95)`,
             }}
           />
         </motion.div>

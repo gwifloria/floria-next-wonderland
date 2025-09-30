@@ -87,26 +87,18 @@ export function MasonryGallery({
                 key={image.id}
                 initial={{
                   opacity: 0,
-                  scale: 0.8,
-                  rotate: Math.random() * 10 - 5,
+                  y: 20,
                 }}
                 animate={{
                   opacity: 1,
-                  scale: 1,
-                  rotate:
-                    Math.random() * GALLERY_CONFIG.ANIMATION.ROTATION_RANGE -
-                    GALLERY_CONFIG.ANIMATION.ROTATION_RANGE / 2,
+                  y: 0,
                 }}
                 transition={{
                   delay:
                     columnIndex * GALLERY_CONFIG.ANIMATION.STAGGER_DELAY +
                     imageIndex * GALLERY_CONFIG.ANIMATION.IMAGE_DELAY,
                   duration: GALLERY_CONFIG.ANIMATION.LOAD_DURATION,
-                }}
-                whileHover={{
-                  scale: 1.02,
-                  rotate: 0,
-                  transition: { duration: GALLERY_CONFIG.ANIMATION.DURATION },
+                  ease: "easeOut",
                 }}
                 className="cursor-pointer"
               >

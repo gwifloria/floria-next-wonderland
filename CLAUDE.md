@@ -133,6 +133,8 @@ yarn clean:console         # Remove console statements from code
 ### Journal Style Theme
 **IMPORTANT**: This project follows a **journal/notebook aesthetic**, NOT a typical admin dashboard style.
 
+**Design Scope Note**: Hidden routes (e.g., `/travel`) do not need design suggestions unless explicitly requested by the user.
+
 #### Visual Principles:
 - **Color Palette**: Mint green (#72B385) as primary, avoiding default blue
 - **Typography**: Soft, rounded fonts with emotional warmth

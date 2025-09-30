@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import WhisperEntry from "@/app/api/models/WhisperEntry";
 import dbConnect from "@/app/api/lib/mongoose";
 import { WhisperListResponse } from "@/types/whisper";
+import { deleteImagesByUrls } from "@/lib/cloudinary";
 
 export async function GET(request: NextRequest) {
   try {
@@ -104,11 +105,36 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const deletedEntry = await WhisperEntry.findByIdAndDelete(id);
+    // First, find the entry to get image URLs before deletion
+    const entryToDelete = await WhisperEntry.findById(id);
 
-    if (!deletedEntry) {
+    if (!entryToDelete) {
       return NextResponse.json({ error: "Entry not found" }, { status: 404 });
     }
+
+    // Delete associated Cloudinary images (if any)
+    if (entryToDelete.images && entryToDelete.images.length > 0) {
+      try {
+        const result = await deleteImagesByUrls(entryToDelete.images);
+        console.log(
+          `Deleted ${result.deleted.length} images from Cloudinary for entry ${id}`,
+        );
+        if (result.failed.length > 0) {
+          console.warn(
+            `Failed to delete ${result.failed.length} images from Cloudinary`,
+          );
+        }
+      } catch (cloudinaryError) {
+        // Log error but continue with MongoDB deletion
+        console.error(
+          "Error deleting images from Cloudinary:",
+          cloudinaryError,
+        );
+      }
+    }
+
+    // Delete the MongoDB entry
+    await WhisperEntry.findByIdAndDelete(id);
 
     return NextResponse.json({
       success: true,

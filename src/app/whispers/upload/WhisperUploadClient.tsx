@@ -91,7 +91,7 @@ export default function WhisperUploadClient() {
   const uploadProps = {
     name: "file",
     multiple: false,
-    accept: ".html",
+    accept: ".zip",
     beforeUpload: handleUpload,
     showUploadList: false,
   };
@@ -118,19 +118,20 @@ export default function WhisperUploadClient() {
           <div className="bg-gradient-to-br from-milktea-50 to-rose-50 rounded-lg p-6">
             <h3 className="text-milktea-800 mb-4 font-medium">How to Upload</h3>
             <ol className="text-milktea-700 leading-relaxed space-y-2 text-sm">
-              <li>1. Export your flomo data as HTML from the flomo app</li>
-              <li>2. Select the HTML file below to upload and parse</li>
+              <li>1. Export your flomo data from the flomo app (ZIP format)</li>
+              <li>2. Upload the ZIP file below (includes HTML + all images)</li>
               <li>
                 3. The system will automatically extract all entries and content
               </li>
               <li>
-                4. Images embedded in the HTML will be processed automatically
+                4. All images will be uploaded to Cloudinary for optimal
+                performance
               </li>
             </ol>
 
             <Alert
-              message="Direct HTML Upload"
-              description="Simply drag and drop your whisper HTML export file. No need to extract any ZIP files."
+              message="ZIP Format Required"
+              description="Only ZIP files exported from flomo are supported. This ensures all images are properly uploaded to Cloudinary."
               type="info"
               showIcon
               className="mt-4"
@@ -152,10 +153,10 @@ export default function WhisperUploadClient() {
               <p className="ant-upload-text text-milktea-800 text-base font-medium mb-2">
                 {uploading
                   ? "Processing..."
-                  : "Click or drag HTML file to upload"}
+                  : "Click or drag ZIP file to upload"}
               </p>
               <p className="ant-upload-hint text-milktea-600 text-xs">
-                Only HTML files from whisper exports are supported
+                Only ZIP files from flomo exports are supported
               </p>
             </Dragger>
 
