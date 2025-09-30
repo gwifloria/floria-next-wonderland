@@ -39,10 +39,6 @@ export const ResumeWrapper = ({
 }: ResumeWrapperProps) => {
   // 有内容就解析显示，没内容显示静态降级
   if (content) {
-    console.log(
-      "ResumeWrapper: Using dynamic content",
-      content.slice(0, 100) + "...",
-    );
     const { content: markdownContent } = matter(content);
     const { personalInfo, sections } = parseMarkdownContent(markdownContent);
     return (
