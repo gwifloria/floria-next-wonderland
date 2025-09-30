@@ -1,10 +1,11 @@
 "use client";
 
 import { postFetcher } from "@/util/fetch";
-import { FloatButton, message, Popconfirm } from "antd";
+import { FloatButton, Popconfirm } from "antd";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import useSWRMutation from "swr/mutation";
+import { useMessage } from "@/provider/UIProviders";
 
 const ADMIN_EMAIL = "ghuijue@gmail.com";
 
@@ -33,6 +34,7 @@ interface CleanupResult {
 
 export function GalleryAdminPanel() {
   const { data: session } = useSession();
+  const messageApi = useMessage();
   const [authLoading, setAuthLoading] = useState(false);
   const isAdmin = session?.user?.email === ADMIN_EMAIL;
 
@@ -51,10 +53,12 @@ export function GalleryAdminPanel() {
         duration: hasErrors ? 4 : 3,
       };
 
-      hasErrors ? message.warning(messageProps) : message.success(messageProps);
+      hasErrors
+        ? messageApi.warning(messageProps)
+        : messageApi.success(messageProps);
     } else {
       const cleanupResult = result as CleanupResult;
-      message.success({
+      messageApi.success({
         content: `数据库清理完成! 删除了 ${cleanupResult.stats.deletedCount} 张图片`,
         duration: 3,
       });
@@ -70,7 +74,7 @@ export function GalleryAdminPanel() {
       `${operation === "sync" ? "Sync" : "Cleanup"} failed:`,
       error,
     );
-    message.error({
+    messageApi.error({
       content: `${operation === "sync" ? "同步" : "清理"}失败，请检查控制台`,
       duration: 3,
     });

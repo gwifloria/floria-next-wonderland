@@ -1,61 +1,11 @@
 {
   "hooks": {
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "osascript -e 'display notification \"🎉 Claude Code 通知\" with title \"Claude Code\" sound name \"Crystal\"'"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "osascript -e 'display notification \"🎉 完成 Code 通知\" with title \"Claude Code\" sound name \"Crystal\"'"
-          }
-        ]
-      }
-    ],
-    "SubagentStop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo '🤖 [SubagentStop] 子代理停止 - $(date \"+%H:%M:%S\")'"
-          }
-        ]
-      }
-    ],
     "PreCompact": [
       {
         "hooks": [
           {
             "type": "command",
             "command": "echo '📦 [PreCompact] 即将压缩上下文 - $(date \"+%H:%M:%S\")'"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo '🚀 [SessionStart] 会话开始 - $(date \"+%H:%M:%S\")'"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo '👋 [SessionEnd] 会话结束 - $(date \"+%H:%M:%S\")'"
           }
         ]
       }

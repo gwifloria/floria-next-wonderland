@@ -49,6 +49,7 @@ export const UsageGuide = () => {
               Next/React/TS/Express/Mongodb/AntD/Tailwind
             </span>
           </p>
+          <p className="scale-[0.7] text-left">感觉越来越像 qq 空间了……</p>
         </div>
       </div>
     </div>

@@ -75,6 +75,7 @@ yarn clean:console         # Remove console statements from code
 /                    # Homepage with navigation cards
 /blog               # Blog listing and articles with pin support
 /letters            # Message/forum system
+/whispers           # Personal whispers/thoughts timeline (碎碎念)
 /lab                # Projects showcase
 /gallery            # Image gallery with optimization
 /contact            # Contact information and resume
@@ -88,6 +89,7 @@ yarn clean:console         # Remove console statements from code
 ### Database Collections
 - **Lab**: Project/experiment entries
 - **Message**: Forum/letter threading system
+- **WhisperEntry**: Personal whispers/thoughts entries
 - **Github**: Integration for repository data
 - **WebVitals**: Performance monitoring data
 - **Logs**: Error and performance logs
@@ -184,6 +186,170 @@ yarn clean:console         # Remove console statements from code
 </Popover>
 ```
 
+### UIProvider Pattern (REQUIRED):
+**IMPORTANT**: Always use the project's `UIProvider` hooks for Ant Design's message and modal APIs.
+
+#### ❌ **NEVER** use direct imports:
+```tsx
+import { message, Modal } from "antd";
+
+// DON'T do this:
+Modal.confirm({ ... });
+message.success("Operation completed");
+```
+
+#### ✅ **ALWAYS** use UIProvider hooks:
+```tsx
+import { useMessage, useModal } from "@/provider/UIProviders";
+
+function MyComponent() {
+  const messageApi = useMessage();
+  const modalApi = useModal();
+
+  const handleAction = () => {
+    modalApi.confirm({
+      title: "Are you sure?",
+      onOk: () => {
+        messageApi.success("Operation completed");
+      },
+    });
+  };
+
+  return <button onClick={handleAction}>Action</button>;
+}
+```
+
+#### Alternative Pattern (also valid):
+```tsx
+import { App } from "antd";
+
+function MyComponent() {
+  const { message, modal } = App.useApp();
+
+  // Use message and modal as needed
+}
+```
+
+**Why?** Using UIProvider ensures proper React context setup and prevents console warnings about static method usage. It also provides better control over notification positioning and styling.
+
+## Type System Best Practices
+
+### Core Principles
+**IMPORTANT**: This project uses a layered type system to minimize duplication and maintain consistency between database models, API responses, and frontend types.
+
+### Type Utility Wrappers
+Located in `/src/types/common.ts`:
+
+```typescript
+// Database documents (MongoDB) - adds _id field
+export type WithDbId<T> = T & { _id: string };
+
+// API responses - adds id field (converted from _id)
+export type WithApiId<T> = T & { id: string };
+
+// Common timestamp fields for all database models
+export interface TimestampBase {
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Standardized API response wrapper
+export interface ApiResponse<T = any> {
+  success?: boolean;
+  message?: string;
+  data?: T;
+  error?: string;
+  details?: string[];
+}
+```
+
+### Design Pattern (Follow this for ALL features)
+
+#### ✅ **CORRECT Pattern** - Reference: `/src/types/whisper.ts`
+
+```typescript
+// 1. Define core type with shared fields
+export interface WhisperEntryCore extends TimestampBase {
+  timestamp: Date;
+  content: string;
+  images: string[];
+  tags: string[];
+  source: string;
+  visibility: "public" | "private";
+}
+
+// 2. Database type - add _id via wrapper
+export type WhisperEntryDb = WithDbId<WhisperEntryCore>;
+
+// 3. API response type - add id via wrapper
+export type WhisperEntryApi = WithApiId<WhisperEntryCore>;
+
+// 4. Specialized types as needed
+export interface WhisperListResponse {
+  data: WhisperEntryApi[];
+  pagination: { ... };
+  filters: { ... };
+}
+```
+
+#### ❌ **WRONG Pattern** - DO NOT do this:
+
+```typescript
+// BAD: Duplicating fields across types
+export interface WhisperDb {
+  _id: string;
+  timestamp: Date;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+  // ... duplicate fields
+}
+
+export interface WhisperApi {
+  id: string;
+  timestamp: Date;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+  // ... duplicate fields again!
+}
+```
+
+### Model → API Conversion Pattern
+
+In API routes, convert database documents to API responses:
+
+```typescript
+// In your API route
+import WhisperEntry from "@/app/api/models/WhisperEntry";
+import { WhisperEntryApi } from "@/types/whisper";
+
+const entries = await WhisperEntry.find().lean({ virtuals: true });
+
+// Mongoose virtual 'id' automatically converts _id
+const apiEntries: WhisperEntryApi[] = entries.map(entry => ({
+  id: entry.id,  // virtual getter from _id
+  timestamp: entry.timestamp,
+  content: entry.content,
+  // ... other fields
+}));
+```
+
+### Guidelines
+
+1. **Define once, extend everywhere** - Core types should contain all shared fields
+2. **Use wrappers for IDs** - `WithDbId` for MongoDB, `WithApiId` for API responses
+3. **Inherit timestamps** - All database models extend `TimestampBase`
+4. **API responses** - Wrap data with `ApiResponse<T>` for consistency
+5. **No duplication** - If you copy-paste field definitions, you're doing it wrong
+6. **Reference examples** - Look at `whisper.ts`, `lab.d.ts`, `letter.d.ts` for patterns
+
+### Benefits
+- **Single source of truth** - Change a field once, updates everywhere
+- **Type safety** - TypeScript catches mismatches between layers
+- **Maintainability** - Easy to add new fields or modify existing ones
+- **Consistency** - API contracts match database schemas
+
 ## Git Workflow
 - Main branch: `main`
 - Development branch: `dev`
@@ -210,10 +376,14 @@ yarn clean:console         # Remove console statements from code
 # Public APIs
 /api/posts/*           # Blog post management
 /api/letters/*         # Forum/messaging system
+/api/whispers/list     # Whisper entries list (GET: public, DELETE: admin)
+/api/whispers/stats    # Whisper statistics (GET: public)
 /api/lab/*             # Lab project operations
 /api/gallery/*         # Gallery management
 
 # Admin APIs (require authentication)
+/api/whispers/upload   # Upload whisper HTML exports
+/api/whispers/clear    # Clear all whisper entries
 /api/monitoring/*      # Performance monitoring data
 ```
 

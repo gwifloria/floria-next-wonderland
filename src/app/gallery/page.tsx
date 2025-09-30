@@ -1,5 +1,6 @@
 "use client";
 
+import AntDShell from "@/provider/AntDShell";
 import { SWRShell } from "@/provider/SWRShell";
 import { GalleryApiResponse, GalleryImage } from "@/types/gallery";
 import { motion } from "framer-motion";
@@ -16,9 +17,11 @@ import { formatGalleryImages } from "./utils";
 
 export default function GalleryPage() {
   return (
-    <SWRShell>
-      <Gallery></Gallery>
-    </SWRShell>
+    <AntDShell>
+      <SWRShell>
+        <Gallery></Gallery>
+      </SWRShell>
+    </AntDShell>
   );
 }
 function Gallery() {
