@@ -68,46 +68,57 @@ export default function WhisperTimelineClient() {
 
   return (
     <main className="relative max-w-4xl mx-auto px-4 py-8">
-      {/* Background layers - dual-layer journal aesthetic */}
-      {/* Layer 1: Crumpled kraft paper texture (base) */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.20] z-1">
-        <Image src="/images/niupizhi-bg-cropped.png" alt="" fill priority />
+      {/* Layer 2: Notebook journal spread (decorative focal point) */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.2] -z-10 flex items-center justify-center">
+        <Image
+          src="/images/blue-beach.png"
+          alt=""
+          fill
+          className="scale-150 md:scale-125 lg:scale-150 opacity-70"
+        />
       </div>
 
-      {/* Layer 2: Notebook journal spread (decorative focal point) */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.18] -z-10 flex items-center justify-center">
+      {/* Left side beach decoration */}
+      <div className="fixed left-4 top-1/4 pointer-events-none opacity-50 -z-10 hidden lg:block">
         <Image
-          src="/images/pintie.png"
+          src="/images/blue-billboard.png"
           alt=""
-          width={800}
-          height={600}
-          style={{
-            objectFit: "contain",
-            mixBlendMode: "multiply",
-          }}
-          className="scale-150 md:scale-125 lg:scale-150 opacity-70"
+          width={180}
+          height={240}
+          className="-rotate-12"
+          style={{ objectFit: "contain" }}
+        />
+      </div>
+
+      {/* Right side beach decoration */}
+      <div className="fixed right-12 top-1/3 pointer-events-none opacity-30 -z-10 hidden lg:block">
+        <Image
+          src="/images/sea-dream-catcher.png"
+          alt=""
+          width={160}
+          height={220}
+          className="rotate-6"
+          style={{ objectFit: "contain" }}
         />
       </div>
 
       {/* Header */}
       <header className="relative flex flex-col gap-2 mb-8">
-        {/* Left top decoration - envelope */}
+        {/* Left top decoration - sea star */}
         <div className="absolute -left-2 -top-4 w-16 h-16 rotate-12 opacity-60 pointer-events-none">
-          <Image src="/images/env-small.png" alt="" fill />
+          <Image src="/images/sea-star.png" alt="" fill />
         </div>
 
-        {/* Right top decoration - daisy */}
-        <div className="absolute -right-3 -top-6 w-20 h-20 -rotate-6 opacity-50 pointer-events-none">
-          <Image src="/images/daisy-flower-single.png" alt="" fill />
+        {/* Right top decoration - island silhouette */}
+        <div className="absolute -right-3 -top-6 w-24 h-20 -rotate-6 opacity-50 pointer-events-none">
+          <Image src="/images/island-white-hengfu.png" alt="" fill />
         </div>
 
         {/* Header content with backdrop */}
-        <div className="relative z-10 bg-white/80 backdrop-blur-sm rounded-xl p-4 border-2 border-dashed border-milktea-200">
+        <div className="relative z-10 bg-sand-50/70 backdrop-blur-sm rounded-xl p-4 border-2 border-dashed border-sand-300">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-semibold text-milktea-800">
-                Whispers
-              </h1>
+              <h1 className="text-xl font-semibold text-sand-800">Whispers</h1>
               <PageIntro>
                 <WhisperTechDetails />
               </PageIntro>
@@ -123,9 +134,15 @@ export default function WhisperTimelineClient() {
                   placeholder="Search whispers..."
                   allowClear
                   onSearch={handleSearch}
-                  style={{ width: 200 }}
+                  style={{
+                    width: 200,
+                    fontFamily: "'Caveat', cursive",
+                  }}
                   size="small"
-                  className="rounded-lg"
+                  className="rounded-lg whisper-search-input"
+                  classNames={{
+                    input: "font-handwritten",
+                  }}
                 />
               </div>
 
@@ -138,7 +155,7 @@ export default function WhisperTimelineClient() {
               <Tag
                 closable
                 onClose={() => setSelectedTag(null)}
-                className="bg-milktea-500 text-white border-milktea-500"
+                className="bg-rose-100 text-rose-600 border-rose-200"
               >
                 #{selectedTag}
               </Tag>
@@ -147,7 +164,7 @@ export default function WhisperTimelineClient() {
 
           {/* Stats as footnote */}
           {stats && (
-            <div className="text-[10px] text-milktea-400 opacity-60">
+            <div className="text-[10px] text-nepal-400 opacity-60">
               {stats.overview.totalEntries} entries /{" "}
               {stats.overview.totalWithImages} with images /{" "}
               {stats.overview.totalTags} tags
@@ -182,20 +199,20 @@ export default function WhisperTimelineClient() {
             {/* Timeline */}
             <div className="relative">
               {/* Vertical timeline line - dashed style */}
-              <div className="absolute left-6 top-0 bottom-0 w-px border-l-2 border-dashed border-milktea-300"></div>
+              <div className="absolute left-6 top-0 bottom-0 w-px border-l-2 border-dashed border-nepal-200/50"></div>
 
               <div className="space-y-6">
                 {data.data.map((entry, index) => (
                   <div key={entry.id} className="relative">
-                    {/* Timeline side decorations - appear occasionally */}
+                    {/* Timeline side decorations - sea theme */}
                     {index % 7 === 0 && (
                       <div className="absolute -left-8 top-4 w-12 h-12 opacity-40 rotate-12 pointer-events-none">
-                        <Image src="/images/note-rose.png" alt="" fill />
+                        <Image src="/images/blue-heart.png" alt="" fill />
                       </div>
                     )}
                     {index % 5 === 2 && (
                       <div className="absolute -left-10 top-2 w-14 h-14 opacity-30 -rotate-6 pointer-events-none">
-                        <Image src="/images/orange-flowers.png" alt="" fill />
+                        <Image src="/images/white-shell.png" alt="" fill />
                       </div>
                     )}
                     {index % 6 === 4 && (
@@ -205,7 +222,7 @@ export default function WhisperTimelineClient() {
                     )}
                     {index % 8 === 1 && (
                       <div className="absolute -left-8 top-8 w-11 h-11 opacity-40 -rotate-12 pointer-events-none">
-                        <Image src="/images/music-blue.png" alt="" fill />
+                        <Image src="/images/sea-star.png" alt="" fill />
                       </div>
                     )}
 
@@ -241,23 +258,23 @@ export default function WhisperTimelineClient() {
 
       {/* Bottom decoration layer */}
       <div className="relative mt-16 mb-8 h-32">
-        {/* Pencils scattered */}
-        <div className="absolute bottom-0 left-[10%] w-32 h-32 opacity-40 -rotate-12 pointer-events-none">
-          <Image src="/images/pencils.png" alt="" fill />
+        {/* Left - sea star */}
+        <div className="absolute bottom-0 left-[10%] w-24 h-24 opacity-40 -rotate-12 pointer-events-none">
+          <Image src="/images/hailuo.png" alt="" fill />
         </div>
 
-        {/* Dog sticker */}
-        <div className="absolute bottom-0 right-[15%] w-24 h-24 opacity-50 rotate-6 pointer-events-none">
-          <Image src="/images/dog.png" alt="" fill />
+        {/* Center - island silhouette */}
+        <div className="absolute bottom-12 left-[50%] -translate-x-1/2 w-32 h-20 opacity-35 pointer-events-none">
+          <Image src="/images/island-white-hengfu.png" alt="" fill />
         </div>
 
-        {/* Daisy basket */}
-        <div className="absolute bottom-12 left-[50%] -translate-x-1/2 w-28 h-28 opacity-35 pointer-events-none">
-          <Image src="/images/daisy-basket.png" alt="" fill />
+        {/* Right - summer night (keep for dreamy feel) */}
+        <div className="absolute bottom-2 right-[5%] w-28 h-28 opacity-35 pointer-events-none">
+          <Image src="/images/summer-night.png" alt="" fill />
         </div>
 
         {/* Bottom dashed line */}
-        <div className="absolute bottom-0 w-full border-b-2 border-dashed border-milktea-200 opacity-50"></div>
+        <div className="absolute bottom-0 w-full border-b-2 border-dashed border-sand-200 opacity-50"></div>
       </div>
     </main>
   );

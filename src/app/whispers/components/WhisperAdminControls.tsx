@@ -65,7 +65,7 @@ export default function WhisperAdminControls({
           type="primary"
           icon={<UploadOutlined />}
           size="small"
-          className="bg-milktea-500 hover:bg-milktea-600 border-milktea-500 hover:border-milktea-600"
+          className="bg-nepal-500 hover:bg-nepal-600 border-nepal-500 hover:border-nepal-600"
         >
           Upload
         </Button>
@@ -75,7 +75,7 @@ export default function WhisperAdminControls({
         icon={<ClearOutlined />}
         onClick={handleClearAll}
         size="small"
-        className="border-rose-300 text-rose-600 hover:border-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100"
+        className="border-rose-400 text-rose-600 hover:border-rose-500 hover:text-rose-700 bg-rose-100 hover:bg-rose-200"
       >
         Clear
       </Button>

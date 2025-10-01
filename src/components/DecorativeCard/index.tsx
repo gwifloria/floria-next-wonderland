@@ -47,7 +47,7 @@ export default function DecorativeCard({
 
   return (
     <article
-      className={`relative group rounded-2xl border border-dashed border-rose-200 bg-[#FFFDF9] shadow-[0_1px_0_rgba(0,0,0,0.04)] p-4 ${className}`}
+      className={`relative group rounded-2xl border border-dashed border-sand-300 bg-sand-50/60 backdrop-blur-sm shadow-[0_1px_0_rgba(0,0,0,0.04)] p-4 ${className}`}
     >
       {/* Decoration: washi tape or small icon */}
       {decorationType === 0 ? (
@@ -111,7 +111,7 @@ export default function DecorativeCard({
       )}
 
       {/* Content */}
-      <div className="prose prose-sm max-w-none leading-relaxed text-neutral-700">
+      <div className="prose prose-sm max-w-none leading-relaxed text-sand-800">
         {typeof content === "string" ? (
           <div dangerouslySetInnerHTML={{ __html: content }} />
         ) : (

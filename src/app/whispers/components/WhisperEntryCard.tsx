@@ -1,6 +1,7 @@
 "use client";
 
 import DecorativeCard from "@/components/DecorativeCard";
+import { isAdminUser } from "@/constants/auth";
 import { useMessage, useModal } from "@/provider/UIProviders";
 import { WhisperEntryApi } from "@/types/whisper";
 import { fmtDateTime } from "@/util/date";
@@ -8,7 +9,6 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { Button, Tag } from "antd";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { isAdminUser } from "@/constants/auth";
 
 interface WhisperEntryCardProps {
   entry: WhisperEntryApi;
@@ -68,15 +68,15 @@ export default function WhisperEntryCard({
   return (
     <div className="relative pl-16">
       {/* Timeline marker - positioned to align with the vertical line */}
-      <div className="absolute left-[19px] top-4 w-[14px] h-[14px] bg-gradient-to-br from-milktea-400 to-milktea-500 border-[3px] border-white rounded-full shadow-sm z-10"></div>
+      <div className="absolute left-[19px] top-4 w-[14px] h-[14px] bg-gradient-to-br from-nepal-400 to-nepal-500 border-[3px] border-white rounded-full shadow-sm z-10"></div>
 
       {/* Decorative card - only manages card styling */}
       <DecorativeCard
         id={entry.id}
         className="hover:shadow-md transition-all duration-200 hover:-translate-y-1"
         renderHeader={() => (
-          <div className="flex justify-between items-center mb-3 pb-2 border-b border-rose-100">
-            <time className="text-xs text-rose-700 font-medium">
+          <div className="flex justify-between items-center mb-3 pb-2 border-b border-nepal-100">
+            <time className="text-xs text-nepal-600 font-medium">
               {fmtDateTime(entry.timestamp.toString())}
             </time>
             {isAdmin && (
@@ -113,7 +113,7 @@ export default function WhisperEntryCard({
                 {entry.images.map((image, imgIndex) => (
                   <div
                     key={imgIndex}
-                    className="relative rounded-lg overflow-hidden border border-rose-100 shadow-sm"
+                    className="relative rounded-lg overflow-hidden border border-sand-200 shadow-sm"
                   >
                     <Image
                       src={image}

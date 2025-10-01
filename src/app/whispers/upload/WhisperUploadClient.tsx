@@ -100,24 +100,24 @@ export default function WhisperUploadClient() {
     <AntDShell>
       <main className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
-        <header className="flex items-center gap-4 mb-8 pb-4 border-b-2 border-milktea-100">
+        <header className="flex items-center gap-4 mb-8 pb-4 border-b-2 border-nepal-100">
           <Link
             href="/whispers"
-            className="flex items-center gap-2 text-xs px-4 py-2 border border-milktea-300 rounded-lg hover:bg-milktea-100 transition-all duration-200 hover:-translate-x-1 no-underline"
+            className="flex items-center gap-2 text-xs px-4 py-2 border border-nepal-300 rounded-lg hover:bg-nepal-50 transition-all duration-200 hover:-translate-x-1 no-underline"
           >
             <ArrowLeftOutlined />
             Back to Whispers
           </Link>
-          <h1 className="text-2xl font-semibold text-milktea-800">
+          <h1 className="text-2xl font-semibold text-nepal-800">
             Upload Whisper Export
           </h1>
         </header>
 
         {/* Instructions */}
-        <Card className="mb-8 border-milktea-200 shadow-sm">
-          <div className="bg-gradient-to-br from-milktea-50 to-rose-50 rounded-lg p-6">
-            <h3 className="text-milktea-800 mb-4 font-medium">How to Upload</h3>
-            <ol className="text-milktea-700 leading-relaxed space-y-2 text-sm">
+        <Card className="mb-8 border-nepal-200 shadow-sm">
+          <div className="bg-gradient-to-br from-nepal-50 to-sand-50 rounded-lg p-6">
+            <h3 className="text-nepal-800 mb-4 font-medium">How to Upload</h3>
+            <ol className="text-nepal-700 leading-relaxed space-y-2 text-sm">
               <li>1. Export your flomo data from the flomo app (ZIP format)</li>
               <li>2. Upload the ZIP file below (includes HTML + all images)</li>
               <li>
@@ -140,22 +140,22 @@ export default function WhisperUploadClient() {
         </Card>
 
         {/* Upload Area */}
-        <Card className="mb-8 border-milktea-200 shadow-sm">
-          <div className="bg-gradient-to-br from-white to-milktea-50 rounded-lg p-8">
+        <Card className="mb-8 border-nepal-200 shadow-sm">
+          <div className="bg-gradient-to-br from-white to-nepal-50 rounded-lg p-8">
             <Dragger
               {...uploadProps}
-              className="border-milktea-300 bg-gradient-to-br from-milktea-50 to-rose-50 hover:border-milktea-500 hover:bg-gradient-to-br hover:from-rose-50 hover:to-milktea-100"
+              className="border-nepal-300 bg-gradient-to-br from-nepal-50 to-sand-50 hover:border-nepal-500 hover:bg-gradient-to-br hover:from-sand-50 hover:to-nepal-100"
               disabled={uploading}
             >
-              <p className="ant-upload-drag-icon text-milktea-500 text-4xl mb-4">
+              <p className="ant-upload-drag-icon text-nepal-500 text-4xl mb-4">
                 <InboxOutlined />
               </p>
-              <p className="ant-upload-text text-milktea-800 text-base font-medium mb-2">
+              <p className="ant-upload-text text-nepal-800 text-base font-medium mb-2">
                 {uploading
                   ? "Processing..."
                   : "Click or drag ZIP file to upload"}
               </p>
-              <p className="ant-upload-hint text-milktea-600 text-xs">
+              <p className="ant-upload-hint text-nepal-600 text-xs">
                 Only ZIP files from flomo exports are supported
               </p>
             </Dragger>
@@ -166,9 +166,9 @@ export default function WhisperUploadClient() {
                   percent={100}
                   status="active"
                   showInfo={false}
-                  strokeColor="#b08b7a"
+                  strokeColor="#537687"
                 />
-                <p className="mt-3 text-milktea-600 text-xs">
+                <p className="mt-3 text-nepal-600 text-xs">
                   Parsing whisper entries and processing content...
                 </p>
               </div>
@@ -191,46 +191,46 @@ export default function WhisperUploadClient() {
 
         {/* Results Display */}
         {result && (
-          <Card className="border-milktea-200 shadow-md">
-            <div className="bg-gradient-to-br from-milktea-50 to-rose-50 rounded-lg p-6">
+          <Card className="border-nepal-200 shadow-md">
+            <div className="bg-gradient-to-br from-nepal-50 to-sand-50 rounded-lg p-6">
               <div className="flex items-center gap-4 mb-6">
-                <CheckCircleOutlined className="text-milktea-600 text-xl" />
-                <h2 className="text-milktea-800 text-lg font-semibold">
+                <CheckCircleOutlined className="text-nepal-600 text-xl" />
+                <h2 className="text-nepal-800 text-lg font-semibold">
                   Upload Complete!
                 </h2>
               </div>
 
               {/* Summary */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                <div className="flex flex-col items-center p-4 bg-white/80 border border-milktea-150 rounded-xl shadow-sm">
-                  <span className="text-xl font-bold text-milktea-600 mb-1">
+                <div className="flex flex-col items-center p-4 bg-white/80 border border-nepal-200 rounded-xl shadow-sm">
+                  <span className="text-xl font-bold text-nepal-600 mb-1">
                     {result.summary.totalParsed}
                   </span>
-                  <span className="text-xs text-milktea-700 font-medium">
+                  <span className="text-xs text-nepal-700 font-medium">
                     Total Parsed
                   </span>
                 </div>
-                <div className="flex flex-col items-center p-4 bg-white/80 border border-milktea-150 rounded-xl shadow-sm">
-                  <span className="text-xl font-bold text-milktea-600 mb-1">
+                <div className="flex flex-col items-center p-4 bg-white/80 border border-nepal-200 rounded-xl shadow-sm">
+                  <span className="text-xl font-bold text-nepal-600 mb-1">
                     {result.summary.saved}
                   </span>
-                  <span className="text-xs text-milktea-700 font-medium">
+                  <span className="text-xs text-nepal-700 font-medium">
                     Saved
                   </span>
                 </div>
-                <div className="flex flex-col items-center p-4 bg-white/80 border border-milktea-150 rounded-xl shadow-sm">
-                  <span className="text-xl font-bold text-milktea-600 mb-1">
+                <div className="flex flex-col items-center p-4 bg-white/80 border border-nepal-200 rounded-xl shadow-sm">
+                  <span className="text-xl font-bold text-nepal-600 mb-1">
                     {result.summary.duplicates}
                   </span>
-                  <span className="text-xs text-milktea-700 font-medium">
+                  <span className="text-xs text-nepal-700 font-medium">
                     Duplicates
                   </span>
                 </div>
-                <div className="flex flex-col items-center p-4 bg-white/80 border border-milktea-150 rounded-xl shadow-sm">
-                  <span className="text-xl font-bold text-milktea-600 mb-1">
+                <div className="flex flex-col items-center p-4 bg-white/80 border border-nepal-200 rounded-xl shadow-sm">
+                  <span className="text-xl font-bold text-nepal-600 mb-1">
                     {result.summary.errors}
                   </span>
-                  <span className="text-xs text-milktea-700 font-medium">
+                  <span className="text-xs text-nepal-700 font-medium">
                     Errors
                   </span>
                 </div>
@@ -246,16 +246,16 @@ export default function WhisperUploadClient() {
                     key: "saved",
                     label: `Saved Entries (${result.details.savedEntries.length})`,
                     className:
-                      "bg-blue-50/50 rounded-lg mb-2 border border-blue-100",
+                      "bg-nepal-50/50 rounded-lg mb-2 border border-nepal-200",
                     children: (
                       <div className="bg-white/50 rounded-lg p-2 space-y-3">
                         {result.details.savedEntries.map((entry) => (
                           <div
                             key={entry.id}
-                            className="p-3 border border-blue-100 rounded-lg bg-white/80"
+                            className="p-3 border border-nepal-200 rounded-lg bg-white/80"
                           >
                             <div className="flex justify-between items-center mb-2">
-                              <span className="text-xs text-blue-600 font-medium">
+                              <span className="text-xs text-nepal-600 font-medium">
                                 {entry.timestamp}
                               </span>
                               <Tag color="success">Saved</Tag>
@@ -332,10 +332,10 @@ export default function WhisperUploadClient() {
                     key: "images",
                     label: `Content Processing (${result.details.imageFiles.processed} images found)`,
                     className:
-                      "bg-indigo-50/50 rounded-lg mb-2 border border-indigo-100",
+                      "bg-rose-50/50 rounded-lg mb-2 border border-rose-200",
                     children: (
                       <div className="bg-white/50 rounded-lg p-4">
-                        <div className="space-y-2 text-sm text-indigo-700">
+                        <div className="space-y-2 text-sm text-rose-700">
                           <p>
                             Images found: {result.details.imageFiles.processed}
                           </p>
@@ -377,7 +377,7 @@ export default function WhisperUploadClient() {
                   <Button
                     type="primary"
                     size="large"
-                    className="bg-milktea-500 hover:bg-milktea-600 border-milktea-500 hover:border-milktea-600"
+                    className="bg-nepal-500 hover:bg-nepal-600 border-nepal-500 hover:border-nepal-600"
                   >
                     View Timeline
                   </Button>
@@ -388,7 +388,7 @@ export default function WhisperUploadClient() {
                     setError(null);
                   }}
                   size="large"
-                  className="border-milktea-300 text-milktea-600 hover:border-milktea-600 hover:text-milktea-700 bg-milktea-50 hover:bg-milktea-100"
+                  className="border-rose-300 text-rose-600 hover:border-rose-500 hover:text-rose-700 bg-rose-50 hover:bg-rose-100"
                 >
                   Upload Another
                 </Button>

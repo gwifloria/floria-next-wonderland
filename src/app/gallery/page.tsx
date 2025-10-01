@@ -4,6 +4,7 @@ import AntDShell from "@/provider/AntDShell";
 import { SWRShell } from "@/provider/SWRShell";
 import { GalleryApiResponse, GalleryImage } from "@/types/gallery";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import useSWR from "swr";
 import { HandwrittenTitle } from "../contact/components/ScrapbookCard";
@@ -12,7 +13,6 @@ import { BackToTop } from "./components/BackToTop";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 import { MasonryGallery } from "./components/MasonryGallery";
 import { GALLERY_CONFIG, GALLERY_STYLES } from "./constants";
-import "./styles.css";
 import { formatGalleryImages } from "./utils";
 
 export default function GalleryPage() {
@@ -62,18 +62,39 @@ function Gallery() {
   }
 
   return (
-    <div className={`${GALLERY_STYLES.CONTAINER} gallery-container relative`}>
+    <div
+      className={`${GALLERY_STYLES.CONTAINER} relative [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-milktea-100/10 [&::-webkit-scrollbar-track]:rounded [&::-webkit-scrollbar-thumb]:bg-milktea-300/30 [&::-webkit-scrollbar-thumb]:rounded [&::-webkit-scrollbar-thumb:hover]:bg-milktea-500/50`}
+    >
       {/* Notebook background - large scrapbook aesthetic */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.12] -z-10">
-        <motion.img
+      <motion.div
+        className="fixed inset-0 pointer-events-none -z-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.25 }}
+        transition={{ duration: 1.2 }}
+      >
+        <Image
           src="/images/notebook.png"
           alt=""
-          className="w-full h-full object-cover"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.2 }}
+          fill
+          className="object-cover"
+          priority
         />
-      </div>
+      </motion.div>
+
+      {/* Additional paper texture overlay to reduce whiteness */}
+      <motion.div
+        className="fixed inset-0 pointer-events-none -z-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.08 }}
+        transition={{ duration: 1.5 }}
+      >
+        <Image
+          src="/images/paper-beige-texture.png"
+          alt=""
+          fill
+          className="object-cover"
+        />
+      </motion.div>
 
       <motion.div
         initial={{ opacity: 0, y: -30 }}
@@ -85,7 +106,7 @@ function Gallery() {
           size="xl"
           className="text-rose-700 mb-4 text-2xl sm:text-3xl lg:text-4xl"
         >
-          📸 My Gallery
+          My Gallery
         </HandwrittenTitle>
         <motion.p
           initial={{ opacity: 0 }}
@@ -96,7 +117,7 @@ function Gallery() {
         ></motion.p>
       </motion.div>
 
-      <div className="px-3 sm:px-6 pb-16 sm:pb-20 masonry-container">
+      <div className="px-3 sm:px-4 md:px-5 lg:px-6 pb-16 sm:pb-20">
         <MasonryGallery
           images={images}
           onLoadMore={loadMore}

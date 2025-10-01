@@ -92,7 +92,7 @@ export default function JournalPagination({
   return (
     <div className="flex flex-col items-center gap-4 py-6 px-24 relative">
       {/* Background decoration using pagination.png */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-28 opacity-75 pointer-events-none z-0">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-28 opacity-50 pointer-events-none z-0">
         <Image src="/images/pagination.png" alt="" fill priority={false} />
       </div>
 

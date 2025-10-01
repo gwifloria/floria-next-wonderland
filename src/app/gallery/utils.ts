@@ -11,7 +11,6 @@ export const formatGalleryImages = (
       alt: item.name,
       width: GALLERY_CONFIG.IMAGE.DEFAULT_WIDTH,
       height: GALLERY_CONFIG.IMAGE.DEFAULT_HEIGHT,
-      caption: item.name.replace(GALLERY_CONFIG.IMAGE_EXTENSIONS, ""),
     }),
   );
 };

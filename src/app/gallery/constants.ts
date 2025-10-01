@@ -91,9 +91,6 @@ export const GALLERY_CONFIG = {
     },
   ],
 
-  // 文件扩展名匹配
-  IMAGE_EXTENSIONS: /\.(jpg|jpeg|png|gif|webp|svg|bmp|ico|avif)$/i,
-
   // Back to top配置
   BACK_TO_TOP: {
     SHOW_THRESHOLD: 300,
@@ -102,11 +99,8 @@ export const GALLERY_CONFIG = {
 
 // CSS类名常量
 export const GALLERY_STYLES = {
-  CONTAINER:
-    "min-h-screen bg-gradient-to-br from-milktea-50 via-rose-50 to-milktea-100",
+  CONTAINER: "min-h-screen ",
   FONT_FAMILY: "'Caveat', cursive",
-  SCRAPBOOK_PHOTO:
-    "relative bg-milktea-50/60 p-1.5 sm:p-2 shadow-lg transform scrapbook-photo",
   LOADING_GRADIENT: "bg-gradient-to-br from-milktea-100 to-rose-100",
   ERROR_GRADIENT: "bg-gradient-to-br from-gray-100 to-gray-200",
 } as const;

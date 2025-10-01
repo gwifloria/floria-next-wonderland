@@ -1,5 +1,5 @@
 import AntDShell from "@/provider/AntDShell";
-import { EmptyState } from "./components/BlogSkelton";
+import { EmptyState } from "./components/EmptyState";
 
 export default function BlogIndex() {
   return (
