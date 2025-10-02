@@ -1,67 +1,109 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export function LoadingSpinner() {
   return (
-    <div className="flex flex-col items-center justify-center gap-6">
-      {/* 主要加载动画 */}
-      <div className="relative">
-        {/* 外圈旋转的相机图标 */}
+    <div className="flex flex-col items-center justify-center gap-6 py-12">
+      {/* Scrapbook-style loading: wobbling photo stack */}
+      <div className="relative w-32 h-32">
+        {/* Bottom photo - slightly rotated */}
         <motion.div
-          animate={{ rotate: 360 }}
+          animate={{
+            rotate: [5, 7, 5],
+            y: [0, -2, 0],
+          }}
           transition={{
             duration: 2,
             repeat: Infinity,
-            ease: "linear",
+            ease: "easeInOut",
           }}
-          className="w-16 h-16 border-4 border-rose-200 border-t-rose-500 rounded-full"
+          className="absolute inset-0 bg-milktea-100 rounded-sm shadow-md border-4 border-milktea-50"
+          style={{ transform: "rotate(5deg)" }}
         />
 
-        {/* 中心的相机图标 */}
+        {/* Middle photo - opposite rotation */}
         <motion.div
-          initial={{ scale: 0.8, opacity: 0.6 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{
-            duration: 1,
-            repeat: Infinity,
-            repeatType: "reverse",
+          animate={{
+            rotate: [-3, -5, -3],
+            y: [0, -3, 0],
           }}
-          className="absolute inset-0 flex items-center justify-center text-2xl"
+          transition={{
+            duration: 2.2,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 0.3,
+          }}
+          className="absolute inset-0 bg-rose-100 rounded-sm shadow-lg border-4 border-rose-50"
+          style={{ transform: "rotate(-3deg)" }}
+        />
+
+        {/* Top photo - with notebook icon */}
+        <motion.div
+          animate={{
+            rotate: [2, 0, 2],
+            y: [0, -4, 0],
+          }}
+          transition={{
+            duration: 2.4,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 0.6,
+          }}
+          className="absolute inset-0 bg-milktea-50 rounded-sm shadow-xl border-4 border-white flex items-center justify-center"
+          style={{ transform: "rotate(2deg)" }}
         >
-          📸
+          <div className="relative w-16 h-16 opacity-40">
+            <Image
+              src="/images/notebook.png"
+              alt=""
+              fill
+              style={{ objectFit: "contain" }}
+            />
+          </div>
         </motion.div>
       </div>
 
-      {/* 加载文本 */}
+      {/* Handwritten loading text */}
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.6 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0.6, 1, 0.6] }}
+        transition={{
+          duration: 1.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
         className="text-center"
       >
         <div
-          className="text-xl text-rose-600 mb-2"
+          className="text-xl text-milktea-700"
           style={{ fontFamily: "'Caveat', cursive" }}
         >
-          Loading...
+          Loading memories...
         </div>
       </motion.div>
 
-      {/* 装饰性的小点 */}
-      <div className="flex gap-2">
+      {/* Hand-drawn dots */}
+      <div className="flex gap-3">
         {[0, 1, 2].map((index) => (
           <motion.div
             key={index}
-            initial={{ scale: 0.8, opacity: 0.4 }}
-            animate={{ scale: 1.2, opacity: 1 }}
-            transition={{
-              duration: 0.6,
-              repeat: Infinity,
-              repeatType: "reverse",
-              delay: index * 0.2,
+            initial={{ scale: 1, opacity: 0.5 }}
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.5, 0.8, 0.5],
             }}
-            className="w-2 h-2 bg-rose-300 rounded-full"
+            transition={{
+              duration: 1.2,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: index * 0.3,
+            }}
+            className="w-2.5 h-2.5 bg-milktea-400 rounded-full"
+            style={{
+              transform: `rotate(${index * 15}deg)`,
+            }}
           />
         ))}
       </div>

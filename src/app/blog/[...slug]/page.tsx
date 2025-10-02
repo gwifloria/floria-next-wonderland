@@ -1,8 +1,8 @@
+import { MarkdownWrapper as MarkdownWrapperShell } from "@/components/Markdown";
 import { toAbsPath } from "@/util/path";
 import { LeftOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import Link from "next/link";
-import { MarkdownWrapper as MarkdownWrapperShell } from "@/components/Markdown";
 
 export default async function BlogSlugPage({
   params,
@@ -13,7 +13,7 @@ export default async function BlogSlugPage({
   const path = resolved.slug.map(decodeURIComponent).join("/");
 
   return (
-    <>
+    <div className="bg-white/50 h-full overflow-hidden relative backdrop-blur-sm p-6 pb-12 rounded-xl ">
       <Link
         className="mb-4 block"
         href={toAbsPath("/blog")}
@@ -29,6 +29,6 @@ export default async function BlogSlugPage({
         </Button>
       </Link>
       <MarkdownWrapperShell path={path} showLastUpdated={true} />
-    </>
+    </div>
   );
 }

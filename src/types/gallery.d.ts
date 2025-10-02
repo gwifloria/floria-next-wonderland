@@ -57,7 +57,4 @@ export interface GalleryImage {
   alt: string;
   width: number;
   height: number;
-  caption?: string;
-  location?: string;
-  date?: string;
 }

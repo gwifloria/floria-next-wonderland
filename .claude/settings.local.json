@@ -1,70 +1,11 @@
 {
   "hooks": {
-    "permissions": {
-      "defaultMode": "plan"
-    },
-    "PreToolUse": [
+    "PreCompact": [
       {
-        "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "echo 'hi'"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo 'end'"
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "notify-send 'Claude Code' 'Awaiting your input'"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo 'prompt received'"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "matcher": "bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo 'session start'"
-          }
-        ]
-      }
-    ],
-    "SubagentStop": [
-      {
-        "matcher": "bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "yarn typecheck && yarn lint"
+            "command": "echo '📦 [PreCompact] 即将压缩上下文 - $(date \"+%H:%M:%S\")'"
           }
         ]
       }

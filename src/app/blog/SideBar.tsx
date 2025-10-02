@@ -3,8 +3,7 @@ import { Skeleton } from "antd";
 import Link from "next/link";
 import Icon from "@/components/SmartIcon";
 import PinControl from "./components/PinControl";
-import { categories, CatKey } from "./constants";
-import { catStyles, cx } from "./util";
+import { categories, CatKey, catStyles, cx } from "./constants";
 // components/ui/SectionTape.tsx
 export function SectionTape({ label }: { label: string }) {
   return (

@@ -22,7 +22,12 @@ const PageHeader = () => {
           href="/"
           className="flex items-center gap-2 whitespace-nowrap text-2xl font-extrabold text-mint-500 tracking-tight select-none drop-shadow-sm hover:text-rose-400 transition-colors duration-200"
         >
-          <span aria-hidden>🍸</span>
+          <img
+            src="/icons/wonder-icon.png"
+            alt="Wonder Icon"
+            className="w-8 h-8 object-contain"
+            aria-hidden="true"
+          />
           <span>Wonderland</span>
         </Link>
 
@@ -73,8 +78,17 @@ const PageHeader = () => {
           className={`absolute right-0 top-0 h-full w-[78%] max-w-[320px] bg-[#f9f4ee]/95 backdrop-blur border-l border-neutral-200 shadow-xl transition-transform ${open ? "translate-x-0" : "translate-x-full"}`}
         >
           <div className="h-[56px] flex items-center px-4 justify-between">
-            <Link href="/" className="font-serif text-center text-lg">
-              🍸 Wonderland
+            <Link
+              href="/"
+              className="font-serif text-center text-lg flex items-center gap-2"
+            >
+              <img
+                src="/icons/wonder-icon.png"
+                alt="Wonder Icon"
+                className="w-6 h-6 object-contain"
+                aria-hidden="true"
+              />
+              Wonderland
             </Link>
             <button
               aria-label="Close menu"

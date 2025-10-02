@@ -1,8 +1,6 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
-
-// 管理员邮箱
-const ADMIN_EMAIL = "ghuijue@gmail.com";
+import { ADMIN_EMAIL } from "@/constants/auth";
 
 // 需要管理员权限的路由
 const ADMIN_ROUTES = [
@@ -11,7 +9,13 @@ const ADMIN_ROUTES = [
   "/api/lab/delete",
   "/api/gallery/sync",
   "/api/gallery/cleanup",
-  "/api/monitoring",
+  "/api/whispers/upload", // 保护 whispers 上传功能
+  "/api/whispers/clear", // 保护 whispers 清空功能
+];
+
+// 需要管理员权限的特定方法路由
+const ADMIN_METHOD_ROUTES = [
+  { path: "/api/whispers/list", methods: ["DELETE"] }, // 只保护删除方法
 ];
 
 // 简单的内存存储限流器（生产环境建议使用Redis）
@@ -20,8 +24,22 @@ const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 /**
  * 检查是否为管理员路由
  */
-function isAdminRoute(pathname: string): boolean {
-  return ADMIN_ROUTES.some((route) => pathname.startsWith(route));
+function isAdminRoute(pathname: string, method?: string): boolean {
+  // 检查完全需要管理员权限的路由
+  if (ADMIN_ROUTES.some((route) => pathname.startsWith(route))) {
+    return true;
+  }
+
+  // 检查需要特定方法权限的路由
+  if (method) {
+    return ADMIN_METHOD_ROUTES.some(
+      (adminRoute) =>
+        pathname.startsWith(adminRoute.path) &&
+        adminRoute.methods.includes(method),
+    );
+  }
+
+  return false;
 }
 
 /**
@@ -122,7 +140,7 @@ export async function middleware(request: NextRequest) {
     }
 
     // 2. 管理员路由认证检查
-    if (isAdminRoute(pathname)) {
+    if (isAdminRoute(pathname, request.method)) {
       const token = await getToken({
         req: request,
         secret: process.env.NEXTAUTH_SECRET,

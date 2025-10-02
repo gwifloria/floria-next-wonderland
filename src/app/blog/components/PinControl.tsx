@@ -1,11 +1,9 @@
 "use client";
+import { isAdminUser } from "@/constants/auth";
 import { BlogPostItem } from "@/types/blog";
 import { postFetcher } from "@/util/fetch";
 import { useSession } from "next-auth/react";
 import useSWRMutation from "swr/mutation";
-import Icon from "@/components/SmartIcon";
-
-const ADMIN_EMAIL = "ghuijue@gmail.com";
 
 interface PinControlProps {
   post: BlogPostItem;
@@ -34,7 +32,7 @@ export default function PinControl({ post, category }: PinControlProps) {
   });
 
   // Only show to admin users
-  if (!session?.user?.email || session.user.email !== ADMIN_EMAIL) {
+  if (!isAdminUser(session?.user?.email)) {
     return null;
   }
 
