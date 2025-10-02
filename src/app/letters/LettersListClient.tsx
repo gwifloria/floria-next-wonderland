@@ -55,10 +55,13 @@ export function ThreadHeader({ t, index }: { t: ThreadApi; index: number }) {
   return (
     <>
       {/* 封面背景（按 1~4 轮换） */}
-      <span
-        aria-hidden
-        style={{ backgroundImage: `url(${cover})` }}
-        className="pointer-events-none absolute inset-0 rounded-2xl bg-cover bg-center"
+      <Image
+        src={cover}
+        alt=""
+        fill
+        priority={index === 0}
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        className="pointer-events-none rounded-2xl object-cover"
       />
       {/* 米白遮罩，保证文字可读性 */}
       <span

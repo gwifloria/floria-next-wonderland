@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ReactNode } from "react";
 import { PAPER_TEXTURE_STYLE, SPACING, THEME_COLORS } from "../constants";
 
@@ -10,6 +11,16 @@ export function PaperContainer({ children }: PaperContainerProps) {
     <div
       className={`container ${THEME_COLORS.background} ${THEME_COLORS.border} border shadow-sm rounded-3xl mx-auto ${SPACING.container} relative overflow-hidden`}
     >
+      {/* Priority preload for paper texture */}
+      <Image
+        src="/images/paper.png"
+        alt=""
+        width={400}
+        height={400}
+        priority
+        className="hidden"
+      />
+
       {/* Paper texture overlay */}
       <div
         className="absolute inset-0 pointer-events-none"

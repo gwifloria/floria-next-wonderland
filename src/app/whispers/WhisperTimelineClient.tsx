@@ -85,6 +85,7 @@ export default function WhisperTimelineClient() {
           alt=""
           width={180}
           height={240}
+          priority
           className="-rotate-12"
           style={{ objectFit: "contain" }}
         />
@@ -97,6 +98,7 @@ export default function WhisperTimelineClient() {
           alt=""
           width={160}
           height={220}
+          priority
           className="rotate-6"
           style={{ objectFit: "contain" }}
         />
