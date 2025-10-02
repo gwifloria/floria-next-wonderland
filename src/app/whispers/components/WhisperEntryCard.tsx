@@ -15,6 +15,7 @@ interface WhisperEntryCardProps {
   selectedTag: string | null;
   onTagClick: (tag: string) => void;
   onDeleteSuccess: () => void;
+  isPriority?: boolean; // For first card LCP optimization
 }
 
 export default function WhisperEntryCard({
@@ -22,6 +23,7 @@ export default function WhisperEntryCard({
   selectedTag,
   onTagClick,
   onDeleteSuccess,
+  isPriority = false,
 }: WhisperEntryCardProps) {
   const { data: session } = useSession();
   const messageApi = useMessage();
@@ -73,6 +75,7 @@ export default function WhisperEntryCard({
       {/* Decorative card - only manages card styling */}
       <DecorativeCard
         id={entry.id}
+        isPriority={isPriority}
         className="hover:shadow-md transition-all duration-200 hover:-translate-y-1"
         renderHeader={() => (
           <div className="flex justify-between items-center mb-3 pb-2 border-b border-nepal-100">

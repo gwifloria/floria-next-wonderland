@@ -23,6 +23,7 @@ export default function PageIntro({ children }: PageIntroProps) {
       >
         <button
           className="relative inline-block rotate-12 opacity-70 hover:opacity-100 transition-all duration-200 group"
+          style={{ width: "24px", height: "16px" }}
           aria-label="查看页面详情"
         >
           <Image

@@ -48,10 +48,11 @@ export function MailComment({ threadId }: { threadId: string }) {
       {/* Comments List */}
       {comments?.length ? (
         <div className="space-y-4">
-          {comments.map((comment) => (
+          {comments.map((comment, index) => (
             <DecorativeCard
               key={comment.id}
               id={comment.id}
+              isPriority={index === 0}
               author={
                 comment?.author?.name || comment?.author?.address || "匿名"
               }

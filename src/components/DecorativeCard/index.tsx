@@ -16,6 +16,7 @@ interface DecorativeCardProps {
   onDelete?: (id: string) => void;
   showDeleteButton?: boolean;
   className?: string;
+  isPriority?: boolean; // For first card LCP optimization
 
   // Custom render functions for flexible layouts
   renderHeader?: () => ReactNode;
@@ -30,6 +31,7 @@ export default function DecorativeCard({
   onDelete,
   showDeleteButton = false,
   className = "",
+  isPriority = false,
   renderHeader,
   renderFooter,
 }: DecorativeCardProps) {
@@ -59,6 +61,7 @@ export default function DecorativeCard({
             src="/images/tape-beige.png"
             alt=""
             fill
+            priority={isPriority}
             className="object-contain"
           />
         </div>
@@ -71,6 +74,7 @@ export default function DecorativeCard({
             src="/images/washi-2.png"
             alt=""
             fill
+            priority={isPriority}
             className="object-contain"
           />
         </div>

@@ -17,7 +17,15 @@ import {
 import { MailComment } from "./MailComment";
 
 /** 单条邮件：统一"信件/手帐"气质 */
-function MessageCard({ m, index }: { m: MailMessageApi; index: number }) {
+function MessageCard({
+  m,
+  index,
+  isPriority = false,
+}: {
+  m: MailMessageApi;
+  index: number;
+  isPriority?: boolean;
+}) {
   // determine sender key and choose background
   const addr = (m.from?.address || "anonymous").toLowerCase();
   let paperBg: string = PAPER_BACKGROUNDS[0];
@@ -39,6 +47,7 @@ function MessageCard({ m, index }: { m: MailMessageApi; index: number }) {
           fill
           alt=""
           src={paperBg}
+          priority={isPriority}
           className="pointer-events-none absolute scale-[2] inset-0 opacity-40 contrast-70 object-cover"
           style={{ objectPosition: "center top" }}
         />
@@ -138,7 +147,7 @@ export default function LetterDetailClient({ threadId }: { threadId: string }) {
       {/* 最近两封 */}
       <section className="space-y-6">
         {visibleMsgs.map((m, i) => (
-          <MessageCard key={m.id} m={m} index={i} />
+          <MessageCard key={m.id} m={m} index={i} isPriority={i === 0} />
         ))}
       </section>
 
